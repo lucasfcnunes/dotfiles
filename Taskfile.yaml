@@ -1,0 +1,18 @@
+version: '3'
+tasks:
+  get:nixos-wsl:
+    desc: Get NixOS for WSL
+    dir: ./tmp/
+    cmds:
+      - echo "Getting NixOS for WSL..."
+      - wget https://github.com/nix-community/NixOS-WSL/releases/download/2505.7.0/nixos.wsl
+      - wget https://github.com/nix-community/NixOS-WSL/releases/download/2505.7.0/nixos.wsl.sha256
+  nix-channel:
+    cmds:
+      # github:NixOS/nixpkgs/nixos-25.05
+      - sudo nix-channel --add https://nixos.org/channels/nixos-25.05 nixos
+      # github:nix-community/nixos-wsl/release-25.05
+      - sudo nix-channel --add https://github.com/nix-community/NixOS-WSL/archive/refs/heads/release-25.05.tar.gz nixos-wsl
+      # - nix flake update
+      - sudo nix-channel --update
+      - sudo nixos-rebuild switch
