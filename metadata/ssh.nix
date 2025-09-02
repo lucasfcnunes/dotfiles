@@ -10,7 +10,7 @@
     "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGqesfGzltPA+pNVQ667T1tKzQoz09qTcoQshygxl73I3EbYD5vnHFtC+tnziVbfxSx8ZDRvPDN7vHEalE5U3JU="
   ];
 
-  kradalby = [
+  lucasfcnunes = [
     # kPhone
     "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFiqc4Mou7XVbFNEY0EDkD34G1JbtuFB0WndjktfiBBxS3hz0XdE/mCUjS5Zs65mg5aKzdQXisGRX85LT4DTAtQ="
 

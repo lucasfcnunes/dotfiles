@@ -24,25 +24,25 @@ with builtins; let
 in {
   servers = {
     oracleldn = hostsToWireguard."core.oracldn" // {
-      endpoint_address = "oracldn.fap.no";
+      endpoint_address = "oracldn.lucasfcnunes.com";
       endpoint_port = 51820;
       public_key = "Gp4ZxbTOP3yo8SVPBC1Bi34OqArGYsvP3MNT1CjbTyM=";
     };
 
     oraclefurt = hostsToWireguard."core.oracfurt" // {
-      endpoint_address = "oracfurt.fap.no";
+      endpoint_address = "oracfurt.lucasfcnunes.com";
       endpoint_port = 51820;
       public_key = "3cjdc90xSHcs+E9lY1LoLavsWumxyNtsfCVuLWKHglw=";
     };
 
     terra = hostsToWireguard."core.terra" // {
-      endpoint_address = "terra.fap.no";
+      endpoint_address = "terra.lucasfcnunes.com";
       endpoint_port = 51820;
       public_key = "c/PM40me7sWgdYyXTMCTV3KXuRvCvpQzIW5AK4w+fDY=";
     };
 
     tjoda = hostsToWireguard."core.tjoda" // {
-      endpoint_address = "tjoda.fap.no";
+      endpoint_address = "tjoda.lucasfcnunes.com";
       endpoint_port = 51820;
       public_key = "sZ6JQB3ud/NxyxrEiTBe6MkoTU4BTpaYz4lvboAq8AQ=";
     };
@@ -50,7 +50,7 @@ in {
 
   clients = {
     ldn = hostsToWireguard."dev.ldn" // {
-      # endpoint_address = "ldn.fap.no";
+      # endpoint_address = "ldn.lucasfcnunes.com";
       # endpoint_port = 51820;
       public_key = "L1sF/PWHXiavT2arPLhDyh9wWwK5a3UeC4mpvFG8xFE=";
     };

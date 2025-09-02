@@ -20,7 +20,7 @@
         node_name = config.networking.hostName;
         server = lib.mkDefault false;
         log_level = "DEBUG";
-        datacenter = builtins.replaceStrings [".fap.no"] [""] config.networking.domain;
+        datacenter = builtins.replaceStrings [".lucasfcnunes.com"] [""] config.networking.domain;
 
         retry_join = lib.mkIf (config.networking.defaultGateway != null) (lib.mkDefault [config.networking.defaultGateway.address]);
 

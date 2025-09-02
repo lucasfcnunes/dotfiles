@@ -8,7 +8,7 @@ with lib; let
   cfg = config.services.homebridges;
 
   tradfriCodec = builtins.fetchGit {
-    url = "https://github.com/kradalby/tradfri-mqttthing.git";
+    url = "https://github.com/lucasfcnunes/tradfri-mqttthing.git";
     ref = "master";
     rev = "c09fe38ce0ae58f1c9216b9dfcb7e05d641eebbe";
   };

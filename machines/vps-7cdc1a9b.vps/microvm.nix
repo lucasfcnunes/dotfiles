@@ -149,7 +149,7 @@ in {
   #           # The GitHub Actions self-hosted runner service.
   #           services.github-runners.headscale = {
   #             enable = true;
-  #             url = "https://github.com/kradalby/headscale";
+  #             url = "https://github.com/lucasfcnunes/headscale";
   #             replace = true;
   #             extraLabels = ["nixos" "docker"];
   #             user = "github-runner";
@@ -164,7 +164,7 @@ in {
   #               git
   #             ];
 
-  #             name = "kradalby-${config.networking.hostName}-${toString index}";
+  #             name = "lucasfcnunes-${config.networking.hostName}-${toString index}";
 
   #             tokenFile = config.age.secrets.github-headscale-token.path;
   #           };
@@ -176,7 +176,7 @@ in {
 
   services.resolved = {
     enable = true;
-    domains = ["dalby.ts.net"];
+    domains = ["tail3404eb.ts.net"];
     extraConfig = ''
       DNS=::1 127.0.0.1
       DNSStubListener=no
@@ -260,9 +260,9 @@ in {
     vm;
 
   networking = {
-    hostId = "007f0200";
-    hostName = "lenovo";
-    domain = "ldn.fap.no";
+    hostId = "007f0101";
+    hostName = "vps-7cdc1a9b";
+    domain = "vps.ovh.ca";
   };
 
   microvm.vms =

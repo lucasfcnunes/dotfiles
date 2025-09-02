@@ -50,9 +50,9 @@ in
                 type = "sendreceive";
               };
 
-              "kradalby - Sync" = {
+              "lucasfcnunes - Sync" = {
                 id = "xTDuT-kZeuK";
-                path = "/storage/sync/kradalby";
+                path = "/storage/sync/lucasfcnunes";
                 devices = builtins.attrNames config.services.syncthing.settings.devices;
                 type = "sendreceive";
               };

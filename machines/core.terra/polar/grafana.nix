@@ -32,7 +32,7 @@ in {
 
     smtp = {
       enable = true;
-      host = "smtp.fap.no:25";
+      host = "smtp.lucasfcnunes.com:25";
       fromAddress = "grafana@${config.networking.domain}";
     };
 

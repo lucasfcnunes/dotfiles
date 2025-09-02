@@ -11,7 +11,7 @@ windows:
       layout: main-vertical
       panes:
         - terra:
-            - set -xg RESTIC_REPOSITORY rest:https://restic.core.terra.fap.no/
+            - set -xg RESTIC_REPOSITORY rest:https://restic.core.terra.lucasfcnunes.com/
             - set -xg RESTIC_PASSWORD_FILE ~/.config/restic.p
             - |
               while true
@@ -29,7 +29,7 @@ windows:
                   sleep 3600
               end
         - tjoda:
-            - set -xg RESTIC_REPOSITORY rest:https://restic.core.tjoda.fap.no/
+            - set -xg RESTIC_REPOSITORY rest:https://restic.core.tjoda.lucasfcnunes.com/
             - set -xg RESTIC_PASSWORD_FILE ~/.config/restic.p
             - restic backup $HOME/git $HOME/Sync
             - |
@@ -79,4 +79,4 @@ windows:
   - colima:
       panes:
         - up:
-          - colima start --vm-type vz --cpu 4 --memory 12 --disk 100; colima ssh -- top
+            - colima start --vm-type vz --cpu 4 --memory 12 --disk 100; colima ssh -- top

@@ -37,11 +37,11 @@ in {
             password = "birdbirdbirdistheword";
           };
 
-          kradalby = {
+          lucasfcnunes = {
             acl = [
               "readwrite #"
             ];
-            password = "kradalby";
+            password = "lucasfcnunes";
           };
 
           exporter = {

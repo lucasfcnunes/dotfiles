@@ -124,7 +124,7 @@
         set host $argv[1]
         set hostDash (echo $host | ${pkgs.gnused}/bin/sed 's/\./-/g')
 
-        set sshKey (ssh-keyscan -t ed25519 $host.fap.no | ${pkgs.gnused}/bin/sed 's/.*ssh/ssh/')
+        set sshKey (ssh-keyscan -t ed25519 $host.lucasfcnunes.com | ${pkgs.gnused}/bin/sed 's/.*ssh/ssh/')
 
         echo "New key: $sshKey"
 

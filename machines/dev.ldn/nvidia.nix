@@ -43,5 +43,5 @@ in {
   '';
 
   # CHANGE: add your own user here
-  users.groups.libvirtd.members = ["root" "kradalby"];
+  users.groups.libvirtd.members = ["root" "lucasfcnunes"];
 }

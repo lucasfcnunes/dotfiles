@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  domain = "pdf.fap.no";
+  domain = "pdf.lucasfcnunes.com";
   port = 63456;
   nginx = import ../../common/funcs/nginx.nix {inherit config lib;};
 

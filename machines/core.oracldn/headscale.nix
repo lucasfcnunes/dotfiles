@@ -6,7 +6,7 @@
 }: let
   s = import ../../metadata/ipam.nix {inherit lib config;};
   consul = import ../../common/funcs/consul.nix {inherit lib;};
-  domain = "headscale.kradalby.no";
+  domain = "headscale.lucasfcnunes.no";
   aclConfig = {
     acls = [
       {
@@ -21,7 +21,7 @@
         action = "accept";
         src = ["kristoffer"];
         dst = ["*"];
-        users = ["kradalby" "root"];
+        users = ["lucasfcnunes" "root"];
       }
     ];
   };
@@ -68,7 +68,7 @@ in {
       metrics_listen_addr = ":54910";
 
       oidc = {
-        issuer = "https://auth.kradalby.no/oauth2/openid/headscale";
+        issuer = "https://auth.lucasfcnunes.no/oauth2/openid/headscale";
         client_id = "headscale";
         client_secret_path = config.age.secrets.headscale-oidc-secret.path;
         pkce = {
@@ -112,7 +112,7 @@ in {
           enabled = true;
           region_id = 999;
           region_code = "ldn-fap";
-          region_name = "headscale.oracldn.fap.no";
+          region_name = "headscale.oracldn.lucasfcnunes.com";
           stun_listen_addr = "0.0.0.0:3478";
           private_key_path = config.age.secrets.headscale-private-key.path;
         };

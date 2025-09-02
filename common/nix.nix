@@ -33,7 +33,7 @@
     # settings = {
     #   auto-optimise-store = true;
     #   sandbox = true;
-    #   trusted-users = [ "kradalby" ];
+    #   trusted-users = [ "lucasfcnunes" ];
     # };
 
     gc = {

@@ -24,7 +24,7 @@
     buildMachines = import ../../common/buildmachines.nix;
   };
 
-  users.users.kradalby = {
+  users.users.lucasfcnunes = {
     name = machine.username;
     home = machine.homeDir;
   };
@@ -75,7 +75,7 @@
   };
 
   system = {
-    primaryUser = "kradalby";
+    primaryUser = "lucasfcnunes";
     defaults = {
       smb.NetBIOSName = machine.hostname;
       dock.orientation = lib.mkForce "left";

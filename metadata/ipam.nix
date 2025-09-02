@@ -100,7 +100,7 @@ with builtins; let
       ) (attrNames hostsWithConsul));
 
   # Legacy compatibility
-  baseDomain = ".fap.no";
+  baseDomain = ".lucasfcnunes.com";
   currentSite = builtins.replaceStrings [baseDomain] [""] config.networking.domain;
   consulPeers = mapAttrs (key: value: value.consul) (filterAttrs (key: hasAttr "consul") (removeAttrs sites [currentSite]));
   consul = mapAttrs (key: value: value.consul) (filterAttrs (key: hasAttr "consul") sites);

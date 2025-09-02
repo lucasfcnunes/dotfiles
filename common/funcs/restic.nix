@@ -37,7 +37,7 @@ with lib; let
 
       (mkIf pkgs.stdenv.isDarwin {
         services.restic.backups."${name}" = {
-          logPath = "/Users/kradalby/Library/Logs";
+          logPath = "/Users/lucasfcnunes/Library/Logs";
           calendarInterval = {
             Minute = 30;
           };
@@ -66,7 +66,7 @@ with lib; let
     inherit paths;
     inherit owner;
     name = site;
-    repository = "rest:https://restic.core.${site}.fap.no/${name}";
+    repository = "rest:https://restic.core.${site}.lucasfcnunes.com/${name}";
   });
 in {
   inherit backupJob;

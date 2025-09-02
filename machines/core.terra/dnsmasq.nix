@@ -33,7 +33,7 @@
       ];
 
       dhcp-option-force = [
-        "option:domain-search,tjoda,fap.no,kradalby.no"
+        "option:domain-search,tjoda,lucasfcnunes.com,lucasfcnunes.no"
       ];
 
       # static leases

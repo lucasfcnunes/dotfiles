@@ -43,9 +43,9 @@ in {
       ];
     };
 
-    # UID allocations in kradalby world
+    # UID allocations in lucasfcnunes world
     # 21xxx - User accounts
-    # 21000 - kradalby
+    # 21000 - lucasfcnunes
     #
     # 22xxx - Service accounts
     # 22000 - storage user and group
@@ -57,12 +57,12 @@ in {
 
     users = {
       users = {
-        kradalby = {
+        lucasfcnunes = {
           isNormalUser = true;
           uid = 21000;
           extraGroups = ["wireshark" "docker" "wheel" "storage"];
           shell = pkgs.fish;
-          openssh.authorizedKeys.keys = sshKeys.main ++ sshKeys.kradalby;
+          openssh.authorizedKeys.keys = sshKeys.main ++ sshKeys.lucasfcnunes;
           # passwordFile = config.age.secrets.r.path;
         };
 

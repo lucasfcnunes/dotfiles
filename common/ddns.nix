@@ -7,7 +7,7 @@
 
   # services.cfdyndns = {
   #   enable = true;
-  #   email = "kradalby@kradalby.no";
+  #   email = "lucasfcnunes@lucasfcnunes.no";
   #   apikeyFile = config.sops.secrets.cloudflare_token.path;
   #
   #   records = [
@@ -24,9 +24,9 @@
     enable = false;
     verbose = false;
     domains = [config.networking.domain];
-    zone = "fap.no";
+    zone = "lucasfcnunes.com";
     server = "www.cloudflare.com";
-    username = "kradalby@kradalby.no";
+    username = "lucasfcnunes@lucasfcnunes.no";
     passwordFile = config.age.secrets.cloudflare-ddns-token.path;
     protocol = "cloudflare";
     use = "web, web=api.ipify.org";

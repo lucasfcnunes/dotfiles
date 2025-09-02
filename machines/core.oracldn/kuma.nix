@@ -5,7 +5,7 @@
   system,
   ...
 }: let
-  domain = "uptime.kradalby.no";
+  domain = "uptime.lucasfcnunes.no";
 in {
   services.uptime-kuma = {
     enable = true;

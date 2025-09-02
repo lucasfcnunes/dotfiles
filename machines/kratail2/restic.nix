@@ -28,7 +28,7 @@
   cfg = site: {
     name = "kratail";
     secret = "restic-kratail-token";
-    owner = "kradalby";
+    owner = "lucasfcnunes";
     inherit site;
     paths = basePaths;
   };

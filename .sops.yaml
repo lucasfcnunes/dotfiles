@@ -1,6 +1,6 @@
 ---
 keys:
-  - &kradalby age1qup7qqaxqt82lu04f8l2lmmdmeyzv2fyen2re87d79mfyga76vesxmqpyc
+  - &lucasfcnunes age1qup7qqaxqt82lu04f8l2lmmdmeyzv2fyen2re87d79mfyga76vesxmqpyc
 
   # Hosts
   - &dev-terra age1ex64eqg9vl635slkfv2nnz9a4htcjnhunwdlwt2ylznw0h37a90s4t6zpx
@@ -19,7 +19,7 @@ creation_rules:
   - path_regex: secrets.yaml$
     key_groups:
       - age:
-          - *kradalby
+          - *lucasfcnunes
           - *dev-terra
           - *core-ldn
           - *home-ldn

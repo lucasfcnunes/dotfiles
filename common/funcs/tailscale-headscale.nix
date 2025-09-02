@@ -5,8 +5,8 @@
 }: let
   package = pkgs.tailscale;
   tailscale = {
-    hostname ? ''${builtins.replaceStrings [".fap.no"] [""] config.networking.fqdn}'',
-    loginServer ? "https://headscale.kradalby.no",
+    hostname ? ''${builtins.replaceStrings [".lucasfcnunes.com"] [""] config.networking.fqdn}'',
+    loginServer ? "https://headscale.lucasfcnunes.no",
     reset ? true,
     reauth ? false,
     ssh ? true,

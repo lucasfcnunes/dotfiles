@@ -28,7 +28,7 @@
 
   networking = {
     hostName = "eye";
-    domain = "ldn.fap.no";
+    domain = "ldn.lucasfcnunes.com";
     nameservers = [
       "1.1.1.1"
       "1.0.0.1"

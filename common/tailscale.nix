@@ -36,7 +36,7 @@ in {
         "--advertise-exit-node"
         "--advertise-connector"
         "--webclient=true"
-        ''--hostname=${builtins.replaceStrings [".fap.no"] [""] config.networking.fqdn}''
+        ''--hostname=${builtins.replaceStrings ["lucasfcnunes.com"] [""] config.networking.fqdn}''
       ]
       ++ lib.optional ((builtins.length cfg.advertiseRoutes) > 0) ''--advertise-routes=${builtins.concatStringsSep "," cfg.advertiseRoutes}'';
 

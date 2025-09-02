@@ -144,8 +144,8 @@
           		local remote_urls
           		remote_urls=$(git remote -v || true) # Prevent error if no remotes are configured
 
-          		# Check if any remote URL contains "kradalby"
-          		if echo "$remote_urls" | grep -q "kradalby"; then
+          		# Check if any remote URL contains "lucasfcnunes"
+          		if echo "$remote_urls" | grep -q "lucasfcnunes"; then
           			echo "Deleting repository: $repo_dir"
           			# Go back to the base directory and delete the repository
           			cd "$base_dir" || exit

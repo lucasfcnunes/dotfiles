@@ -25,7 +25,7 @@
         loginServer = "https://headscale.sandefjordfiber.no";
 
         hostname = "minio-tjoda";
-        # TODO(kradalby): replace with services.minio.listenAddress
+        # TODO(lucasfcnunes): replace with services.minio.listenAddress
         backendPort = 9000;
       };
     };

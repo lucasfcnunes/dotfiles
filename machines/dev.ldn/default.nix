@@ -64,8 +64,8 @@ in {
   };
 
   # Also add work SSH keys
-  users.users.root.openssh.authorizedKeys.keys = sshKeys.main ++ sshKeys.kradalby ++ sshKeys.work;
-  users.users.kradalby.openssh.authorizedKeys.keys = sshKeys.main ++ sshKeys.kradalby ++ sshKeys.work;
+  users.users.root.openssh.authorizedKeys.keys = sshKeys.main ++ sshKeys.lucasfcnunes ++ sshKeys.work;
+  users.users.lucasfcnunes.openssh.authorizedKeys.keys = sshKeys.main ++ sshKeys.lucasfcnunes ++ sshKeys.work;
 
   # Temporarily disabled - attic server is not currently running
   services.attic-watch.enable = false;
@@ -90,7 +90,7 @@ in {
 
   security.sudo.extraRules = [
     {
-      users = ["kradalby"];
+      users = ["lucasfcnunes"];
       commands = [
         {
           command = "ALL";

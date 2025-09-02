@@ -1,7 +1,7 @@
 {...}: {
   security.pki.certificates = [
     ''
-      kradalby corp
+      lucasfcnunes corp
       =============
       -----BEGIN CERTIFICATE-----
       MIIBsjCCAVmgAwIBAgIQIEbLo+m1klVh1hqtCwUl3TAKBggqhkjOPQQDAjA4MRYw

@@ -56,7 +56,7 @@
         insteadOf = "gh:";
         pushInsteadOf = "gh:";
       };
-      github = {user = "kradalby";};
+      github = {user = "lucasfcnunes";};
 
       commit = {
         gpgsign = config.programs.git.extraConfig.user.signingkey != "";

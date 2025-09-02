@@ -7,10 +7,10 @@
   # TODO:
   services.ssmtp = {
     enable = true;
-    root = "kradalby@kradalby.no";
+    root = "lucasfcnunes@lucasfcnunes.no";
     # TODO: Does this need to be overriden?
     domain = "";
-    hostName = "smtp.fap.no:25";
+    hostName = "smtp.lucasfcnunes.com:25";
     useTLS = false;
 
     settings = {
@@ -24,8 +24,8 @@
     scriptArgs = "%I";
     script = ''
       UNIT=$(systemd-escape $1)
-      TO="kradalby@kradalby.no"
-      FROM="root@home.ldn.fap.no"
+      TO="lucasfcnunes@lucasfcnunes.no"
+      FROM="root@home.ldn.lucasfcnunes.com"
       SUBJECT="$UNIT Failed"
       HEADERS="To:$TO\nFrom:$FROM\nSubject: $SUBJECT\n"
       BODY=$(systemctl status --no-pager $UNIT || true)

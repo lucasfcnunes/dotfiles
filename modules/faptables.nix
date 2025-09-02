@@ -275,7 +275,7 @@ in {
             ct state {established, related} counter accept
             ct state invalid counter drop
 
-            # TODO(kradalby): If needed, look at:
+            # TODO(lucasfcnunes): If needed, look at:
             # https://github.com/mdlayher/homelab/blob/main/nixos/routnerr-3/nftables.nix
 
             counter reject
@@ -301,7 +301,7 @@ in {
           }
 
           chain prerouting_wans {
-            # TODO(kradalby): If needed, look at:
+            # TODO(lucasfcnunes): If needed, look at:
             # https://github.com/mdlayher/homelab/blob/main/nixos/routnerr-3/nftables.nix
             accept
           }

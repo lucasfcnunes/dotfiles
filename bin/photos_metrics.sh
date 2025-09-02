@@ -121,8 +121,8 @@ photos_app_end_time_seconds set "$(date +%s)"
 
 io::prometheus::PushAdd \
     job="photos_app" \
-    instance="kramacbook.vpn.fap.no" \
-    gateway="https://pushgateway.terra.fap.no"
+    instance="kramacbook.vpn.lucasfcnunes.com" \
+    gateway="https://pushgateway.terra.lucasfcnunes.com"
 # path=""
 
 # io::prometheus::ExportAsText

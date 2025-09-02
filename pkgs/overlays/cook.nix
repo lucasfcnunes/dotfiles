@@ -23,6 +23,6 @@ rustPlatform.buildRustPackage rec {
     description = "Command line program which provides a suite of tools to create shopping lists and maintain recipes.";
     homepage = "https://github.com/cooklang/cookcli";
     license = licenses.unlicense;
-    maintainers = [maintainers.kradalby];
+    maintainers = [maintainers.lucasfcnunes];
   };
 }

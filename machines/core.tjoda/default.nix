@@ -46,7 +46,7 @@
 
   networking = {
     hostName = "core";
-    domain = "tjoda.fap.no";
+    domain = "tjoda.lucasfcnunes.com";
     hostId = "14889c5c";
   };
 

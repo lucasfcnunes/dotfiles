@@ -4,50 +4,50 @@
 # base64 -w0 /etc/ssh/ssh_host_ed25519_key.pub
 [
   # {
-  #   hostName = "core.terra.fap.no";
+  #   hostName = "core.terra.lucasfcnunes.com";
   #   systems = ["x86_64-linux"];
   #   sshUser = "root";
-  #   sshKey = "/Users/kradalby/.ssh/id_ed25519";
+  #   sshKey = "/Users/lucasfcnunes/.ssh/id_ed25519";
   #   maxJobs = 5;
   #   supportedFeatures = ["big-parallel" "kvm" "nixos-test"];
   #
   #   publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUdFenhqcHM1OGFJcncxWnhnRFV1ajFXN1QzQng2WmJPNlEzNGEweGoyQkEgcm9vdEBjb3JlCg==";
   # }
   # {
-  #   hostName = "core.tjoda.fap.no";
+  #   hostName = "core.tjoda.lucasfcnunes.com";
   #   systems = ["x86_64-linux"];
   #   sshUser = "root";
-  #   sshKey = "/Users/kradalby/.ssh/id_ed25519";
+  #   sshKey = "/Users/lucasfcnunes/.ssh/id_ed25519";
   #   maxJobs = 3;
   #   supportedFeatures = ["big-parallel" "kvm" "nixos-test"];
   #   publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJTcUVoTExkczhzaHc4SE1PU3BOOFVNQkZqTFBUQ3lnMVRqSEtxWHZtMVcgcm9vdEBuaXhvcwo=";
   # }
   # {
-  #   hostName = "core.oracldn.fap.no";
+  #   hostName = "core.oracldn.lucasfcnunes.com";
   #   systems = ["aarch64-linux"];
   #   sshUser = "root";
-  #   sshKey = "/Users/kradalby/.ssh/id_ed25519";
+  #   sshKey = "/Users/lucasfcnunes/.ssh/id_ed25519";
   #   maxJobs = 3;
   #   supportedFeatures = ["big-parallel" "kvm" "nixos-test"];
   #   publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUdFZTllSU1mNDYyWlFoRThObDlqeVVzY1J0VFRZZUFJUFJOMmt2TzNjZEMgcm9vdEBjb3JlCg==";
   # }
   {
-    hostName = "dev.oracfurt.fap.no";
+    hostName = "dev.oracfurt.lucasfcnunes.com";
     systems = ["aarch64-linux"];
     sshUser = "root";
-    sshKey = "/Users/kradalby/.ssh/id_ed25519";
+    sshKey = "/Users/lucasfcnunes/.ssh/id_ed25519";
     maxJobs = 3;
     supportedFeatures = ["big-parallel" "kvm" "nixos-test"];
     publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUU2NXMvaFJuMzR2NVVOaFNJQzgvSk4vNDUyaExkcW4xMzFnVnFxQlRQbmwgcm9vdEBkZXYK";
   }
   {
-    hostName = "dev.ldn.fap.no";
+    hostName = "dev.ldn.lucasfcnunes.com";
     systems = [
       "x86_64-linux"
       # "aarch64-linux"
     ];
     sshUser = "root";
-    sshKey = "/Users/kradalby/.ssh/id_ed25519";
+    sshKey = "/Users/lucasfcnunes/.ssh/id_ed25519";
     maxJobs = 3;
     supportedFeatures = ["big-parallel" "kvm" "nixos-test"];
     publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUYzblJYcVhmbG9Wc2wxN1daV3hLSWtVOUFhNi85c1UxMm1ZS0J0cFN4NjYgcm9vdEBuaXhvcwo=";

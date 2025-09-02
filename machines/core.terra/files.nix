@@ -4,7 +4,7 @@
   config,
   ...
 }: let
-  domain = "files.kradalby.no";
+  domain = "files.lucasfcnunes.no";
 in {
   security.acme.certs."${domain}".domain = domain;
 

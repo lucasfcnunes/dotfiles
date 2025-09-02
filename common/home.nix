@@ -11,14 +11,14 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     users = {
-      kradalby = {
+      lucasfcnunes = {
         imports = [
           ../home
         ];
         programs.git = {
           extraConfig = {
             user = {
-              signingkey = lib.mkForce "/home/kradalby/.ssh/id_ed25519.pub";
+              signingkey = lib.mkForce "/home/lucasfcnunes/.ssh/id_ed25519.pub";
             };
           };
         };

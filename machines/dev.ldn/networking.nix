@@ -33,7 +33,7 @@ in {
   networking = {
     hostId = "58808be0";
     hostName = "dev";
-    domain = "ldn.fap.no";
+    domain = "ldn.lucasfcnunes.com";
 
     # Use systemd-networkd for configuration. Forcibly disable legacy DHCP
     # client.
@@ -57,7 +57,7 @@ in {
   # Use resolved for local DNS lookups, querying through CoreDNS.
   services.resolved = {
     enable = true;
-    domains = ["dalby.ts.net"];
+    domains = ["tail3404eb.ts.net"];
     extraConfig = ''
       DNS=::1 127.0.0.1
       DNSStubListener=no

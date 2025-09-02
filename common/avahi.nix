@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  site = builtins.replaceStrings [".fap.no"] [""] config.networking.domain;
+  site = builtins.replaceStrings [".lucasfcnunes.com"] [""] config.networking.domain;
 in {
   services.avahi = {
     enable = true;

@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  domain = "auth.kradalby.no";
+  domain = "auth.lucasfcnunes.no";
   certDir = config.security.acme.certs."${domain}".directory;
 in {
   age.secrets = {
@@ -56,7 +56,7 @@ in {
         # Generate a credentials reset link:
         # nix-shell -p kanidm
         # kanidm person credential create-reset-token <USERNAME> --name idm_admin
-        kradalby = {
+        lucasfcnunes = {
           displayName = "Kristoffer Dalby";
           mailAddresses = ["kristoffer@dalby.cc"];
           groups = [];
@@ -64,12 +64,12 @@ in {
       };
 
       groups = {
-        vpn_users.members = ["kradalby"];
+        vpn_users.members = ["lucasfcnunes"];
       };
 
       systems.oauth2.headscale = {
-        originUrl = "https://headscale.kradalby.no/oidc/callback";
-        originLanding = "https://headscale.kradalby.no";
+        originUrl = "https://headscale.lucasfcnunes.no/oidc/callback";
+        originLanding = "https://headscale.lucasfcnunes.no";
         displayName = "Headscale";
         scopeMaps.vpn_users = ["openid" "profile" "email"];
         basicSecretFile = config.age.secrets.kanidm-headscale-oidc-secret.path;

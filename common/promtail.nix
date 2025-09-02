@@ -1,5 +1,5 @@
 {config, ...}: let
-  site = builtins.replaceStrings [".fap.no"] [""] config.networking.domain;
+  site = builtins.replaceStrings [".lucasfcnunes.com"] [""] config.networking.domain;
 in {
   services.promtail = {
     enable = false;
@@ -13,7 +13,7 @@ in {
 
       clients = [
         {
-          url = "https://loki.oracldn.fap.no/loki/api/v1/push";
+          url = "https://loki.oracldn.lucasfcnunes.com/loki/api/v1/push";
           # url = "http://10.69.0.206:3100/loki/api/v1/push";
         }
       ];

@@ -29,9 +29,9 @@ in {
           PGID = "1000";
           ALLOW_SIGNUP = "false";
           DB_ENGINE = "sqlite";
-          BASE_URL = "oppskrift.dalby.ts.net";
+          BASE_URL = "oppskrift.tail3404eb.ts.net";
           OIDC_AUTH_ENABLED = "true";
-          OIDC_CONFIGURATION_URL = "https://idp.dalby.ts.net/.well-known/openid-configuration";
+          OIDC_CONFIGURATION_URL = "https://idp.tail3404eb.ts.net/.well-known/openid-configuration";
           OIDC_AUTO_REDIRECT = "true";
           OIDC_CLIENT_ID = "unused";
           OIDC_CLIENT_SECRET = "unused";

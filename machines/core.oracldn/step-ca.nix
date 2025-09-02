@@ -6,7 +6,7 @@
 }: let
   cfg = config.services.step-ca;
 
-  domain = "ca.kradalby.no";
+  domain = "ca.lucasfcnunes.no";
 in {
   options.services.step-ca.configFilePath = lib.mkOption {
     type = lib.types.path;

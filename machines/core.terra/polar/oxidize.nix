@@ -6,7 +6,7 @@
 }: let
   meta = import ./meta.nix {};
 
-  domain = "ox.core.terra.fap.no";
+  domain = "ox.core.terra.lucasfcnunes.com";
   conf = pkgs.writeText "oxidized-config.yml" ''
     ---
     debug: true

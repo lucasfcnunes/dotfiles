@@ -6,7 +6,7 @@
 }: let
   retention = "24h";
 
-  domain = "loki.oracldn.fap.no";
+  domain = "loki.oracldn.lucasfcnunes.com";
 in {
   services.loki = {
     enable = false;

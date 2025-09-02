@@ -8,22 +8,22 @@
     ../../common
     ./hardware-configuration.nix
 
-    ../../common/acme.nix
-    ../../common/nginx.nix
+    # ../../common/acme.nix
+    # ../../common/nginx.nix
     ../../common/containers.nix
     ../../common/tailscale.nix
 
-    ../../common/consul.nix
+    # ../../common/consul.nix
 
     ./tailscale-headscale.nix
 
     # ./networking.nix
-    ./microvm.nix
-    # ./k3s.nix
+    # ./microvm.nix
+    ./k3s.nix
   ];
 
   services.tailscale = {
-    tags = ["tag:ldn" "tag:server"];
+    tags = ["tag:vps" "tag:server"];
   };
 
   virtualisation.docker.enable = lib.mkForce false;
@@ -34,5 +34,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 }

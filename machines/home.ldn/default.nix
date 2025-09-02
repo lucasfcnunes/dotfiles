@@ -33,7 +33,7 @@
 
   networking = {
     hostName = "home";
-    domain = "ldn.fap.no";
+    domain = "ldn.lucasfcnunes.com";
     nameservers = [
       "10.65.0.1"
     ];

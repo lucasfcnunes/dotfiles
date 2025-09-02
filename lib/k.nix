@@ -1,3 +1,3 @@
 {...}: {
-  tailscaleHostname = cfg: builtins.replaceStrings [".fap.no" "."] ["" "-"] cfg.networking.fqdn;
+  tailscaleHostname = cfg: builtins.replaceStrings [".lucasfcnunes.com" "."] ["" "-"] cfg.networking.fqdn;
 }

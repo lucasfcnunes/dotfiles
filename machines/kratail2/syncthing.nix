@@ -6,9 +6,9 @@ in {
   services = {
     syncthing = {
       enable = true;
-      user = "kradalby";
-      dataDir = "/Users/kradalby";
-      configDir = "/Users/kradalby/Library/Application Support/Syncthing";
+      user = "lucasfcnunes";
+      dataDir = "/Users/lucasfcnunes";
+      configDir = "/Users/lucasfcnunes/Library/Application Support/Syncthing";
       guiAddress = "0.0.0.0:38443";
       overrideDevices = true;
       overrideFolders = true;
@@ -16,7 +16,7 @@ in {
       folders = {
         "Sync" = {
           id = "xTDuT-kZeuK";
-          path = "/Users/kradalby/Sync";
+          path = "/Users/lucasfcnunes/Sync";
           devices = builtins.attrNames config.services.syncthing.devices;
           type = "sendreceive";
         };

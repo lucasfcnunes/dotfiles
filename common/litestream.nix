@@ -15,7 +15,7 @@ with lib; let
         type = "s3";
         bucket = "databases";
         path = db.name;
-        endpoint = "http://minio.oracldn.fap.no:9000";
+        endpoint = "http://minio.oracldn.lucasfcnunes.com:9000";
         region = "us-east-1";
         validation-interval = "24h";
       }
@@ -24,7 +24,7 @@ with lib; let
         type = "s3";
         bucket = "databases";
         path = db.name;
-        endpoint = "http://minio.tjoda.fap.no:9000";
+        endpoint = "http://minio.tjoda.lucasfcnunes.com:9000";
         region = "us-east-1";
         validation-interval = "24h";
       }

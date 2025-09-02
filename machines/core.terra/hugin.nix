@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  domain = "hugin.kradalby.no";
+  domain = "hugin.lucasfcnunes.no";
   nginx = import ../../common/funcs/nginx.nix {inherit config lib;};
 
   vhost = nginx.externalVhost {

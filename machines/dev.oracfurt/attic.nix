@@ -39,7 +39,7 @@ in {
     # https://lgug2z.com/articles/deploying-a-cloudflare-r2-backed-nix-binary-cache-attic-on-fly-io/
     # https://lgug2z.com/articles/building-and-privately-caching-x86-and-aarch64-nixos-systems-on-github-actions/
 
-    # env ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64="" atticadm make-token --sub "kradalby" --validity "10y" --pull "*"
+    # env ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64="" atticadm make-token --sub "lucasfcnunes" --validity "10y" --pull "*"
     # --push "*" --create-cache "*" --configure-cache "*" --configure-cache-retention "*" --destroy-cache "*" --delete "*"
     # -f config.toml
     atticd = {

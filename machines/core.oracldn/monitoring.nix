@@ -77,11 +77,11 @@ in
           {
             job_name = "consul";
             consul_sd_configs = [
-              {server = "consul.ldn.fap.no";}
-              {server = "consul.oracldn.fap.no";}
-              {server = "consul.oracfurt.fap.no";}
-              {server = "consul.tjoda.fap.no";}
-              {server = "consul.terra.fap.no";}
+              {server = "consul.ldn.lucasfcnunes.com";}
+              {server = "consul.oracldn.lucasfcnunes.com";}
+              {server = "consul.oracfurt.lucasfcnunes.com";}
+              {server = "consul.tjoda.lucasfcnunes.com";}
+              {server = "consul.terra.lucasfcnunes.com";}
             ];
             relabel_configs = [
               {
@@ -98,7 +98,7 @@ in
                   "__meta_consul_service_port"
                 ];
                 regex = "([a-z]+);([a-z]+);([0-9]+)";
-                replacement = "$1.$2.fap.no:$3";
+                replacement = "$1.$2.lucasfcnunes.com:$3";
                 target_label = "instance";
               }
               {
@@ -477,7 +477,7 @@ in
           enable = true;
 
           web = {
-            external-url = "https://pushgateway.oracldn.fap.no";
+            external-url = "https://pushgateway.oracldn.lucasfcnunes.com";
             listen-address = "localhost:9091";
           };
 

@@ -297,13 +297,13 @@
       "locked": {
         "lastModified": 1728848795,
         "narHash": "sha256-c81Faza/dg5GZbxOZnNIGxdJGF+kZeQVk28MvLVmP8E=",
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "homewizard-p1-exporter",
         "rev": "e8c5057483fddc42413f33b68dcbbec8d5c63141",
         "type": "github"
       },
       "original": {
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "homewizard-p1-exporter",
         "type": "github"
       }
@@ -320,13 +320,13 @@
       "locked": {
         "lastModified": 1728848166,
         "narHash": "sha256-YCDGMaw/BvPCuT+zU0sYNFxMqIMPLony4fx0tzBlW0g=",
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "hugin",
         "rev": "bc36fbc29aafd66f39743c0053a55b83819044cd",
         "type": "github"
       },
       "original": {
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "hugin",
         "type": "github"
       }
@@ -343,13 +343,13 @@
       "locked": {
         "lastModified": 1754322391,
         "narHash": "sha256-um5oPiMKwpgz5v/A1cabj3++fk5JzOEbLNAhis7596I=",
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "hvor",
         "rev": "7de112cc5c80915c4884ddf5af8da07077a528d0",
         "type": "github"
       },
       "original": {
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "hvor",
         "type": "github"
       }
@@ -390,13 +390,13 @@
       "locked": {
         "lastModified": 1743064649,
         "narHash": "sha256-vfkRyOEI6Ay61aFIubZRePKNYKDuStM/5ZZZq3ZNO74=",
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "kra",
         "rev": "acc701481bc61cfceb2edb5104d17382011e68a3",
         "type": "github"
       },
       "original": {
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "kra",
         "type": "github"
       }
@@ -423,7 +423,7 @@
         "type": "github"
       }
     },
-    "neovim-kradalby": {
+    "neovim-lucasfcnunes": {
       "inputs": {
         "flake-compat": "flake-compat",
         "flake-utils": [
@@ -475,13 +475,13 @@
       "locked": {
         "lastModified": 1752388473,
         "narHash": "sha256-fIiI57AZp9tzG4DsMOhdLzM89lEgcX9MDHABrb9//Uw=",
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "neovim",
         "rev": "8b61623ee4fc1d07e81335128ca9986dd0c2f0b1",
         "type": "github"
       },
       "original": {
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "neovim",
         "type": "github"
       }
@@ -627,17 +627,17 @@
         "type": "github"
       }
     },
-    "nixpkgs-kradalby": {
+    "nixpkgs-lucasfcnunes": {
       "locked": {
         "lastModified": 1748442041,
         "narHash": "sha256-2ecoH9nq29fsPbx4rw36RaPTZLF7CZwDQNULl1z/ZkM=",
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "nixpkgs",
         "rev": "0dd5cdaa3b0548b1ebe53a8c39d2f8468771ce1a",
         "type": "github"
       },
       "original": {
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "ref": "headscale-026",
         "repo": "nixpkgs",
         "type": "github"
@@ -785,13 +785,13 @@
         "jujutsu": "jujutsu",
         "krapage": "krapage",
         "microvm": "microvm",
-        "neovim-kradalby": "neovim-kradalby",
+        "neovim-lucasfcnunes": "neovim-lucasfcnunes",
         "nix-rosetta-builder": "nix-rosetta-builder",
         "nixos-generators": "nixos-generators_2",
         "nixpkgs": "nixpkgs",
         "nixpkgs-darwin": "nixpkgs-darwin",
         "nixpkgs-hardware": "nixpkgs-hardware",
-        "nixpkgs-kradalby": "nixpkgs-kradalby",
+        "nixpkgs-lucasfcnunes": "nixpkgs-lucasfcnunes",
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-nixos": "nixpkgs-nixos",
         "nixpkgs-old-stable": "nixpkgs-old-stable",
@@ -972,13 +972,13 @@
       "locked": {
         "lastModified": 1732478317,
         "narHash": "sha256-PMrf0RhBVeze73JSlBl6a7OQQuK6H/3QAwfuPXQz/Ck=",
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "tasmota-exporter",
         "rev": "3f840c2efd76a5390e62ce6417529530034a87ef",
         "type": "github"
       },
       "original": {
-        "owner": "kradalby",
+        "owner": "lucasfcnunes",
         "repo": "tasmota-exporter",
         "type": "github"
       }

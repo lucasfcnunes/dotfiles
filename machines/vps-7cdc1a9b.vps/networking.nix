@@ -6,9 +6,9 @@
   maxVMs = 5;
 in {
   networking = {
-    hostId = "007f0200";
-    hostName = "lenovo";
-    domain = "ldn.fap.no";
+    hostId = "007f0101";
+    hostName = "vps-7cdc1a9b";
+    domain = "vps.ovh.ca";
 
     # Use systemd-networkd for configuration. Forcibly disable legacy DHCP
     # client.
@@ -44,7 +44,7 @@ in {
   # Use resolved for local DNS lookups, querying through CoreDNS.
   services.resolved = {
     enable = true;
-    domains = ["dalby.ts.net"];
+    domains = ["tail3404eb.ts.net"];
     extraConfig = ''
       DNS=::1 127.0.0.1
       DNSStubListener=no

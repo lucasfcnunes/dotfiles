@@ -5,10 +5,10 @@ import os
 import requests
 from github import Github  # https://github.com/PyGithub/PyGithub
 
-gitea_url = "https://git.kradalby.no/api/v1"
+gitea_url = "https://git.lucasfcnunes.no/api/v1"
 gitea_token = os.environ["GITEA_MIRROR_TOKEN"]
 
-github_username = "kradalby"
+github_username = "lucasfcnunes"
 github_token = os.environ["GITHUB_MIRROR_TOKEN"]
 
 ignore = ["G-Research"]
@@ -35,7 +35,7 @@ for repo in gh.get_user().get_repos():
 
     if repo.organization and repo.organization.login not in ignore:
         name = repo.full_name.replace("/", "-")
-    elif repo.owner and repo.owner.login == "kradalby":
+    elif repo.owner and repo.owner.login == "lucasfcnunes":
         name = repo.name
     elif repo.owner and repo.owner.login not in ignore:
         name = repo.full_name.replace("/", "-")

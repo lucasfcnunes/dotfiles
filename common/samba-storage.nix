@@ -13,7 +13,7 @@ in {
         browsable = "yes";
         public = "no";
         writeable = "yes";
-        "valid users" = "kradalby";
+        "valid users" = "lucasfcnunes";
         "force user" = "storage";
         "force group" = "storage";
         "create mask" = "0755";

@@ -12,7 +12,7 @@
 with lib; let
   cfg = config.services.tailscale2;
 in {
-  meta.maintainers = with maintainers; [kradalby];
+  meta.maintainers = with maintainers; [lucasfcnunes];
 
   options.services.tailscale2 = {
     enable = mkEnableOption (lib.mdDoc "Second Tailscale daemon that only runs in userspace");

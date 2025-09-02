@@ -17,7 +17,7 @@ _: {
       "homebrew/services"
       "ibm-swift/kitura"
       "jotta/cli"
-      "kradalby/tap"
+      "lucasfcnunes/tap"
       "lukakerr/things"
       "minio/stable"
       "sachaos/tap"

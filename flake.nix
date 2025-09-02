@@ -1,9 +1,9 @@
 {
-  description = "kradalby's system config";
+  description = "lucasfcnunes' system config";
 
   # nixConfig = {
   #   extra-substituters = [
-  #     # "http://attic.dalby.ts.net/system?priority=43"
+  #     # "http://attic.tail3404eb.ts.net/system?priority=43"
   #   ];
   #   extra-trusted-public-keys = [
   #     # "system:40arGOg81ZACFJQAksoEplo8PfgxDd6aEQpNbuHXcCg="
@@ -20,7 +20,7 @@
     nixpkgs-old-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-    nixpkgs-kradalby.url = "github:kradalby/nixpkgs/headscale-026";
+    nixpkgs-lucasfcnunes.url = "github:lucasfcnunes/nixpkgs/headscale-026";
 
     nixpkgs-hardware.url = "github:NixOS/nixos-hardware";
 
@@ -74,25 +74,25 @@
 
     # Go based
     krapage = {
-      url = "github:kradalby/kra";
+      url = "github:lucasfcnunes/kra";
       inputs."utils".follows = "utils";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     hvor = {
-      url = "github:kradalby/hvor";
+      url = "github:lucasfcnunes/hvor";
       inputs."utils".follows = "utils";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     tasmota-exporter = {
-      url = "github:kradalby/tasmota-exporter";
+      url = "github:lucasfcnunes/tasmota-exporter";
       inputs."utils".follows = "utils";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     homewizard-p1-exporter = {
-      url = "github:kradalby/homewizard-p1-exporter";
+      url = "github:lucasfcnunes/homewizard-p1-exporter";
       inputs."utils".follows = "utils";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
@@ -105,7 +105,7 @@
     };
 
     hugin = {
-      url = "github:kradalby/hugin";
+      url = "github:lucasfcnunes/hugin";
       inputs."flake-utils".follows = "utils";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
@@ -116,9 +116,9 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    # munin.url = "github:kradalby/munin";
-    neovim-kradalby = {
-      url = "github:kradalby/neovim";
+    # munin.url = "github:lucasfcnunes/munin";
+    neovim-lucasfcnunes = {
+      url = "github:lucasfcnunes/neovim";
       inputs."flake-utils".follows = "utils";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
@@ -188,7 +188,7 @@
       golink.overlays.default
       (import ./pkgs/overlays {})
       (_: final: let
-        # TODO(kradalby): figure out why this doesnt work
+        # TODO(lucasfcnunes): figure out why this doesnt work
         goOver = name: ("${name}".packages."${final.system}"."${name}".override {
           buildGoModule = final.buildGo124Module;
         });
@@ -211,7 +211,7 @@
           buildGoModule = final.buildGo124Module;
         };
         redlib = redlib.packages."${final.system}".default;
-        neovim = neovim-kradalby.packages."${final.system}".neovim-kradalby;
+        neovim = neovim-lucasfcnunes.packages."${final.system}".neovim-lucasfcnunes;
       })
     ];
 
@@ -277,14 +277,14 @@
           tags = ["x86" "ldn"];
         };
 
-        # "lenovo.ldn" = box.nixosBox {
-        #   arch = "x86_64-linux";
-        #   name = "lenovo.ldn";
-        #   tags = ["x86" "ldn"];
-        #   modules = with inputs; [
-        #     microvm.nixosModules.host
-        #   ];
-        # };
+        "vps-7cdc1a9b.vps" = box.nixosBox {
+          arch = "x86_64-linux";
+          name = "vps-7cdc1a9b.vps";
+          tags = ["x86" "vps"];
+          modules = with inputs; [
+            microvm.nixosModules.host
+          ];
+        };
 
         "core.tjoda" = box.nixosBox {
           arch = "x86_64-linux";
@@ -299,9 +299,9 @@
         kratail2 = let
           machine = {
             arch = "aarch64-darwin";
-            username = "kradalby";
+            username = "lucasfcnunes";
             hostname = "kratail2";
-            homeDir = /Users/kradalby;
+            homeDir = /Users/lucasfcnunes;
           };
         in
           box.macBox machine darwin home-manager;
@@ -360,7 +360,7 @@
           (with pkgs; {
             networking = {
               hostName = name;
-              domain = "bootstrap.fap.no";
+              domain = "bootstrap.lucasfcnunes.com";
               firewall.enable = lib.mkForce false;
               useDHCP = lib.mkForce true;
             };

@@ -4,7 +4,7 @@
   config,
   ...
 }: let
-  domain = "umami.kradalby.no";
+  domain = "umami.lucasfcnunes.no";
   port = 63458;
   nginx = import ../../common/funcs/nginx.nix {inherit config lib;};
 

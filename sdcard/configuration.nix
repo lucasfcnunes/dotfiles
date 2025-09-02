@@ -14,7 +14,7 @@
   networking.useDHCP = true;
   networking.firewall.enable = false;
 
-  nix.trustedUsers = ["kradalby"];
+  nix.trustedUsers = ["lucasfcnunes"];
 
   services.openssh = {
     enable = true;
@@ -24,11 +24,11 @@
 
   users = {
     users = {
-      kradalby = {
-        password = "kradalby";
+      lucasfcnunes = {
+        password = "lucasfcnunes";
       };
       root = {
-        password = "kradalby";
+        password = "lucasfcnunes";
       };
     };
   };

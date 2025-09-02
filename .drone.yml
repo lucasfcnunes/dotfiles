@@ -82,7 +82,7 @@
         "pull": "always",
         "settings":
           {
-            "host": "core.terra.fap.no",
+            "host": "core.terra.lucasfcnunes.com",
             "rm": true,
             "source": ["dist/*"],
             "strip_components": 1,

@@ -29,7 +29,7 @@
     ./restic.nix
     # ./gh-runner.nix
     ./postfix.nix
-    # ./libvirt.nix # TODO(kradalby): Figure out why it breaks coreDNS, binds 53
+    # ./libvirt.nix # TODO(lucasfcnunes): Figure out why it breaks coreDNS, binds 53
     ./hugin.nix
     ./postgres.nix
     # ./immich.nix
@@ -68,7 +68,7 @@
 
   networking = {
     hostName = "core";
-    domain = "terra.fap.no";
+    domain = "terra.lucasfcnunes.com";
     nameservers = [
       "1.1.1.1"
       "1.0.0.1"

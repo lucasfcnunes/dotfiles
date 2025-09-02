@@ -9,11 +9,11 @@ in {
     enable = true;
 
     hosts = [
-      "core.terra.fap.no"
-      "core.oracldn.fap.no"
-      "dev.ldn.fap.no"
-      "core.tjoda.fap.no"
-      # "core.ntnu.fap.no"
+      "core.terra.lucasfcnunes.com"
+      "core.oracldn.lucasfcnunes.com"
+      "dev.ldn.lucasfcnunes.com"
+      "core.tjoda.lucasfcnunes.com"
+      # "core.ntnu.lucasfcnunes.com"
       "vg.no"
       "1.1.1.1"
       "8.8.8.8"

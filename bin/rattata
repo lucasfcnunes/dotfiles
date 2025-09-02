@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-xfreerdp /w:1366 /h:730 /u:kradalby@kradalby.no /v:10.60.0.12
+xfreerdp /w:1366 /h:730 /u:lucasfcnunes@lucasfcnunes.no /v:10.60.0.12

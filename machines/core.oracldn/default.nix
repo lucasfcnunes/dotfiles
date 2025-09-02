@@ -48,7 +48,7 @@
 
   networking = {
     hostName = "core";
-    domain = "oracldn.fap.no";
+    domain = "oracldn.lucasfcnunes.com";
     nameservers = [
       "1.1.1.1"
       "1.0.0.1"

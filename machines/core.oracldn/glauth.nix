@@ -4,10 +4,10 @@
   lib,
   ...
 }: let
-  domain = "ldap.kradalby.no";
+  domain = "ldap.lucasfcnunes.no";
 
   ui = {
-    domain = "directory.kradalby.no";
+    domain = "directory.lucasfcnunes.no";
     port = 5000;
   };
 in {
@@ -27,7 +27,7 @@ in {
 
   virtualisation.oci-containers.containers.glauth = {
     # image = "glauth/glauth:v2.0.0";
-    image = "kradalby/glauth:v2.0.0-040322-arm64";
+    image = "lucasfcnunes/glauth:v2.0.0-040322-arm64";
     user = config.users.users.glauth.uid;
     # workdir = "/home/podmanager";
     autoStart = true;
@@ -38,12 +38,12 @@ in {
     environment = {};
     volumes = [
       "glauth-config:/app/config"
-      "/var/lib/acme/ldap.kradalby.no:/certs"
+      "/var/lib/acme/ldap.lucasfcnunes.no:/certs"
     ];
   };
 
   # virtualisation.oci-containers.containers.glauth-ui = {
-  #   image = "kradalby/glauth-ui:040322-2-arm64";
+  #   image = "lucasfcnunes/glauth-ui:040322-2-arm64";
   #   user = config.users.users.glauth.uid;
   #   # workdir = " /home/podmanager ";
   #   autoStart = true;
@@ -52,10 +52,10 @@ in {
   #   ];
   #   environment = {
   #     SECRET_KEY = "test";
-  #     MAIL_SERVER = "smtp.fap.no";
+  #     MAIL_SERVER = "smtp.lucasfcnunes.com";
   #     MAIL_PORT = "25";
   #     MAIL_USE_TLS = "0";
-  #     MAIL_ADMIN = "directory@kradalby.no";
+  #     MAIL_ADMIN = "directory@lucasfcnunes.no";
   #     DATABASE_URL = "postgresql://glauth@localhost:5432/glauth";
   #   };
   #   volumes = [
@@ -69,8 +69,8 @@ in {
     cookieSecret = "test";
 
     mail = {
-      server = "smtp.fap.no";
-      admin = "directory@kradalby.no";
+      server = "smtp.lucasfcnunes.com";
+      admin = "directory@lucasfcnunes.no";
     };
   };
 

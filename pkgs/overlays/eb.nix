@@ -23,6 +23,6 @@ rustPlatform.buildRustPackage rec {
     description = "♻️ Run commands with exponential backoff 📈";
     homepage = "https://github.com/rye/eb";
     license = licenses.unlicense;
-    maintainers = [maintainers.kradalby];
+    maintainers = [maintainers.lucasfcnunes];
   };
 }

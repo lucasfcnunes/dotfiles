@@ -7,7 +7,7 @@
 with lib; let
   consul = import ./funcs/consul.nix {inherit lib;};
 
-  site = builtins.replaceStrings [".fap.no"] [""] config.networking.domain;
+  site = builtins.replaceStrings [".lucasfcnunes.com"] [""] config.networking.domain;
 
   nextdns-config = pkgs.writeTextFile {
     name = "nextdns-config";
@@ -45,7 +45,7 @@ in {
       enable = true;
       config = let
         sites = import ../metadata/consul.nix;
-        currentSite = builtins.replaceStrings [".fap.no"] [""] config.networking.domain;
+        currentSite = builtins.replaceStrings [".lucasfcnunes.com"] [""] config.networking.domain;
 
         s = import ../metadata/ipam.nix {inherit lib config;};
         peers = s.consulPeers;
@@ -74,7 +74,7 @@ in {
           }
         }
 
-        dalby.ts.net {
+        tail3404eb.ts.net {
           import b
           forward . 100.100.100.100:53 {
             health_check 5s

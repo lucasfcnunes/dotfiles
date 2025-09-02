@@ -4,13 +4,13 @@
   ...
 }: let
   isWorkstation = pkgs.stdenv.isDarwin && pkgs.stdenv.isAarch64;
-  kradalbyLogin = hostname: {
+  lucasfcnunesLogin = hostname: {
     hostname = hostname;
-    user = "kradalby";
+    user = "lucasfcnunes";
     port = 22;
   };
   fapRoot = {
-    hostname = "%h.fap.no";
+    hostname = "%h.lucasfcnunes.com";
     user = "root";
     port = 22;
   };
@@ -30,14 +30,14 @@ in {
       else "";
 
     matchBlocks = {
-      "sprocket" = kradalbyLogin "sprocket.nvg.ntnu.no";
-      "devl" = kradalbyLogin "dev.ldn.fap.no";
-      "devf" = kradalbyLogin "dev.oracfurt.fap.no";
+      "sprocket" = lucasfcnunesLogin "sprocket.nvg.ntnu.no";
+      "devl" = lucasfcnunesLogin "dev.ldn.lucasfcnunes.com";
+      "devf" = lucasfcnunesLogin "dev.oracfurt.lucasfcnunes.com";
       "*.s" = {
         hostname = "%handefjordfiber.no";
         user = "root";
         port = 22;
-        proxyJump = "core.terra.fap.no";
+        proxyJump = "core.terra.lucasfcnunes.com";
       };
       "*.terra" = fapRoot;
       "*.tjoda" = fapRoot;
@@ -52,12 +52,12 @@ in {
       "control*" = {
         user = "ubuntu";
       };
-      "kradalby-workstation*" = {
+      "lucasfcnunes-workstation*" = {
         user = "ubuntu";
       };
       "tailscale-proxy" = {
         match = "host !bunny.corp.tailscale.com,*.tailscale.com,control,shard*,derp*,trunkd*";
-        proxyCommand = "/Users/kradalby/go/bin/ts-ssh-proxy %r %h %p";
+        proxyCommand = "/Users/lucasfcnunes/go/bin/ts-ssh-proxy %r %h %p";
       };
     };
   };

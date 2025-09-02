@@ -20,7 +20,7 @@
 
   networking = {
     hostName = "rpi";
-    domain = "vetle.fap.no";
+    domain = "vetle.lucasfcnunes.com";
     usePredictableInterfaceNames = lib.mkForce true;
     dhcpcd.enable = true;
     useDHCP = lib.mkDefault true;

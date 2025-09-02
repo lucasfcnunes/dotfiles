@@ -53,7 +53,7 @@ with lib; let
     download "https://v.firebog.net/hosts/Shalla-mal.txt"
     download "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/add.Risk/hosts"
 
-    # kradalby's pihole migration
+    # lucasfcnunes's pihole migration
     download https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
     download https://raw.githubusercontent.com/kboghdady/youTube_ads_4_pi-hole/master/youtubelist.txt
     download https://www.github.developerdan.com/hosts/lists/amp-hosts-extended.txt

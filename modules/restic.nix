@@ -317,8 +317,8 @@ in {
           {
             text = ''
               # logfilename                                [owner:group]   mode   count   size   when  flags
-              ${backup.logPath}/restic-${name}.log         kradalby:staff      750    10      10240  *     NJ
-              ${backup.logPath}/restic-${name}-error.log   kradalby:staff      750    10      10240  *     NJ
+              ${backup.logPath}/restic-${name}.log         lucasfcnunes:staff      750    10      10240  *     NJ
+              ${backup.logPath}/restic-${name}-error.log   lucasfcnunes:staff      750    10      10240  *     NJ
 
             '';
           }

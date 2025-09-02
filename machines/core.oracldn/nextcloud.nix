@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  domain = "nextcloud.kradalby.no";
+  domain = "nextcloud.lucasfcnunes.no";
 
   nginx = import ../../common/funcs/nginx.nix {inherit config lib;};
 
@@ -93,7 +93,7 @@ in
         settings = {
           inherit (cfg) devices;
           folders = {
-            "kradalby - Sync" = {
+            "lucasfcnunes - Sync" = {
               id = "xTDuT-kZeuK";
               # Name of folder in Syncthing, also the folder ID
               path = "${config.services.nextcloud.datadir}/syncthing/Sync";
