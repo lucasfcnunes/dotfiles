@@ -1,0 +1,10 @@
+[Unit]
+Description=GPG Relay
+
+[Service]
+ExecStartPre=/bin/rm -f /home/lucasfcnunes/.gnupg/S.gpg-agent.host /run/user/1000/gnupg/S.gpg-agent
+ExecStart=/usr/bin/socat "UNIX-LISTEN:/home/lucasfcnunes/.gnupg/S.gpg-agent.host,fork,unlink-close,unlink-early" EXEC:'/mnt/c/opt/bin/npiperelay-NZSmartie.exe -v -p -ep -ei -s -a "C:/Users/lucas/AppData/Local/gnupg/S.gpg-agent.extra"',nofork
+ExecStartPost=/bin/bash -c 'mkdir -p /run/user/1000/gnupg/ && /usr/bin/ln -s /home/lucasfcnunes/.gnupg/S.gpg-agent.host /run/user/1000/gnupg/S.gpg-agent'
+
+[Install]
+WantedBy=default.target
