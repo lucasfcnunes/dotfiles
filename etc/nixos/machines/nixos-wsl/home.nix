@@ -15,23 +15,77 @@
       zsh
     ];
     file = {
-      ".config-systemd-user-files" = {
-        target = "./.config/systemd/user";
-        source = ./home/lucasfcnunes/.config/systemd/user;
-        recursive = true;
-      };
       "agents.sh" = {
         executable = true;
         source = ./home/lucasfcnunes/agents.sh;
       };
     };
   };
-  # systemd.user.services = {
-  #   gpg-agent.socket = {
-  #   };
-  #   gpg-agent-ssh.socket = {
-  #   };
-  # };
+  systemd.user = {
+    sockets = {
+      gpg-agent = {
+        Unit = {
+          Description = "GnuPG cryptographic agent and passphrase cache";
+          Documentation = "man:gpg-agent(1)";
+        };
+        Socket = {
+          ListenStream = "%t/gnupg/S.gpg-agent";
+          SocketMode = "0600";
+          DirectoryMode = "0700";
+          Accept = true;
+        };
+        Install = {
+          WantedBy = [ "sockets.target" ];
+        };
+      };
+      gpg-agent-ssh = {
+        Unit = {
+          Description = "GnuPG cryptographic agent (ssh-agent emulation)";
+          Documentation = "man:gpg-agent(1) man:ssh-add(1) man:ssh-agent(1) man:ssh(1)";
+        };
+        Socket = {
+          ListenStream = "%t/gnupg/S.gpg-agent.ssh";
+          SocketMode = "0600";
+          DirectoryMode = "0700";
+          Accept = true;
+        };
+        Install = {
+          WantedBy = [ "sockets.target" ];
+        };
+      };
+    };
+    services = {
+      "gpg-agent@" = {
+        Unit = {
+          Description = "gpg4win to WSL connector for GPG";
+          Requires = "gpg-agent.socket";
+        };
+        Service = {
+          Type = "simple";
+          ExecStart = "/mnt/c/opt/bin/npiperelay-NZSmartie.exe -ep -ei -s -a 'C:/Users/lucas/AppData/Local/gnupg/S.gpg-agent.extra'";
+          # ExecStart = "/mnt/c/opt/bin/npiperelay-NZSmartie.exe -ep -ei -s -a 'C:/Users/lucas/AppData/Local/gnupg/S.gpg-agent'";
+          StandardInput = "socket";
+        };
+        Install = {
+          WantedBy = [ "default.target" ];
+        };
+      };
+      "gpg-agent-ssh@" = {
+        Unit = {
+          Description = "gpg4win to WSL connector for SSH";
+          Requires = "gpg-agent-ssh.socket";
+        };
+        Service = {
+          Type = "simple";
+          ExecStart = "/mnt/c/opt/bin/npiperelay-NZSmartie.exe -ei -s '//./pipe/openssh-ssh-agent'";
+          StandardInput = "socket";
+        };
+        Install = {
+          WantedBy = [ "default.target" ];
+        };
+      };
+    };
+  };
   programs = {
     home-manager.enable = true;
     gpg = {
