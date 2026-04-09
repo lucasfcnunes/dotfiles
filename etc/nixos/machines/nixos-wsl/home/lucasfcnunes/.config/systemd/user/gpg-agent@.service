@@ -1,0 +1,12 @@
+[Unit]
+Description=gpg4win to WSL connector for GPG
+Requires=gpg-agent.socket
+
+[Service]
+Type=simple
+ExecStart=/mnt/c/opt/bin/npiperelay-NZSmartie.exe -ep -ei -s -a 'C:/Users/lucas/AppData/Local/gnupg/S.gpg-agent.extra'
+# ExecStart=/mnt/c/opt/bin/npiperelay-NZSmartie.exe -ep -ei -s -a 'C:/Users/lucas/AppData/Local/gnupg/S.gpg-agent'
+StandardInput=socket
+
+[Install]
+WantedBy=default.target

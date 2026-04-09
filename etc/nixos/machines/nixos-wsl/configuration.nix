@@ -1,9 +1,17 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   nix = {
     settings = {
       auto-optimise-store = true;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
     };
     gc = {
       automatic = true;
@@ -11,25 +19,36 @@
       options = "--delete-older-than 6d";
     };
   };
-  boot.kernelModules = [ "nvme-fabrics" "nvme-tcp" ];
+  networking.hostName = "nixos-wsl";
+  boot.kernelModules = [
+    "nvme-fabrics"
+    "nvme-tcp"
+  ];
   environment.systemPackages = with pkgs; [
-    nix-ld-rs # https://github.com/nix-community/nix-ld
+    nix-ld # https://github.com/nix-community/nix-ld
     starship # prompt
     fish # shell
+    zsh # shell
+    zsh-powerlevel10k
     direnv # environment variable manager
     fzf # fuzzy finder
     vim
-    helix
+    # helix
     curl
     wget
     zellij # terminal multiplexer
     lazygit # git tui
     jq # json processor
+    yq # jq on steroids processor
     ripgrep # search tool
     bat # cat replacement
     fd # find replacement
     eza # ls replacement
     git # version control
+    neovim
+    go-task
+    nixfmt
+    gnupg
   ];
   programs = {
     nix-ld.enable = true;
@@ -44,10 +63,15 @@
         fzf --fish | source
       '';
     };
+    zsh = {
+      enable = true;
+    };
     direnv = {
       enable = true;
       nix-direnv.enable = true;
     };
   };
-  users.users.nixos.shell = pkgs.fish;
+  users.users.lucasfcnunes.shell = pkgs.zsh;
+  # users.defaultUserShell = pkgs.zsh;
+  # system.userActivationScripts.zshrc = "touch .zshrc";
 }
