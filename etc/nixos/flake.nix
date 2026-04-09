@@ -22,7 +22,6 @@
         nixos-wsl = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
-            # wsl-setting
             ./machines/nixos-wsl/configuration.nix
             nixos-wsl.nixosModules.default
             {
@@ -48,6 +47,27 @@
             )
           ];
         };
+        nixos-01 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./machines/nixos-01/configuration.nix
+            # home-manager settings
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.lucasfcnunes = import ./machines/nixos-01/home.nix;
+            }
+            # vscode-server settings
+            vscode-server.nixosModules.default
+            (
+              { config, pkgs, ... }:
+              {
+                services.vscode-server.enable = true;
+              }
+            )
+          ];
+        };
       };
       deploy.nodes = {
         nixos-wsl = {
@@ -55,6 +75,13 @@
           profiles.system = {
             user = "lucasfcnunes";
             path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-wsl;
+          };
+        };
+        nixos-01 = {
+          hostname = "nixos-01";
+          profiles.system = {
+            user = "lucasfcnunes";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-01;
           };
         };
       };
