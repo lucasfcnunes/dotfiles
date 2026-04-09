@@ -34,6 +34,21 @@
   # };
   programs = {
     home-manager.enable = true;
+    gpg = {
+      enable = true;
+      publicKeys = [
+        {
+          source = pkgs.fetchurl {
+            url = "https://keybase.io/lucasfcnunes/pgp_keys.asc?fingerprint=51bbb719db9a3f8a928a4d5c9d76b9d8e1e20e99";
+            sha256 = "93f1beb2d91b47b78052161316da25169c3920c843974786aea46dba458e89b5";
+            # url = "https://github.com/lucasfcnunes.gpg";
+            # sha256 = "a12def83439c20a6a36b082a9169596965807f042b2848202075702798cf80b4"; # only trailing newline changed
+          };
+          trust = 5;
+        }
+      ];
+
+    };
     zsh = {
       enable = true;
       enableCompletion = true;
