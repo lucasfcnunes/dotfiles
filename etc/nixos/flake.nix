@@ -78,9 +78,12 @@
           };
         };
         nixos-01 = {
-          hostname = "nixos-01";
+          hostname = "192.168.15.101";
+          # hostname = "nixos-01";
           profiles.system = {
-            user = "lucasfcnunes";
+            sshUser = "lucasfcnunes";
+            interactiveSudo = true;
+            user = "root";
             path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-01;
           };
         };

@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 tasks:
   get:nixos-wsl:
     desc: Get NixOS for WSL
@@ -9,10 +9,25 @@ tasks:
       - wget https://github.com/nix-community/NixOS-WSL/releases/download/2505.7.0/nixos.wsl.sha256
   nix-channel:
     cmds:
-      # github:NixOS/nixpkgs/nixos-25.05
-      - sudo nix-channel --add https://nixos.org/channels/nixos-25.05 nixos
-      # github:nix-community/nixos-wsl/release-25.05
-      - sudo nix-channel --add https://github.com/nix-community/NixOS-WSL/archive/refs/heads/release-25.05.tar.gz nixos-wsl
+      # github:NixOS/nixpkgs/nixos-25.11
+      - sudo nix-channel --add https://nixos.org/channels/nixos-25.11 nixos
+      # github:nix-community/nixos-wsl/release-25.11
+      - sudo nix-channel --add https://github.com/nix-community/NixOS-WSL/archive/refs/heads/release-25.11.tar.gz nixos-wsl
       # - nix flake update
       - sudo nix-channel --update
       - sudo nixos-rebuild switch
+  install:dotfiles:
+    cmds:
+      - cd ~ && git clone https://github.com/lucasfcnunes/dotfiles.git
+      - sudo rm -rf /etc/nixos/ && sudo ln -s ~/dotfiles/etc/nixos/ /etc/nixos
+  flake:update:
+    dir: /etc/nixos/
+    cmds:
+      # - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'cd /etc/nixos/ && nix flake update' --packages git vim go-task
+      - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nixos-rebuild switch' --packages git vim go-task
+      # - nix flake update
+      - nix run github:serokell/deploy-rs .#nixos-wsl
+  nixos-anywhere:
+    desc: Deploy NixOS using NixOS Anywhere
+    cmds:
+    - nix run github:nix-community/nixos-anywhere -- --flake '.#myconfig' --target-host ubuntu@vps-01.lucasfcnunes.com

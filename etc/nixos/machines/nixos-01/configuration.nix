@@ -16,6 +16,10 @@
   ];
 
   nix.settings = {
+    trusted-users = [
+      "root"
+      "lucasfcnunes"
+    ];
     # auto-optimise-store = true;
     experimental-features = [
       "nix-command"
@@ -77,6 +81,17 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
+
+  security.sudo = {
+    # place top level options (like wheelNeedPassword) here
+    enable = true; # make sure to enable the sudo package
+    execWheelOnly = false;
+    wheelNeedsPassword = false;
+    extraConfig = "#includedir /etc/sudoers.d"; # write custom config in here
+    extraRules = [
+      # place sudoers rules here
+    ];
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.defaultUserShell = pkgs.zsh;
