@@ -79,7 +79,7 @@
         };
         nixos-01 = {
           hostname = "192.168.15.101";
-          # hostname = "nixos-01";
+          # hostname = "nixos-01.tail3404eb.ts.net";
           sshUser = "lucasfcnunes";
           # interactiveSudo = true;
           profiles.system = {
