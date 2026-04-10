@@ -49,6 +49,7 @@
     go-task
     nixfmt
     gnupg
+    sops
   ];
   programs = {
     nix-ld.enable = true;
