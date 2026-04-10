@@ -6,6 +6,10 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     deploy-rs.url = "github:serokell/deploy-rs";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
@@ -15,6 +19,7 @@
       home-manager,
       vscode-server,
       deploy-rs,
+      sops-nix,
       ...
     }:
     {
@@ -30,6 +35,8 @@
               wsl.docker-desktop.enable = true;
               wsl.defaultUser = "lucasfcnunes";
             }
+            # sops-nix
+            sops-nix.nixosModules.sops
             # home-manager settings
             home-manager.nixosModules.home-manager
             {

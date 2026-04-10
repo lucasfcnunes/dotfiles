@@ -1,0 +1,10 @@
+keys:
+  - &gpg-lucasfcnunes 51bbb719db9a3f8a928a4d5c9d76b9d8e1e20e99
+  # - &age-lucasfcnunes age...
+creation_rules:
+  - path_regex: (.*)(\.enc)(\.\w+)?
+    key_groups:
+      - pgp:
+          - *gpg-lucasfcnunes
+        # age:
+        #   - *age-lucasfcnunes
