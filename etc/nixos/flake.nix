@@ -80,10 +80,15 @@
         nixos-01 = {
           hostname = "192.168.15.101";
           # hostname = "nixos-01";
+          sshUser = "lucasfcnunes";
+          # interactiveSudo = true;
           profiles.system = {
-            sshUser = "lucasfcnunes";
-            interactiveSudo = true;
             user = "root";
+            autoRollback = false;
+            magicRollback = false;
+            remoteBuild = true;
+            activationTimeout = 600;
+            confirmTimeout = 60;
             path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-01;
           };
         };

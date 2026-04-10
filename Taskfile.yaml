@@ -21,13 +21,16 @@ tasks:
       - cd ~ && git clone https://github.com/lucasfcnunes/dotfiles.git
       - sudo rm -rf /etc/nixos/ && sudo ln -s ~/dotfiles/etc/nixos/ /etc/nixos
   flake:update:
-    dir: /etc/nixos/
+    dir: ./etc/nixos/
     cmds:
-      # - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'cd /etc/nixos/ && nix flake update' --packages git vim go-task
+      - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nix flake update' --packages git vim go-task
       - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nixos-rebuild switch' --packages git vim go-task
-      # - nix flake update
-      - nix run github:serokell/deploy-rs .#nixos-wsl
-  nixos-anywhere:
-    desc: Deploy NixOS using NixOS Anywhere
+  # nixos-anywhere:
+  #   desc: Deploy NixOS using NixOS Anywhere
+  #   cmds:
+  #     - nix run github:nix-community/nixos-anywhere -- --flake '.#myconfig' --target-host ubuntu@vps-01.lucasfcnunes.com
+  deploy:
+    desc: Deploy NixOS using deploy-rs
+    dir: ./etc/nixos/
     cmds:
-    - nix run github:nix-community/nixos-anywhere -- --flake '.#myconfig' --target-host ubuntu@vps-01.lucasfcnunes.com
+      - nix run github:serokell/deploy-rs -- .#nixos-01.system --skip-checks
