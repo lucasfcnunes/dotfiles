@@ -15,6 +15,7 @@
     ./hardware-configuration.nix
     ./k3s.nix
     ./tailscale.nix
+    ./cloudflared.nix
   ];
 
   nix.settings = {
