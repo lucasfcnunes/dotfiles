@@ -31,6 +31,7 @@
     {
       nixosConfigurations = {
         nixos-wsl = nixpkgs.lib.nixosSystem {
+          system = "${system}";
           specialArgs = { inherit inputs; };
           modules = [
             ./machines/nixos-wsl/configuration.nix
@@ -61,6 +62,7 @@
           ];
         };
         nixos-01 = nixpkgs.lib.nixosSystem {
+          system = "${system}";
           specialArgs = { inherit inputs; };
           modules = [
             ./machines/nixos-01/configuration.nix
@@ -89,7 +91,7 @@
           hostname = "nixos-wsl";
           profiles.system = {
             user = "lucasfcnunes";
-            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-wsl;
+            path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.nixos-wsl;
           };
         };
         nixos-01 = {
@@ -104,7 +106,7 @@
             remoteBuild = true;
             activationTimeout = 600;
             confirmTimeout = 60;
-            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-01;
+            path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.nixos-01;
           };
         };
       };

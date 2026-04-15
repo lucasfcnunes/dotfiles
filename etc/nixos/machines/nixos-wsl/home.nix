@@ -137,7 +137,7 @@
 
             # Preferred editor for local and remote sessions
             if [[ -n $SSH_CONNECTION ]]; then
-              export EDITOR='vim'
+              export EDITOR='nvim'
             else
               # export EDITOR='nvim'
               export EDITOR='code -w'
@@ -179,7 +179,7 @@
           email = "lucasfc.nunes@gmail.com";
         };
         gpg.format = "ssh";
-        user.signingKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7I5xIu1oxunktPOmR/HC+EqBJic2z0sbAn+mgluZdLKyDfHkdH/wSiH45jPplkJ473io3OAqJMo+0mgk7gRNSCzc93zj6fbM6JbQa3bC8FJ2uYFYGDkCtgqxgRpTCNcj8bL5inbcfrR3FcZK43ABtCatjqW8y2C39qvpdj0puxa/1Orm2lIxDubYd5oskqKcxUIIPatfFBACr6UXok2zmNDnZtU30f7C6At27nlcii1tNyuGFNVqocLj/qEKTMPp30LHgOewOmOE2u9cb/T39FvGBBJD1z84Xb/47XFREQyi/eBjzI6v5PyJMJ+1IiwI/fgjnxQAnHZqL1htTAcsXhrol5i/Cp08MEo2PkmtWyD3vzwYEMJSxLdghsEQ8ClH2u6QMI2uZIUQpsvNW6uCaH+ooRmcyP3UyspWEVeqSce2I3Iy8mBdCHO0od0Yeqc8P/0B6IfrSUyHXdYetCeRDP5VcpSKsn9/YnjhRW8QSARCV4TvkMwFJpjcZ3eUN3Tb2ix9wEDg9wHXn8nvh4AnfIWAbBffbIWtnT5+JId+h6NhcJlXwQjGRbVctbA6XcAx9AiIml1dr+VHv6hQDwdpEFXy1J58jEnwKJIOJLPp/n6G/7bgyr7H8JhBGIW35ZxzuMvml6amaTWUG2icsFLL/MO+ZuXVJ8JDeUmi0DS8fRw== (gpg-ssh-lucasfcnunes)";
+        user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMlBdpRehqTLYT2XKNJndv0pMWCBuqdLUPCDc1xd2XLp (gpg-ssh-lucasfcnunes)";
         commit.gpgSign = true;
         init.defaultBranch = "master";
         safe.directory = "*";
@@ -195,14 +195,14 @@
         diff."sopsdiffer" = {
           textconv = "sops -d --config /dev/null";
         };
-        core = {
-          editor = "nvim";
-        };
+        # core = {
+        #   editor = "nvim";
+        # };
       };
     };
     gh = {
       enable = true;
-      settings.editor = "nvim";
+      # settings.editor = "nvim";
     };
   };
 }

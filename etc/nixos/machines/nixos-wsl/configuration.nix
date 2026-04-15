@@ -6,6 +6,7 @@
 }:
 {
   imports = [
+    ./hardware-configuration.nix
     ../common/sops.nix
   ];
 
@@ -23,7 +24,9 @@
       options = "--delete-older-than 6d";
     };
   };
+  # networking.networkmanager.enable = true;
   networking.hostName = "nixos-wsl";
+  # boot.loader.grub.enable = true;
   boot.kernelModules = [
     "nvme-fabrics"
     "nvme-tcp"

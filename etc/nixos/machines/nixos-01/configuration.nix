@@ -23,6 +23,7 @@
     trusted-users = [
       "root"
       "lucasfcnunes"
+      # "@wheel"
     ];
     # auto-optimise-store = true;
     experimental-features = [
