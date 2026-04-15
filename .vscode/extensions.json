@@ -1,5 +1,7 @@
 {
   "recommendations": [
+    "corker.vscode-micromamba",
+    "esbenp.prettier-vscode",
     "signageos.signageos-vscode-sops"
   ]
 }

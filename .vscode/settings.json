@@ -1,0 +1,5 @@
+{
+  "conventionalCommits.gitmoji": false,
+  "conventionalCommits.promptFooter": false,
+  "conventionalCommits.scopes": ["nixos-01", "nixos-wsl", "global", "nixos-*"]
+}
