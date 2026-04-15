@@ -14,7 +14,7 @@
     };
   };
   outputs =
-    inputs@{
+    {
       self,
       nixpkgs,
       nixos-wsl,
@@ -23,11 +23,15 @@
       deploy-rs,
       sops-nix,
       ...
-    }:
+    }@inputs:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
     {
       nixosConfigurations = {
         nixos-wsl = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
             ./machines/nixos-wsl/configuration.nix
             nixos-wsl.nixosModules.default
@@ -57,9 +61,11 @@
           ];
         };
         nixos-01 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
             ./machines/nixos-01/configuration.nix
+            # sops-nix
+            sops-nix.nixosModules.sops
             # home-manager settings
             home-manager.nixosModules.home-manager
             {

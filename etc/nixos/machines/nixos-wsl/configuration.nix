@@ -5,6 +5,10 @@
   ...
 }:
 {
+  imports = [
+    ../common/sops.nix
+  ];
+
   nix = {
     settings = {
       auto-optimise-store = true;
@@ -50,6 +54,7 @@
     nixfmt
     gnupg
     sops
+    age
   ];
   programs = {
     nix-ld.enable = true;

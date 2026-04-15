@@ -34,3 +34,8 @@ tasks:
     dir: ./etc/nixos/
     cmds:
       - nix run github:serokell/deploy-rs -- .#nixos-01.system --skip-checks
+  ssh-to-age:
+    desc: Get the public key of the SSH host key in age format, so it can be added to the SOPS keys for encryption
+    cmds:
+      - nix-shell -p ssh-to-age --run "cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-age"
+      # - nix-shell -p ssh-to-age --run "ssh-keyscan nixos-01 | ssh-to-age"
