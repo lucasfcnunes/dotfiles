@@ -14,7 +14,8 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../common/sops.nix
-    ./k3s.nix
+    # ./k3s.nix
+    ./kubernetes.nix
     ./tailscale.nix
     ./cloudflared.nix
   ];
