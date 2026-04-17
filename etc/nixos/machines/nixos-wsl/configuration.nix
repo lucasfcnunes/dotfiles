@@ -31,47 +31,53 @@
     "nvme-fabrics"
     "nvme-tcp"
   ];
+  environment.variables.PATH = [ "/home/lucasfcnunes/.dotbins/linux/amd64/bin" ];
   environment.systemPackages = with pkgs; [
     nix-ld # https://github.com/nix-community/nix-ld
-    starship # prompt
-    fish # shell
-    zsh # shell
-    zsh-powerlevel10k
-    direnv # environment variable manager
-    fzf # fuzzy finder
-    vim
-    # helix
+    nixfmt
+    git
+    gnupg
     curl
     wget
-    zellij # terminal multiplexer
-    lazygit # git tui
-    jq # json processor
-    yq # jq on steroids processor
-    ripgrep # search tool
-    bat # cat replacement
-    fd # find replacement
-    eza # ls replacement
-    git # version control
+    # vimrm -rf
     neovim
-    go-task
-    nixfmt
-    gnupg
-    sops
-    age
+    zsh
+    zsh-powerlevel10k
+    micromamba
+    direnv
+    # fish
+    # starship # prompt
+    # fzf # fuzzy finder
+    # helix
+    # zellij # terminal multiplexer
+    # lazygit # git tui
+    # jq # json processor
+    # yq # jq on steroids processor
+    # ripgrep # search tool
+    # bat # cat replacement
+    # fd # find replacement
+    # eza # ls replacement
+    # go-task
+    # sops
+    # age
+    # kubectl
+    # kubernetes-helm
+    # helmfile
+    # k9s
   ];
   programs = {
     nix-ld.enable = true;
-    starship = {
-      enable = true;
-    };
-    fish = {
-      enable = true;
-      interactiveShellInit = ''
-        set fish_greeting ""
-        starship init fish | source
-        fzf --fish | source
-      '';
-    };
+    # starship = {
+    #   enable = true;
+    # };
+    # fish = {
+    #   enable = true;
+    #   interactiveShellInit = ''
+    #     set fish_greeting ""
+    #     starship init fish | source
+    #     fzf --fish | source
+    #   '';
+    # };
     zsh = {
       enable = true;
     };

@@ -3,5 +3,8 @@ name: dotfiles
 channels:
   - conda-forge
 dependencies:
-  - pre-commit
   # - prek # pre-commit (in rust, faster than the python version)
+  - pip
+  - pip:
+      - dotbins
+      - pre-commit

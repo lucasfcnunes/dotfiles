@@ -1,0 +1,131 @@
+# tools_dir: ~/.dotbins
+platforms:
+  linux:
+    - amd64
+tools:
+  argo:
+    repo: argoproj/argo-workflows
+  bao:
+    repo: openbao/openbao
+    extract_archive: true
+    path_in_archive: bao
+    shell_code: |
+      alias vault="bao"
+    platform_map:
+      macos: Darwin
+      linux: Linux
+    arch_map:
+      amd64: x86_64
+    asset_patterns: bao_{version}_{platform}_{arch}.tar.gz
+  bat:
+    repo: sharkdp/bat
+    shell_code: |
+      alias bat="bat --paging=never"
+      alias cat="bat --plain --paging=never"
+  cilium:
+    repo: cilium/cilium-cli
+    shell_code:
+      bash,zsh: |
+        source <(cilium completion __DOTBINS_SHELL__)
+  dagger:
+    repo: dagger/dagger
+  dive:
+    repo: wagoodman/dive
+  dnscontrol:
+    repo: StackExchange/dnscontrol
+  dolt:
+    repo: dolthub/dolt
+  doltgres:
+    repo: dolthub/doltgresql
+  dyff:
+    repo: homeport/dyff
+  eza:
+    repo: eza-community/eza
+    shell_code: |
+      alias l="eza -lah --git"
+  fzf:
+    repo: junegunn/fzf
+    shell_code:
+      bash,zsh: |
+        source <(fzf --__DOTBINS_SHELL__)
+  # gam7:
+  #   repo: GAM-team/GAM
+  #   path_in_archive: "**/gam"
+  #   arch_map:
+  #     amd64: x86_64
+  #   asset_patterns: gam-{version}-{platform}-{arch}-legacy.tar.xz
+  gh:
+    repo: cli/cli
+  jj:
+    repo: jj-vcs/jj
+  helmfile:
+    repo: helmfile/helmfile
+    shell_code:
+      bash,zsh: |
+        ( helm plugin list | grep -E '(diff|s3|helm-git|unittest)' || USE_SUDO=false HELM_INSTALL_DIR="$HOME/.dotbins/$_os/$_arch/bin" helmfile init --force ) &> /dev/null
+        source <(helmfile completion __DOTBINS_SHELL__)
+  # http:
+  #   repo: httpie/cli
+  #   tag: 3.2.2
+  hubble:
+    repo: cilium/hubble
+    shell_code:
+      bash,zsh: |
+        source <(hubble completion __DOTBINS_SHELL__)
+  k9s:
+    repo: derailed/k9s
+    shell_code:
+      bash,zsh: |
+        source <(k9s completion __DOTBINS_SHELL__)
+  kind:
+    repo: kubernetes-sigs/kind
+  kubectl-krew:
+    repo: kubernetes-sigs/krew
+    extract_archive: true
+    path_in_archive: krew-linux_amd64
+  kustomize:
+    repo: kubernetes-sigs/kustomize
+  # lazydocker: jesseduffield/lazydocker
+  # lazygit: jesseduffield/lazygit
+  micromamba:
+    repo: mamba-org/micromamba-releases
+    shell_code:
+      bash,zsh: |
+        # https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html
+        export MAMBA_ROOT_PREFIX="$HOME/micromamba"
+        source <(micromamba shell hook --shell=__DOTBINS_SHELL__)
+        # eval "$(micromamba shell hook --shell=__DOTBINS_SHELL__)"
+  mkcert:
+    repo: FiloSottile/mkcert
+  rclone:
+    repo: rclone/rclone
+  sops:
+    repo: getsops/sops
+  task:
+    repo: go-task/task
+    shell_code:
+      bash,zsh: |
+        source <(task --completion=__DOTBINS_SHELL__)
+  tetra:
+    repo: cilium/tetragon
+    extract_archive: true
+    path_in_archive: tetra
+  tofu:
+    repo: opentofu/opentofu
+    shell_code: |
+      alias terraform="tofu"
+  vals:
+    repo: helmfile/vals
+  vcluster:
+    repo: loft-sh/vcluster
+    tag: v0.23.1
+    platform_map:
+      macos: darwin
+    asset_patterns: vcluster-{platform}-{arch}
+  velero:
+    repo: vmware-tanzu/velero
+  yq:
+    repo: mikefarah/yq
+    shell_code:
+      bash,zsh: |
+        source <(yq completion __DOTBINS_SHELL__)
