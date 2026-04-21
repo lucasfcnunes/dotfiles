@@ -3,6 +3,8 @@ platforms:
   linux:
     - amd64
 tools:
+  asciinema:
+    repo: asciinema/asciinema
   argo:
     repo: argoproj/argo-workflows
   bao:
