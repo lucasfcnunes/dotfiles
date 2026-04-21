@@ -1,20 +1,32 @@
-# helmDefaults:
-#   atomic: true
-#   cleanupOnFail: true
-#   wait: true
-#   timeout: 600
-#   recreatePods: false
-#   force: false
 repositories:
   - name: cilium
-    # url: https://helm.cilium.io
-    url: quay.io/cilium/charts
-    oci: true
----
-releases:
-  - name: cilium
+    url: https://helm.cilium.io
+    # url: quay.io/cilium/charts
+    # oci: true
+templates:
+  default-release: &default-release
     namespace: kube-system
-    chart: cilium/cilium
-    version: 1.19.3
+environments:
+  default:
     values:
-      - ./cilium/values.yaml.gotmpl
+      - releases:
+          cilium:
+            version: 1.19.3
+            <<: *default-release
+          tetragon:
+            version: 1.6.1
+            <<: *default-release
+---
+templates:
+  default: &default
+    version: '{{`{{ .Values | get "releases" | get .Release.Name | get "version" }}`}}'
+    namespace: '{{`{{ .Values | get "releases" | get .Release.Name | get "namespace" }}`}}'
+    values:
+      - ./{{`{{ .Release.Name }}`}}/values.yaml.gotmpl
+releases:
+  - chart: cilium/cilium
+    name: cilium
+    <<: *default
+  - chart: cilium/tetragon
+    name: tetragon
+    <<: *default

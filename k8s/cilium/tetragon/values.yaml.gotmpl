@@ -1,0 +1,41 @@
+# INFO: https://github.com/cilium/tetragon/tree/main/examples
+enabled: true
+crds:
+  installMethod: helm
+tetragonOperator:
+  enabled: true
+  podInfo:
+    enabled: true
+  tracingPolicy:
+    enabled: true
+  # prometheus:
+  #   enabled: true
+  #   serviceMonitor:
+  #     enabled: true
+tetragon:
+  enabled: true
+  enableK8sAPI: true
+  # enableProcessCred: false
+  # enableProcessNs: false
+  # processAncestors:
+  #   enabled: ""
+  # btf: ""
+  pprof:
+    enabled: false
+  grpc:
+    enabled: true
+  # prometheus:
+  #   enabled: true
+  #   serviceMonitor:
+  #     enabled: true
+  cri:
+    enabled: true
+    socketHostPath: /run/containerd/containerd.sock
+  cgidmap:
+    enabled: true
+rthooks:
+  enabled: true
+  interface: nri-hook
+  installDir: /var/lib/kubernetes/bin
+  nriHook:
+    nriSocket: /var/run/nri/nri.sock

@@ -6,3 +6,20 @@ tasks:
       CLI_ARGS: "{{.CLI_ARGS}}"
     cmds:
       - kubectl -n kube-system exec ds/cilium -c cilium-agent -- cilium {{.CLI_ARGS}}
+  tetra:
+    desc: use in-daemonset cilium cli
+    vars:
+      CLI_ARGS: "{{.CLI_ARGS}}"
+    cmds:
+      - kubectl -n kube-system exec ds/tetragon -c tetragon -- tetra {{.CLI_ARGS}}
+  tetra:status:
+    cmds:
+      - task: tetra
+        vars:
+          CLI_ARGS: status
+  tetra:logs:
+    vars:
+      CLI_ARGS: '{{default "-o compact" .CLI_ARGS}}'
+    cmds:
+      - kubectl logs -n kube-system -l app.kubernetes.io/name=tetragon -c export-stdout -f | tetra getevents {{.CLI_ARGS}}
+      # - kubectl exec -it -n kube-system ds/tetragon -c tetragon -- tetra getevents {{.CLI_ARGS}}
