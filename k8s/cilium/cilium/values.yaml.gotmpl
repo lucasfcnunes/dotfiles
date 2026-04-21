@@ -58,6 +58,8 @@ hubble:
   enabled: true
   relay:
     enabled: true
+    logOptions:
+      format: json
   ui:
     enabled: true
     frontend:
@@ -184,3 +186,14 @@ extraConfig:
   enable-envoy-config: "true"
 logOptions:
   format: json
+# k8sClientRateLimit:
+#   qps: # TODO: set
+#   burst: # TODO: set
+# l2announcements:
+#   enabled: true
+#   leaseDuration: 3s
+#   leaseRenewDeadline: 1s
+#   leaseRetryPeriod: 200ms
+# l2podAnnouncements:
+#   enabled: true
+#   interfacePattern: ^(tailscale0)$
