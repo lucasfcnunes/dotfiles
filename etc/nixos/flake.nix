@@ -103,7 +103,7 @@
             user = "root";
             autoRollback = false;
             magicRollback = false;
-            remoteBuild = true;
+            # remoteBuild = true;
             activationTimeout = 600;
             confirmTimeout = 60;
             path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.nixos-01;

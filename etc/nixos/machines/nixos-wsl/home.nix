@@ -166,9 +166,12 @@
           name = "Lucas Fernando Cardoso Nunes";
           email = "lucasfc.nunes@gmail.com";
         };
-        gpg.format = "ssh";
-        user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMlBdpRehqTLYT2XKNJndv0pMWCBuqdLUPCDc1xd2XLp (gpg-ssh-lucasfcnunes)";
+        # gpg.format = "ssh";
+        # user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMlBdpRehqTLYT2XKNJndv0pMWCBuqdLUPCDc1xd2XLp (gpg-ssh-lucasfcnunes)";
+        user.signingKey = "51BBB719DB9A3F8A928A4D5C9D76B9D8E1E20E99";
         commit.gpgSign = true;
+        tag.gpgSign = true;
+        tag.forceSignAnnotated = true;
         init.defaultBranch = "master";
         safe.directory = "*";
         url."git@github.com:" = {

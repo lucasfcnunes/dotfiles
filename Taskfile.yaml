@@ -25,6 +25,16 @@ tasks:
     cmds:
       - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nix flake update' --packages git vim go-task
       - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nixos-rebuild switch' --packages git vim go-task
+  flake:eval:
+    dir: ./etc/nixos/
+    vars:
+      MACHINE: '{{.MACHINE| default "nixos-01"}}'
+      NIX_CONFIG_EXAMPLE: virtualisation.containerd
+      NIX_CONFIG: "{{.NIX_CONFIG | default .NIX_CONFIG_EXAMPLE}}"
+    cmds:
+      # - nix-shell --extra-experimental-features 'nix-command flakes' --run 'nix eval .#nixosConfigurations."{{.MACHINE}}".config --json | yq -r "..|strings?" | grep {{.GREP_PATTERN}}' --packages git vim go-task
+      # - nix run github:zimbatm/nix-flake-grep -- virtualisation.containerd
+      - nix eval .#nixosConfigurations."{{.MACHINE}}".config.{{.NIX_CONFIG}} --json | yq -P
   # nixos-anywhere:
   #   desc: Deploy NixOS using NixOS Anywhere
   #   cmds:
@@ -33,9 +43,16 @@ tasks:
     desc: Deploy NixOS using deploy-rs
     dir: ./etc/nixos/
     cmds:
-      - nix run github:serokell/deploy-rs -- .#nixos-01.system --skip-checks
+      - nix run github:serokell/deploy-rs -- .#nixos-01.system --skip-checks --rollback-succeeded false
   ssh-to-age:
     desc: Get the public key of the SSH host key in age format, so it can be added to the SOPS keys for encryption
     cmds:
       - nix-shell -p ssh-to-age --run "cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-age"
       # - nix-shell -p ssh-to-age --run "ssh-keyscan nixos-01 | ssh-to-age"
+  cp:kubeconfig:
+    desc: Copy kubeconfig from nixos-01 to local machine
+    dir: ~/.kube/nixos-01/
+    cmds:
+      - scp root@nixos-01:/etc/kubernetes/cluster-admin.kubeconfig ./kubeconfig
+      - sed -i 's/\/var\/lib\/kubernetes\/secrets/./g' ./kubeconfig
+      - scp root@nixos-01:/var/lib/kubernetes/secrets/{ca,cluster-admin,cluster-admin-key}.pem ./
