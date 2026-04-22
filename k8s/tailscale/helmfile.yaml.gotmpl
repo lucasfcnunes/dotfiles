@@ -1,0 +1,26 @@
+repositories:
+  - name: tailscale
+    url: https://pkgs.tailscale.com/helmcharts
+templates:
+  default-release: &default-release
+    namespace: tailscale
+environments:
+  default:
+    values:
+      - releases:
+          tailscale-operator:
+            version: 1.96.5
+            <<: *default-release
+---
+templates:
+  default: &default
+    version: '{{`{{ .Values | get "releases" | get .Release.Name | get "version" }}`}}'
+    namespace: '{{`{{ .Values | get "releases" | get .Release.Name | get "namespace" }}`}}'
+    values:
+      - ./{{`{{ .Release.Name }}`}}/values.yaml.gotmpl
+    secrets:
+      - ./{{`{{ .Release.Name }}`}}/secrets.enc.yaml
+releases:
+  - chart: tailscale/tailscale-operator
+    name: tailscale-operator
+    <<: *default

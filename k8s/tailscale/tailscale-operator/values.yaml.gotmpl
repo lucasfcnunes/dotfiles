@@ -1,0 +1,10 @@
+installCRDs: true
+operatorConfig:
+  defaultTags:
+    - tag:k8s-operator
+ingressClass:
+  name: tailscale
+  enabled: true
+proxyConfig:
+  defaultTags: tag:k8s
+  firewallMode: auto

@@ -13,6 +13,9 @@ bpf:
 bpfClockProbe: true
 # ipMasqAgent:
 #   enabled: true
+socketLB:
+  # INFO: https://tailscale.com/docs/features/kubernetes-operator#cilium-in-kube-proxy-replacement-mode
+  hostNamespaceOnly: true
 cni:
   install: true
   exclusive: true
@@ -62,6 +65,9 @@ hubble:
       format: json
   ui:
     enabled: true
+    service:
+      annotations:
+        tailscale.com/expose: "true"
     frontend:
       server:
         ipv6:
