@@ -169,7 +169,7 @@
         gpg.format = "ssh";
         user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMlBdpRehqTLYT2XKNJndv0pMWCBuqdLUPCDc1xd2XLp (gpg-ssh-lucasfcnunes)";
         commit.gpgSign = true;
-        init.defaultBranch = "master";
+        init.defaultBranch = "main";
         safe.directory = "*";
         url."git@github.com:" = {
           insteadOf = "https://github.com/";
