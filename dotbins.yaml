@@ -29,6 +29,8 @@ tools:
     # shell_code:
     #   bash,zsh: |
     #     source <(cilium completion __DOTBINS_SHELL__)
+  # crosplane:
+  #   repo: crosplane/crosplane
   dagger:
     repo: dagger/dagger
   dive:
@@ -64,7 +66,7 @@ tools:
     repo: helmfile/helmfile
     shell_code:
       bash,zsh: |
-        ( helm plugin list | grep -E '(diff|s3|helm-git|unittest)' || USE_SUDO=false HELM_INSTALL_DIR="$HOME/.dotbins/$_os/$_arch/bin" helmfile init --force ) &> /dev/null
+        ( helm plugin list | grep -E '(diff|s3|helm-git|unittest)' &> /dev/null || USE_SUDO=false HELM_INSTALL_DIR="$HOME/.dotbins/$_os/$_arch/bin" helmfile init --force )
         source <(helmfile completion __DOTBINS_SHELL__)
   # http:
   #   repo: httpie/cli
@@ -82,6 +84,15 @@ tools:
   #     - "*/bin/hurlfmt"
   jj:
     repo: jj-vcs/jj
+    shell_code:
+      bash,zsh: |
+        # >>> https://www.jj-vcs.dev/latest/install-and-setup/#zsh
+        # >>> standard
+        # autoload -U compinit
+        # compinit
+        # source <(jj util completion __DOTBINS_SHELL__)
+        # >>> dynamic
+        source <(COMPLETE=__DOTBINS_SHELL__ jj)
   jq:
     repo: jqlang/jq
   k9s:
