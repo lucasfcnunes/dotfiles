@@ -1,0 +1,8 @@
+version: "3"
+tasks:
+  cilium:
+    desc: use in-daemonset cilium cli
+    vars:
+      CLI_ARGS: "{{.CLI_ARGS}}"
+    cmds:
+      - kubectl -n kube-system exec ds/cilium -c cilium-agent -- cilium {{.CLI_ARGS}}

@@ -9,9 +9,9 @@
     # useRoutingFeatures = "client";
     # extraSetFlags = [ "--netfilter-mode=nodivert" ];
   };
-  networking.nftables.enable = true;
+
   networking.firewall = {
-    enable = true;
+    # enable = true;
     # Always allow traffic from your Tailscale network
     trustedInterfaces = [ "tailscale0" ];
     # Allow the Tailscale UDP port through the firewall

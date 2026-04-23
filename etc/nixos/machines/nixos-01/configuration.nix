@@ -48,6 +48,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos-01"; # Define your hostname.
+  networking.enableIPv6 = false;
+  boot.kernelParams = [ "ipv6.disable=1" ]; # because NIC tries to acquire IPv6 addresses at boot
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
@@ -160,7 +162,38 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
+  networking.nftables.enable = true;
+  # networking.firewall.enable = true;
+  networking.firewall.backend = "nftables";
+  boot.blacklistedKernelModules = [
+    "ip_tables"
+    "iptable_nat"
+    "iptable_filter"
+    "iptable_mangle"
+    "iptable_raw"
+    "ip6_tables"
+    "ip6table_nat"
+    "ip6table_filter"
+    "ip6table_mangle"
+    "ip6table_raw"
+    "x_tables"
+    "br_netfilter"
+  ];
+  boot.extraModprobeConfig = ''
+    install ip_tables /bin/false
+    install iptable_nat /bin/false
+    install iptable_filter /bin/false
+    install iptable_mangle /bin/false
+    install iptable_raw /bin/false
+    install ip6_tables /bin/false
+    install ip6table_nat /bin/false
+    install ip6table_filter /bin/false
+    install ip6table_mangle /bin/false
+    install ip6table_raw /bin/false
+    install x_tables /bin/false
+    install br_netfilter /bin/false
+  '';
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

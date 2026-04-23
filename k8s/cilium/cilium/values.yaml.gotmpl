@@ -1,0 +1,186 @@
+kubeProxyReplacement: true
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+installNoConntrackIptablesRules: false
+routingMode: native
+tunnelProtocol: vxlan
+bpf:
+  masquerade: true
+  # datapathMode: netkit
+  distributedLRU:
+    enabled: true
+  mapDynamicSizeRatio: 0.08
+  tproxy: true
+bpfClockProbe: true
+# ipMasqAgent:
+#   enabled: true
+cni:
+  install: true
+  exclusive: true
+  binPath: /var/lib/kubernetes/bin
+# nodeinit:
+#   enabled: true
+#   reconfigureKubelet: true
+#   # removeCbrBridge: true
+ipam:
+  mode: multi-pool
+  operator:
+    autoCreateCiliumPodIPPools:
+      default:
+        ipv4:
+          cidrs:
+            - 10.1.0.0/16
+            # - 10.10.0.0/16
+          maskSize: 24
+# k8s:
+#   requireIPv4PodCIDR: false
+#   requireIPv6PodCIDR: false
+ipv4NativeRoutingCIDR: 10.1.0.0/16
+# on node nixos-01
+# podCIDR: 10.1.0.0/24
+# podCIDRs:
+# - 10.1.0.0/24
+# on kubelet/kubeadm
+# --cluster-cidr=10.1.0.0/16
+# --service-cluster-ip-range=10.0.0.0/24
+k8sServiceHost: '{{ requiredEnv "K8S_SERVICE_HOST" }}'
+k8sServicePort: '{{ requiredEnv "K8S_SERVICE_PORT" }}'
+serviceAccounts:
+  cilium:
+    name: cilium
+  operator:
+    name: cilium-operator
+# dnsPolicy: ""
+# dnsProxy:
+#   proxyPort: 10094
+# standaloneDnsProxy:
+#   enabled: true
+hubble:
+  enabled: true
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+    frontend:
+      server:
+        ipv6:
+          enabled: false
+  metrics:
+    # enabled:
+    #   # * https://docs.cilium.io/en/stable/observability/metrics/#hubble-exported-metrics
+    #   - dns:query;ignoreAAAA
+    #   - drop:destinationContext=pod|dns|ip;sourceContext=pod|dns|ip
+    #   - flow:destinationContext=pod|dns|ip;sourceContext=pod|dns|ip
+    #   - flows-to-world
+    #   # - http # ! deprecated
+    #   - httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction
+    #   - icmp
+    #   - kafka
+    #   - port-distribution
+    #   - tcp
+    dynamic:
+      enabled: true
+      config:
+        content:
+          # - name: all
+          #   contextOptions: []
+          #   includeFilters: []
+          #   excludeFilters: []
+          - name: dns
+            contextOptions:
+              - name: query
+              - name: ignoreAAAA
+          - name: drop
+            contextOptions:
+              - name: destinationContext
+                values:
+                  - pod
+                  - dns
+                  - ip
+              - name: sourceContext
+                values:
+                  - pod
+                  - dns
+                  - ip
+          - name: flow
+            contextOptions:
+              - name: destinationContext
+                values:
+                  - pod
+                  - dns
+                  - ip
+              - name: sourceContext
+                values:
+                  - pod
+                  - dns
+                  - ip
+          - name: flows-to-world
+          - name: httpV2
+            contextOptions:
+              - name: exemplars
+                values:
+                  - "true"
+              - name: labelsContext
+                values:
+                  - source_ip
+                  - source_namespace
+                  - source_workload
+                  - destination_ip
+                  - destination_namespace
+                  - destination_workload
+                  - traffic_direction
+          - name: icmp
+          - name: kafka
+          - name: port-distribution
+          - name: tcp
+replicas: 1
+ipv4:
+  enabled: true
+enableIPv4BIGTCP: true
+ipv6:
+  enabled: false
+enableIPv6BIGTCP: false
+enableIPv6Masquerade: false
+debug:
+  enabled: false
+operator:
+  enabled: true
+  replicas: 1
+  unmanagedPodWatcher:
+    restart: true
+# resources:
+#   limits:
+#     cpu: 1000m
+#     memory: 1Gi
+#   requests:
+#     cpu: 100m
+#     memory: 64Mi
+envoy:
+  enabled: true
+  log:
+    format: null
+    format_json:
+      date: "%Y-%m-%dT%T.%e"
+      thread_id: "%t"
+      source_line: "%s:%#"
+      level: "%l"
+      logger: "%n"
+      message: "%j"
+l7Proxy: true
+loadBalancer:
+  # standalone: true
+  # mode: hybrid
+  # acceleration: native
+  acceleration: best-effort
+  l7:
+    backend: envoy
+    algorithm: round_robin
+ingressController:
+  enabled: true
+  loadbalancerMode: shared
+  default: true
+gatewayAPI:
+  enabled: true
+extraConfig:
+  enable-envoy-config: "true"
+logOptions:
+  format: json
