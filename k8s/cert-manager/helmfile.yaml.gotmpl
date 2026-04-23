@@ -1,0 +1,47 @@
+repositories:
+  # INFO: https://cert-manager.io/docs/installation/helm/
+  - name: jetstack
+    # url: https://charts.jetstack.io
+    url: quay.io/jetstack/charts
+    oci: true
+  - name: adfinis
+    url: https://charts.adfinis.com
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates:
+  default-release: &default-release
+    namespace: cert-manager
+environments:
+  default:
+    values:
+      - releases:
+          cert-manager:
+            version: v1.20.2
+            <<: *default-release
+          cert-manager-raw:
+            version: ""
+            <<: *default-release
+          cert-manager-issuers:
+            version: 0.2.5
+            <<: *default-release
+---
+templates:
+  default: &default
+    version: '{{`{{ .Values | get "releases" | get .Release.Name | get "version" }}`}}'
+    namespace: '{{`{{ .Values | get "releases" | get .Release.Name | get "namespace" }}`}}'
+    values:
+      - ./{{`{{ .Release.Name }}`}}/values.yaml.gotmpl
+releases:
+  - chart: jetstack/cert-manager
+    name: cert-manager
+    <<: *default
+  - chart: bedag/raw
+    name: cert-manager-raw
+    <<: *default
+    needs:
+      - cert-manager
+  - chart: adfinis/cert-manager-issuers
+    name: cert-manager-issuers
+    <<: *default
+    needs:
+      - cert-manager
