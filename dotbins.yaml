@@ -24,9 +24,9 @@ tools:
       alias cat="bat --plain --paging=never"
   cilium:
     repo: cilium/cilium-cli
-    shell_code:
-      bash,zsh: |
-        source <(cilium completion __DOTBINS_SHELL__)
+    # shell_code:
+    #   bash,zsh: |
+    #     source <(cilium completion __DOTBINS_SHELL__)
   dagger:
     repo: dagger/dagger
   dive:
@@ -56,8 +56,8 @@ tools:
   #   asset_patterns: gam-{version}-{platform}-{arch}-legacy.tar.xz
   gh:
     repo: cli/cli
-  jj:
-    repo: jj-vcs/jj
+  # helm:
+  #   repo: helm/helm
   helmfile:
     repo: helmfile/helmfile
     shell_code:
@@ -72,6 +72,16 @@ tools:
     shell_code:
       bash,zsh: |
         source <(hubble completion __DOTBINS_SHELL__)
+  # ! hurl: error while loading shared libraries: libxml2.so.2: cannot open shared object file: No such file or directory
+  # hurl:
+  #   repo: Orange-OpenSource/hurl
+  #   path_in_archive:
+  #     - "*/bin/hurl"
+  #     - "*/bin/hurlfmt"
+  jj:
+    repo: jj-vcs/jj
+  jq:
+    repo: jqlang/jq
   k9s:
     repo: derailed/k9s
     shell_code:
@@ -79,10 +89,15 @@ tools:
         source <(k9s completion __DOTBINS_SHELL__)
   kind:
     repo: kubernetes-sigs/kind
+  # kubectl:
+  #   repo: kubernetes/kubernetes
   kubectl-krew:
     repo: kubernetes-sigs/krew
     extract_archive: true
     path_in_archive: krew-linux_amd64
+    shell_code:
+      bash,zsh: |
+        export PATH="$PATH:${KREW_ROOT:-$HOME/.krew}/bin"
   kustomize:
     repo: kubernetes-sigs/kustomize
   # lazydocker: jesseduffield/lazydocker
@@ -99,6 +114,9 @@ tools:
     repo: FiloSottile/mkcert
   rclone:
     repo: rclone/rclone
+    # shell_code:
+    #   bash,zsh: |
+    #     source <(rclone completion __DOTBINS_SHELL__)
   sops:
     repo: getsops/sops
   task:
@@ -110,6 +128,9 @@ tools:
     repo: cilium/tetragon
     extract_archive: true
     path_in_archive: tetra
+    shell_code:
+      bash,zsh: |
+        source <(tetra completion __DOTBINS_SHELL__)
   tofu:
     repo: opentofu/opentofu
     shell_code: |

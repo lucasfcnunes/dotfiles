@@ -60,7 +60,7 @@
     # go-task
     # sops
     # age
-    # kubectl
+    kubectl # TODO: dotbins feature https://github.com/basnijholt/dotbins/issues/171
     # kubernetes-helm
     # helmfile
     # k9s
@@ -89,4 +89,5 @@
   users.users.lucasfcnunes.shell = pkgs.zsh;
   # users.defaultUserShell = pkgs.zsh;
   # system.userActivationScripts.zshrc = "touch .zshrc";
+  time.timeZone = "America/Sao_Paulo";
 }
