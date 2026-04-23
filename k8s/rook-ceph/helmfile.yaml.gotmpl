@@ -1,0 +1,24 @@
+repositories:
+  - name: rook-release
+    url: https://charts.rook.io/release
+templates:
+  default-release: &default-release
+    namespace: rook-ceph
+environments:
+  default:
+    values:
+      - releases:
+          rook-ceph:
+            version: 1.19.4
+            <<: *default-release
+---
+templates:
+  default: &default
+    version: '{{`{{ .Values | get "releases" | get .Release.Name | get "version" }}`}}'
+    namespace: '{{`{{ .Values | get "releases" | get .Release.Name | get "namespace" }}`}}'
+    values:
+      - ./{{`{{ .Release.Name }}`}}/values.yaml.gotmpl
+releases:
+  - chart: rook-release/rook-ceph
+    name: rook-ceph
+    <<: *default

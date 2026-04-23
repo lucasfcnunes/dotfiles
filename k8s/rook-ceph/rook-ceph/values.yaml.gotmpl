@@ -1,0 +1,15 @@
+csi:
+  csiCephFSPluginVolume:
+    - name: lib-modules
+      hostPath:
+        path: /run/current-system/kernel-modules/lib/modules/
+    # - name: host-nix
+    #   hostPath:
+    #     path: /nix
+  csiRBDPluginVolume:
+    - name: lib-modules
+      hostPath:
+        path: /run/current-system/kernel-modules/lib/modules/
+    # - name: host-nix
+    #   hostPath:
+    #     path: /nix
