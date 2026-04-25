@@ -135,16 +135,19 @@ in
       # User = "kubernetes";
       # Group = "kubernetes";
     };
+    environment = {
+      KUBECONFIG = "/etc/kubernetes/cluster-admin.kubeconfig";
+      K8S_SERVICE_HOST = "${kubeMasterIP}";
+      K8S_SERVICE_PORT = "${toString kubeMasterAPIServerPort}";
+      HELM_CACHE_HOME = "/tmp/helm/.cache";
+      HELM_CONFIG_HOME = "/tmp/helm/.config";
+    };
     script = ''
       set -e
       echo "Running Cilium bootstrap script..."
 
+      # solve for this addition to PATH
       export PATH=$PATH:/run/current-system/sw/bin
-      export KUBECONFIG=/etc/kubernetes/cluster-admin.kubeconfig
-      export K8S_SERVICE_HOST=${kubeMasterIP}
-      export K8S_SERVICE_PORT=${toString kubeMasterAPIServerPort}
-      export HELM_CACHE_HOME=/tmp/helm/.cache
-      export HELM_CONFIG_HOME=/tmp/helm/.config
 
       # Wait for API server to be ready
       until ${pkgs.kubectl}/bin/kubectl cluster-info; do
