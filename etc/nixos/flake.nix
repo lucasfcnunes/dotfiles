@@ -1,6 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    disko = {
+      url = "github:nix-community/disko/latest";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-wsl.url = "github:nix-community/nixos-wsl/release-25.11";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
@@ -17,6 +21,7 @@
     {
       self,
       nixpkgs,
+      disko,
       nixos-wsl,
       home-manager,
       vscode-server,
@@ -35,6 +40,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./machines/nixos-wsl/configuration.nix
+            # disko.nixosModules.disko
             nixos-wsl.nixosModules.default
             {
               system.stateVersion = "25.11";
@@ -66,6 +72,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./machines/nixos-01/configuration.nix
+            disko.nixosModules.disko
             # sops-nix
             sops-nix.nixosModules.sops
             # home-manager settings

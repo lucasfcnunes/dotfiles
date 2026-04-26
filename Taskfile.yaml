@@ -1,4 +1,8 @@
 version: "3"
+env:
+  CURRENT_MACHINE:
+    # sh: echo "$HOST"
+    sh: cat /etc/hostname
 tasks:
   get:nixos-wsl:
     desc: Get NixOS for WSL
@@ -35,6 +39,7 @@ tasks:
       # - nix-shell --extra-experimental-features 'nix-command flakes' --run 'nix eval .#nixosConfigurations."{{.MACHINE}}".config --json | yq -r "..|strings?" | grep {{.GREP_PATTERN}}' --packages git vim go-task
       # - nix run github:zimbatm/nix-flake-grep -- virtualisation.containerd
       - nix eval .#nixosConfigurations."{{.MACHINE}}".config.{{.NIX_CONFIG}} --json | yq -P
+      # - nix eval .#nixosConfigurations."{{.MACHINE}}".config.{{.NIX_CONFIG}}
   # nixos-anywhere:
   #   desc: Deploy NixOS using NixOS Anywhere
   #   cmds:
@@ -56,3 +61,23 @@ tasks:
       - scp root@nixos-01:/etc/kubernetes/cluster-admin.kubeconfig ./kubeconfig
       - sed -i 's/\/var\/lib\/kubernetes\/secrets/./g' ./kubeconfig
       - scp root@nixos-01:/var/lib/kubernetes/secrets/{ca,cluster-admin,cluster-admin-key}.pem ./
+  facter:
+    desc: Generate facter.json using nixos-facter
+    dir: ./etc/nixos/
+    vars:
+      MACHINE: "{{.MACHINE | default .CURRENT_MACHINE}}"
+      DEFAULT_CMD: |-
+        {{- if ne .MACHINE .CURRENT_MACHINE -}}
+        ssh 'root@{{.MACHINE}}' --
+        {{- end -}}
+    cmds:
+      - >-
+        {{.DEFAULT_CMD}} sudo nix run nixpkgs#nixos-facter > './machines/{{.MACHINE}}/facter.json'
+      # - nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-facter './machines/{{.MACHINE}}/facter.json' --flake '.#{{.MACHINE}}' --target-host 'root@{{.MACHINE}}'
+  disko:
+    desc: Get information about disks using disko
+    dir: ./etc/nixos/
+    vars:
+      MACHINE: "{{.MACHINE | default .CURRENT_MACHINE}}"
+    cmds:
+      - nix run github:nix-community/disko -- --flake '.#{{.MACHINE}}' --dry-run

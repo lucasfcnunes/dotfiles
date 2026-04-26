@@ -7,9 +7,9 @@
 {
   imports = [
     ./hardware-configuration.nix
+    # ./disko-config.nix
     ../common/sops.nix
   ];
-
   nix = {
     settings = {
       auto-optimise-store = true;
