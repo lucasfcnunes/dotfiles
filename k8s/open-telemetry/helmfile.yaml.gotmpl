@@ -1,0 +1,24 @@
+repositories:
+  - name: open-telemetry
+    url: https://open-telemetry.github.io/opentelemetry-helm-charts
+templates:
+  default-release: &default-release
+    namespace: opentelemetry-kube-stack
+environments:
+  default:
+    values:
+      - releases:
+          opentelemetry-kube-stack:
+            version: 0.14.12
+            <<: *default-release
+---
+templates:
+  default: &default
+    version: '{{`{{ .Values | get "releases" | get .Release.Name | get "version" }}`}}'
+    namespace: '{{`{{ .Values | get "releases" | get .Release.Name | get "namespace" }}`}}'
+    values:
+      - ./{{`{{ .Release.Name }}`}}/values.yaml.gotmpl
+releases:
+  - chart: open-telemetry/opentelemetry-kube-stack
+    name: opentelemetry-kube-stack
+    <<: *default
