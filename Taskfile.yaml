@@ -26,8 +26,14 @@ tasks:
       - sudo rm -rf /etc/nixos/ && sudo ln -s ~/dotfiles/etc/nixos/ /etc/nixos
   flake:update:
     dir: ./etc/nixos/
+    sources:
+      - ./flake.nix
     cmds:
       - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nix flake update' --packages git vim go-task
+  rebuild:
+    deps:
+      - flake:update
+    cmds:
       - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nixos-rebuild switch' --packages git vim go-task
   flake:eval:
     dir: ./etc/nixos/

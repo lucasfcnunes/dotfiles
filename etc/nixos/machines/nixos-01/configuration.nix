@@ -1,217 +1,203 @@
 {
-  config,
-  lib,
-  pkgs,
+  self,
+  inputs,
   ...
 }:
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./disko-config.nix
-    ../common/sops.nix
-    # ./k3s.nix
-    ./kubernetes.nix
-    ./tailscale.nix
-    ./cloudflared.nix
-  ];
+  flake.nixosModules.nixos-01-configuration =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    {
+      imports = [
+        self.nixosModules.nix-defaults
+        self.nixosModules.nixos-01-hardware
+        self.nixosModules.nixpkgs-unstable
+        self.nixosModules.nixos-01-disko-config
+        self.nixosModules.sops
+        self.nixosModules.nixos-01-kubernetes
+        # self.nixosModules.nixos-01-k3s
+        self.nixosModules.tailscale
+        self.nixosModules.cloudflared
+        self.nixosModules.vscode-server
+      ];
 
-  nix.settings = {
-    trusted-users = [
-      "root"
-      "lucasfcnunes"
-      # "@wheel"
-    ];
-    # auto-optimise-store = true;
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    # Cache
-    substituters = [
-      "https://cache.nixos.org"
-      "https://nix-community.cachix.org"
-      "https://nix-mirror.freetls.fastly.net"
-    ];
-    # Download optimization
-    http-connections = 128;
-    max-substitution-jobs = 128;
-    max-jobs = "auto";
-  };
+      # Use the systemd-boot EFI boot loader.
+      boot.loader.systemd-boot.enable = true;
+      boot.loader.efi.canTouchEfiVariables = true;
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+      networking.hostName = "nixos-01"; # Define your hostname.
+      networking.enableIPv6 = false;
+      boot.kernelParams = [ "ipv6.disable=1" ]; # because NIC tries to acquire IPv6 addresses at boot
 
-  networking.hostName = "nixos-01"; # Define your hostname.
-  networking.enableIPv6 = false;
-  boot.kernelParams = [ "ipv6.disable=1" ]; # because NIC tries to acquire IPv6 addresses at boot
+      # Configure network connections interactively with nmcli or nmtui.
+      networking.networkmanager.enable = true;
 
-  # Configure network connections interactively with nmcli or nmtui.
-  networking.networkmanager.enable = true;
+      # Set your time zone.
+      time.timeZone = "UTC";
 
-  # Set your time zone.
-  time.timeZone = "UTC";
+      # Configure network proxy if necessary
+      # networking.proxy.default = "http://user:password@proxy:port/";
+      # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+      # Select internationalisation properties.
+      # i18n.defaultLocale = "en_US.UTF-8";
+      # console = {
+      #   font = "Lat2-Terminus16";
+      #   keyMap = "us";
+      #   useXkbConfig = true; # use xkb.options in tty.
+      # };
 
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
+      # Enable the X11 windowing system.
+      # services.xserver.enable = true;
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
+      # Configure keymap in X11
+      # services.xserver.xkb.layout = "us";
+      # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+      # Enable CUPS to print documents.
+      # services.printing.enable = true;
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
+      # Enable sound.
+      # services.pulseaudio.enable = true;
+      # OR
+      # services.pipewire = {
+      #   enable = true;
+      #   pulse.enable = true;
+      # };
 
-  # Enable sound.
-  # services.pulseaudio.enable = true;
-  # OR
-  # services.pipewire = {
-  #   enable = true;
-  #   pulse.enable = true;
-  # };
+      # Enable touchpad support (enabled default in most desktopManager).
+      # services.libinput.enable = true;
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
+      security.sudo = {
+        # place top level options (like wheelNeedPassword) here
+        enable = true; # make sure to enable the sudo package
+        execWheelOnly = false;
+        wheelNeedsPassword = false;
+        extraConfig = "#includedir /etc/sudoers.d"; # write custom config in here
+        extraRules = [
+          # place sudoers rules here
+        ];
+      };
 
-  security.sudo = {
-    # place top level options (like wheelNeedPassword) here
-    enable = true; # make sure to enable the sudo package
-    execWheelOnly = false;
-    wheelNeedsPassword = false;
-    extraConfig = "#includedir /etc/sudoers.d"; # write custom config in here
-    extraRules = [
-      # place sudoers rules here
-    ];
-  };
+      # Define a user account. Don't forget to set a password with ‘passwd’.
+      # users.defaultUserShell = pkgs.zsh;
+      users.users.root = {
+        openssh.authorizedKeys.keys = [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7I5xIu1oxunktPOmR/HC+EqBJic2z0sbAn+mgluZdLKyDfHkdH/wSiH45jPplkJ473io3OAqJMo+0mgk7gRNSCzc93zj6fbM6JbQa3bC8FJ2uYFYGDkCtgqxgRpTCNcj8bL5inbcfrR3FcZK43ABtCatjqW8y2C39qvpdj0puxa/1Orm2lIxDubYd5oskqKcxUIIPatfFBACr6UXok2zmNDnZtU30f7C6At27nlcii1tNyuGFNVqocLj/qEKTMPp30LHgOewOmOE2u9cb/T39FvGBBJD1z84Xb/47XFREQyi/eBjzI6v5PyJMJ+1IiwI/fgjnxQAnHZqL1htTAcsXhrol5i/Cp08MEo2PkmtWyD3vzwYEMJSxLdghsEQ8ClH2u6QMI2uZIUQpsvNW6uCaH+ooRmcyP3UyspWEVeqSce2I3Iy8mBdCHO0od0Yeqc8P/0B6IfrSUyHXdYetCeRDP5VcpSKsn9/YnjhRW8QSARCV4TvkMwFJpjcZ3eUN3Tb2ix9wEDg9wHXn8nvh4AnfIWAbBffbIWtnT5+JId+h6NhcJlXwQjGRbVctbA6XcAx9AiIml1dr+VHv6hQDwdpEFXy1J58jEnwKJIOJLPp/n6G/7bgyr7H8JhBGIW35ZxzuMvml6amaTWUG2icsFLL/MO+ZuXVJ8JDeUmi0DS8fRw== (none)"
+        ];
+      };
+      users.users.lucasfcnunes = {
+        # shell = pkgs.zsh;
+        openssh.authorizedKeys.keys = [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7I5xIu1oxunktPOmR/HC+EqBJic2z0sbAn+mgluZdLKyDfHkdH/wSiH45jPplkJ473io3OAqJMo+0mgk7gRNSCzc93zj6fbM6JbQa3bC8FJ2uYFYGDkCtgqxgRpTCNcj8bL5inbcfrR3FcZK43ABtCatjqW8y2C39qvpdj0puxa/1Orm2lIxDubYd5oskqKcxUIIPatfFBACr6UXok2zmNDnZtU30f7C6At27nlcii1tNyuGFNVqocLj/qEKTMPp30LHgOewOmOE2u9cb/T39FvGBBJD1z84Xb/47XFREQyi/eBjzI6v5PyJMJ+1IiwI/fgjnxQAnHZqL1htTAcsXhrol5i/Cp08MEo2PkmtWyD3vzwYEMJSxLdghsEQ8ClH2u6QMI2uZIUQpsvNW6uCaH+ooRmcyP3UyspWEVeqSce2I3Iy8mBdCHO0od0Yeqc8P/0B6IfrSUyHXdYetCeRDP5VcpSKsn9/YnjhRW8QSARCV4TvkMwFJpjcZ3eUN3Tb2ix9wEDg9wHXn8nvh4AnfIWAbBffbIWtnT5+JId+h6NhcJlXwQjGRbVctbA6XcAx9AiIml1dr+VHv6hQDwdpEFXy1J58jEnwKJIOJLPp/n6G/7bgyr7H8JhBGIW35ZxzuMvml6amaTWUG2icsFLL/MO+ZuXVJ8JDeUmi0DS8fRw== (none)"
+        ];
+        password = "12345678"; # ! Change this to a secure password or use `passwd` after installation.
+        isNormalUser = true;
+        extraGroups = [
+          "root"
+          "wheel"
+        ]; # Enable ‘sudo’ for the user.
+        # packages = with pkgs; [
+        #   tree
+        # ];
+      };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.defaultUserShell = pkgs.zsh;
-  users.users.root = {
-    openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7I5xIu1oxunktPOmR/HC+EqBJic2z0sbAn+mgluZdLKyDfHkdH/wSiH45jPplkJ473io3OAqJMo+0mgk7gRNSCzc93zj6fbM6JbQa3bC8FJ2uYFYGDkCtgqxgRpTCNcj8bL5inbcfrR3FcZK43ABtCatjqW8y2C39qvpdj0puxa/1Orm2lIxDubYd5oskqKcxUIIPatfFBACr6UXok2zmNDnZtU30f7C6At27nlcii1tNyuGFNVqocLj/qEKTMPp30LHgOewOmOE2u9cb/T39FvGBBJD1z84Xb/47XFREQyi/eBjzI6v5PyJMJ+1IiwI/fgjnxQAnHZqL1htTAcsXhrol5i/Cp08MEo2PkmtWyD3vzwYEMJSxLdghsEQ8ClH2u6QMI2uZIUQpsvNW6uCaH+ooRmcyP3UyspWEVeqSce2I3Iy8mBdCHO0od0Yeqc8P/0B6IfrSUyHXdYetCeRDP5VcpSKsn9/YnjhRW8QSARCV4TvkMwFJpjcZ3eUN3Tb2ix9wEDg9wHXn8nvh4AnfIWAbBffbIWtnT5+JId+h6NhcJlXwQjGRbVctbA6XcAx9AiIml1dr+VHv6hQDwdpEFXy1J58jEnwKJIOJLPp/n6G/7bgyr7H8JhBGIW35ZxzuMvml6amaTWUG2icsFLL/MO+ZuXVJ8JDeUmi0DS8fRw== (none)"
-    ];
-  };
-  users.users.lucasfcnunes = {
-    # shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7I5xIu1oxunktPOmR/HC+EqBJic2z0sbAn+mgluZdLKyDfHkdH/wSiH45jPplkJ473io3OAqJMo+0mgk7gRNSCzc93zj6fbM6JbQa3bC8FJ2uYFYGDkCtgqxgRpTCNcj8bL5inbcfrR3FcZK43ABtCatjqW8y2C39qvpdj0puxa/1Orm2lIxDubYd5oskqKcxUIIPatfFBACr6UXok2zmNDnZtU30f7C6At27nlcii1tNyuGFNVqocLj/qEKTMPp30LHgOewOmOE2u9cb/T39FvGBBJD1z84Xb/47XFREQyi/eBjzI6v5PyJMJ+1IiwI/fgjnxQAnHZqL1htTAcsXhrol5i/Cp08MEo2PkmtWyD3vzwYEMJSxLdghsEQ8ClH2u6QMI2uZIUQpsvNW6uCaH+ooRmcyP3UyspWEVeqSce2I3Iy8mBdCHO0od0Yeqc8P/0B6IfrSUyHXdYetCeRDP5VcpSKsn9/YnjhRW8QSARCV4TvkMwFJpjcZ3eUN3Tb2ix9wEDg9wHXn8nvh4AnfIWAbBffbIWtnT5+JId+h6NhcJlXwQjGRbVctbA6XcAx9AiIml1dr+VHv6hQDwdpEFXy1J58jEnwKJIOJLPp/n6G/7bgyr7H8JhBGIW35ZxzuMvml6amaTWUG2icsFLL/MO+ZuXVJ8JDeUmi0DS8fRw== (none)"
-    ];
-    password = "12345678"; # ! Change this to a secure password or use `passwd` after installation.
-    isNormalUser = true;
-    extraGroups = [
-      "root"
-      "wheel"
-    ]; # Enable ‘sudo’ for the user.
-    # packages = with pkgs; [
-    #   tree
-    # ];
-  };
+      # programs = {
+      #   zsh.enable = true;
+      #   # firefox.enable = true;
+      # };
 
-  # programs = {
-  #   zsh.enable = true;
-  #   # firefox.enable = true;
-  # };
+      # List packages installed in system profile.
+      # You can use https://search.nixos.org/ to find more packages (and options).
+      environment.systemPackages = with pkgs; [
+        # zsh
+        vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+        wget
+        # yq
+        git
+      ];
 
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
-  environment.systemPackages = with pkgs; [
-    # zsh
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    # yq
-    git
-  ];
+      # Some programs need SUID wrappers, can be configured further or are
+      # started in user sessions.
+      # programs.mtr.enable = true;
+      # programs.gnupg.agent = {
+      #   enable = true;
+      #   enableSSHSupport = true;
+      # };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+      # List services that you want to enable:
 
-  # List services that you want to enable:
+      # Enable the OpenSSH daemon.
+      services.openssh = {
+        enable = true;
+        settings = {
+          PasswordAuthentication = false;
+          KbdInteractiveAuthentication = false;
+        };
+      };
 
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
+      # Open ports in the firewall.
+      # networking.firewall.allowedTCPPorts = [ ... ];
+      # networking.firewall.allowedUDPPorts = [ ... ];
+      # Or disable the firewall altogether.
+      networking.firewall.enable = false;
+      networking.nftables.enable = true;
+      # networking.firewall.enable = true;
+      networking.firewall.backend = "nftables";
+      boot.blacklistedKernelModules = [
+        "ip_tables"
+        "iptable_nat"
+        "iptable_filter"
+        "iptable_mangle"
+        "iptable_raw"
+        "ip6_tables"
+        "ip6table_nat"
+        "ip6table_filter"
+        "ip6table_mangle"
+        "ip6table_raw"
+        "x_tables"
+        "br_netfilter"
+      ];
+      boot.extraModprobeConfig = ''
+        install ip_tables /bin/false
+        install iptable_nat /bin/false
+        install iptable_filter /bin/false
+        install iptable_mangle /bin/false
+        install iptable_raw /bin/false
+        install ip6_tables /bin/false
+        install ip6table_nat /bin/false
+        install ip6table_filter /bin/false
+        install ip6table_mangle /bin/false
+        install ip6table_raw /bin/false
+        install x_tables /bin/false
+        install br_netfilter /bin/false
+      '';
+
+      # Copy the NixOS configuration file and link it from the resulting system
+      # (/run/current-system/configuration.nix). This is useful in case you
+      # accidentally delete configuration.nix.
+      # system.copySystemConfiguration = true;
+
+      # This option defines the first version of NixOS you have installed on this particular machine,
+      # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
+      #
+      # Most users should NEVER change this value after the initial install, for any reason,
+      # even if you've upgraded your system to a new NixOS release.
+      #
+      # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
+      # so changing it will NOT upgrade your system - see https://nixos.org/manual/nixos/stable/#sec-upgrading for how
+      # to actually do that.
+      #
+      # This value being lower than the current NixOS release does NOT mean your system is
+      # out of date, out of support, or vulnerable.
+      #
+      # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
+      # and migrated your data accordingly.
+      #
+      # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
     };
-  };
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
-  networking.nftables.enable = true;
-  # networking.firewall.enable = true;
-  networking.firewall.backend = "nftables";
-  boot.blacklistedKernelModules = [
-    "ip_tables"
-    "iptable_nat"
-    "iptable_filter"
-    "iptable_mangle"
-    "iptable_raw"
-    "ip6_tables"
-    "ip6table_nat"
-    "ip6table_filter"
-    "ip6table_mangle"
-    "ip6table_raw"
-    "x_tables"
-    "br_netfilter"
-  ];
-  boot.extraModprobeConfig = ''
-    install ip_tables /bin/false
-    install iptable_nat /bin/false
-    install iptable_filter /bin/false
-    install iptable_mangle /bin/false
-    install iptable_raw /bin/false
-    install ip6_tables /bin/false
-    install ip6table_nat /bin/false
-    install ip6table_filter /bin/false
-    install ip6table_mangle /bin/false
-    install ip6table_raw /bin/false
-    install x_tables /bin/false
-    install br_netfilter /bin/false
-  '';
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
-
-  # This option defines the first version of NixOS you have installed on this particular machine,
-  # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
-  #
-  # Most users should NEVER change this value after the initial install, for any reason,
-  # even if you've upgraded your system to a new NixOS release.
-  #
-  # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
-  # so changing it will NOT upgrade your system - see https://nixos.org/manual/nixos/stable/#sec-upgrading for how
-  # to actually do that.
-  #
-  # This value being lower than the current NixOS release does NOT mean your system is
-  # out of date, out of support, or vulnerable.
-  #
-  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
-  # and migrated your data accordingly.
-  #
-  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "25.11"; # Did you read the comment?
-
 }

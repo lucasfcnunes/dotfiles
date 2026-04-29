@@ -1,11 +1,19 @@
 {
-  config,
-  lib,
-  pkgs,
-  modulesPath,
+  self,
+  inputs,
   ...
 }:
 {
-  imports = [ ];
-  hardware.facter.reportPath = ./facter.json;
+  flake.nixosModules.nixos-wsl-hardware =
+    {
+      config,
+      lib,
+      pkgs,
+      modulesPath,
+      ...
+    }:
+    {
+      imports = [ ];
+      hardware.facter.reportPath = ./facter.json;
+    };
 }
