@@ -89,6 +89,8 @@ in
     "d /var/lib/kubernetes/bin 0755 root root -"
   ];
   services.kubernetes = {
+    package = pkgs.unstable.kubernetes;
+    # package = pkgs.kubernetes;
     roles = [
       "master"
       "node"
