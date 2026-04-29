@@ -37,7 +37,7 @@
     in
     {
       environment.etc = {
-        "k8s".source = ../../../../k8s;
+        "k8s".source = ../../../../../k8s;
       };
       # virtualisation.docker = {
       #   enable = true;

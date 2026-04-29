@@ -1,6 +1,6 @@
 version: "3"
 env:
-  CURRENT_MACHINE:
+  CURRENT_HOST:
     # sh: echo "$HOST"
     sh: cat /etc/hostname
 tasks:
@@ -38,14 +38,14 @@ tasks:
   flake:eval:
     dir: ./etc/nixos/
     vars:
-      MACHINE: '{{.MACHINE| default "nixos-01"}}'
+      HOST: '{{.HOST| default "nixos-01"}}'
       NIX_CONFIG_EXAMPLE: virtualisation.containerd
       NIX_CONFIG: "{{.NIX_CONFIG | default .NIX_CONFIG_EXAMPLE}}"
       FORMAT: '{{.FORMAT | default "--json | yq -P"}}'
     cmds:
-      # - nix-shell --extra-experimental-features 'nix-command flakes' --run 'nix eval .#nixosConfigurations."{{.MACHINE}}".config --json | yq -r "..|strings?" | grep {{.GREP_PATTERN}}' --packages git vim go-task
+      # - nix-shell --extra-experimental-features 'nix-command flakes' --run 'nix eval .#nixosConfigurations."{{.HOST}}".config --json | yq -r "..|strings?" | grep {{.GREP_PATTERN}}' --packages git vim go-task
       # - nix run github:zimbatm/nix-flake-grep -- virtualisation.containerd
-      - nix eval .#nixosConfigurations.'{{.MACHINE}}'.config.{{.NIX_CONFIG}} {{.FORMAT}}
+      - nix eval .#nixosConfigurations.'{{.HOST}}'.config.{{.NIX_CONFIG}} {{.FORMAT}}
   # nixos-anywhere:
   #   desc: Deploy NixOS using NixOS Anywhere
   #   cmds:
@@ -71,19 +71,19 @@ tasks:
     desc: Generate facter.json using nixos-facter
     dir: ./etc/nixos/
     vars:
-      MACHINE: "{{.MACHINE | default .CURRENT_MACHINE}}"
+      HOST: "{{.HOST | default .CURRENT_HOST}}"
       DEFAULT_CMD: |-
-        {{- if ne .MACHINE .CURRENT_MACHINE -}}
-        ssh 'root@{{.MACHINE}}' --
+        {{- if ne .HOST .CURRENT_HOST -}}
+        ssh 'root@{{.HOST}}' --
         {{- end -}}
     cmds:
       - >-
-        {{.DEFAULT_CMD}} sudo nix run nixpkgs#nixos-facter > './machines/{{.MACHINE}}/facter.json'
-      # - nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-facter './machines/{{.MACHINE}}/facter.json' --flake '.#{{.MACHINE}}' --target-host 'root@{{.MACHINE}}'
+        {{.DEFAULT_CMD}} sudo nix run nixpkgs#nixos-facter > './modules/hosts/{{.HOST}}/facter.json'
+      # - nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-facter './modules/hosts/{{.HOST}}/facter.json' --flake '.#{{.HOST}}' --target-host 'root@{{.HOST}}'
   disko:
     desc: Get information about disks using disko
     dir: ./etc/nixos/
     vars:
-      MACHINE: "{{.MACHINE | default .CURRENT_MACHINE}}"
+      HOST: "{{.HOST | default .CURRENT_HOST}}"
     cmds:
-      - nix run github:nix-community/disko -- --flake '.#{{.MACHINE}}' --dry-run
+      - nix run github:nix-community/disko -- --flake '.#{{.HOST}}' --dry-run
