@@ -35,11 +35,11 @@ tasks:
       MACHINE: '{{.MACHINE| default "nixos-01"}}'
       NIX_CONFIG_EXAMPLE: virtualisation.containerd
       NIX_CONFIG: "{{.NIX_CONFIG | default .NIX_CONFIG_EXAMPLE}}"
+      FORMAT: '{{.FORMAT | default "--json | yq -P"}}'
     cmds:
       # - nix-shell --extra-experimental-features 'nix-command flakes' --run 'nix eval .#nixosConfigurations."{{.MACHINE}}".config --json | yq -r "..|strings?" | grep {{.GREP_PATTERN}}' --packages git vim go-task
       # - nix run github:zimbatm/nix-flake-grep -- virtualisation.containerd
-      - nix eval .#nixosConfigurations."{{.MACHINE}}".config.{{.NIX_CONFIG}} --json | yq -P
-      # - nix eval .#nixosConfigurations."{{.MACHINE}}".config.{{.NIX_CONFIG}}
+      - nix eval .#nixosConfigurations.'{{.MACHINE}}'.config.{{.NIX_CONFIG}} {{.FORMAT}}
   # nixos-anywhere:
   #   desc: Deploy NixOS using NixOS Anywhere
   #   cmds:
