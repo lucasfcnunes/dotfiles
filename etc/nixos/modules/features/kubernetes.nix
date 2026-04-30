@@ -31,21 +31,11 @@
       ];
       # cniBinDir = "/var/lib/kubernetes/bin";
       cniBinDir = config.services.kubernetes.dataDir + "/bin";
-      my-kubernetes-helm =
-        with pkgs;
-        wrapHelm kubernetes-helm {
-          plugins = with pkgs.kubernetes-helmPlugins; [
-            helm-secrets
-            helm-diff
-            helm-s3
-            helm-git
-          ];
-        };
-      my-helmfile = pkgs.helmfile-wrapped.override {
-        inherit (my-kubernetes-helm) pluginsDir;
-      };
     in
     {
+      imports = [
+        self.nixosModules.helmfile
+      ];
       environment.etc = {
         "k8s".source = ../../../../k8s;
       };
@@ -85,17 +75,11 @@
           9963
         ];
       };
-      environment.systemPackages =
-        with pkgs.unstable;
-        [
-          # kompose
-          kubectl
-          kubernetes
-        ]
-        ++ [
-          my-kubernetes-helm # helm
-          my-helmfile # helmfile
-        ];
+      environment.systemPackages = with pkgs.unstable; [
+        # kompose
+        kubectl
+        kubernetes
+      ];
       virtualisation = {
         containerd = {
           enable = true;
@@ -159,7 +143,7 @@
           ++ (with pkgs.unstable; [
             kubectl
           ])
-          ++ ([
+          ++ (with self.packages.${pkgs.system}; [
             my-kubernetes-helm
             my-helmfile
           ]);
