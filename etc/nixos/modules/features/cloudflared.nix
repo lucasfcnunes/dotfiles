@@ -13,7 +13,7 @@
     {
       sops.secrets = {
         "ee20eb8e-3e08-438c-92b8-cce52683ae19.json" = {
-          sopsFile = ../../../secrets/cloudflared.enc.yaml;
+          sopsFile = ../../secrets/cloudflared.enc.yaml;
         };
       };
       services.cloudflared = {
