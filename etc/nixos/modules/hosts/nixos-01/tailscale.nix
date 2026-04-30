@@ -22,7 +22,6 @@
       };
 
       networking.firewall = {
-        # enable = true;
         # Always allow traffic from your Tailscale network
         trustedInterfaces = [ "tailscale0" ];
         # Allow the Tailscale UDP port through the firewall

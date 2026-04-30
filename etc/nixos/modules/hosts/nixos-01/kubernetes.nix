@@ -47,7 +47,6 @@
       boot.kernelModules = [ "ceph" ];
       networking.extraHosts = "${kubeMasterIP} ${kubeMasterHostname}";
       networking.firewall = {
-        # enable = true;
         trustedInterfaces = [
           "cilium_net"
           "cilium_host"
