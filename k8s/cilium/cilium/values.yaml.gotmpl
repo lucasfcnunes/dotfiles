@@ -1,3 +1,7 @@
+devices:
+  - eth0 # INFO: https://tailscale.com/docs/features/kubernetes-operator#cilium-in-kube-proxy-replacement-mode
+# extraConfig:
+#   install-iptables-rules: "false" # TODO: waiting on https://github.com/cilium/cilium/pull/44878#issuecomment-4360985850
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 installNoConntrackIptablesRules: false
@@ -162,6 +166,8 @@ operator:
 #   requests:
 #     cpu: 100m
 #     memory: 64Mi
+envoyConfig:
+  enabled: true
 envoy:
   enabled: true
   log:
@@ -188,8 +194,6 @@ ingressController:
   default: true
 gatewayAPI:
   enabled: true
-extraConfig:
-  enable-envoy-config: "true"
 logOptions:
   format: json
 # k8sClientRateLimit:
