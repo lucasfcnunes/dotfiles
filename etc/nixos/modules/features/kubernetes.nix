@@ -16,9 +16,19 @@
     let
       # When using 'easyCerts = true;', the IP address must resolve to the master at the time of creation.
       # In this case, set 'kubeMasterIP = "127.0.0.1";'. Otherwise, you may encounter the following issue: https://github.com/NixOS/nixpkgs/issues/59364.
-      kubeMasterIP = "100.69.10.63";
-      kubeMasterHostname = "nixos-01";
-      kubeMasterAPIServerPort = 6443;
+      kubeMasterIP = "100.69.10.63"; # TODO: make this configurable
+      kubeMasterHostname = "nixos-01"; # TODO: make this configurable
+      kubeMasterAPIServerPort = 6443; # TODO: make this configurable
+      kubeMasterUrl = "https://${kubeMasterHostname}:${toString kubeMasterAPIServerPort}";
+      # kubeConfigFile = "/etc/kubernetes/cluster-admin.kubeconfig";
+      # kubeConfigFile = config.environment.etc."kubernetes/cluster-admin.kubeconfig".source;
+      kubeConfigFile =
+        config.environment.etc.${config.services.kubernetes.pki.etcClusterAdminKubeconfig}.source;
+      kubeRoles = [
+        # TODO: make this configurable
+        "master"
+        "node"
+      ];
       # cniBinDir = "/var/lib/kubernetes/bin";
       cniBinDir = config.services.kubernetes.dataDir + "/bin";
       my-kubernetes-helm =
@@ -38,6 +48,9 @@
     {
       environment.etc = {
         "k8s".source = ../../../../k8s;
+      };
+      environment.variables = {
+        KUBECONFIG = kubeConfigFile;
       };
       # virtualisation.docker = {
       #   enable = true;
@@ -73,7 +86,7 @@
         ];
       };
       environment.systemPackages =
-        with pkgs;
+        with pkgs.unstable;
         [
           # kompose
           kubectl
@@ -97,12 +110,9 @@
       services.kubernetes = {
         package = pkgs.unstable.kubernetes;
         # package = pkgs.kubernetes;
-        roles = [
-          "master"
-          "node"
-        ];
+        roles = kubeRoles;
         masterAddress = kubeMasterHostname;
-        apiserverAddress = "https://${kubeMasterHostname}:${toString kubeMasterAPIServerPort}";
+        apiserverAddress = kubeMasterUrl;
         easyCerts = true;
         apiserver = {
           securePort = kubeMasterAPIServerPort;
@@ -115,10 +125,11 @@
         proxy.enable = false;
         flannel.enable = false;
         kubelet = {
+          # kubeconfig.server = kubeMasterUrl; #TODO: set this only for worker nodes
           cni.packages = lib.mkForce [ ];
           extraOpts = builtins.concatStringsSep " " [
             "--root-dir=/var/lib/kubelet"
-            "--fail-swap-on=false"
+            # "--fail-swap-on=false"
           ];
         };
         apiserver = {
@@ -128,7 +139,7 @@
         };
       };
       systemd.services.cilium-bootstrap = {
-        # enable = false;
+        # enable = false; # TODO: enable this only on nixos-01
         description = "Deploy Cilium CNI, kube-proxy, DNS, etc replacement";
         after = [ "kubernetes.target" ];
         requires = [ "kubernetes.target" ];
@@ -143,8 +154,17 @@
           # User = "kubernetes";
           # Group = "kubernetes";
         };
+        path =
+          [ ]
+          ++ (with pkgs.unstable; [
+            kubectl
+          ])
+          ++ ([
+            my-kubernetes-helm
+            my-helmfile
+          ]);
         environment = {
-          KUBECONFIG = "/etc/kubernetes/cluster-admin.kubeconfig";
+          KUBECONFIG = "${kubeConfigFile}";
           K8S_SERVICE_HOST = "${kubeMasterIP}";
           K8S_SERVICE_PORT = "${toString kubeMasterAPIServerPort}";
           HELM_CACHE_HOME = "/tmp/helm/.cache";
@@ -158,20 +178,20 @@
           export PATH=$PATH:/run/current-system/sw/bin
 
           # Wait for API server to be ready
-          until ${pkgs.kubectl}/bin/kubectl cluster-info; do
+          until kubectl cluster-info; do
             echo "Waiting for Kubernetes API server..."
             sleep 5
           done
 
           # Check if Cilium is already installed
-          # if ${pkgs.kubectl}/bin/kubectl get namespace cilium; then
+          # if kubectl get namespace cilium; then
           #   echo "Cilium namespace already exists, skipping installation"
           #   exit 0
           # fi
 
           # Deploy Cilium using helmfile
           cd /etc/k8s/cilium/
-          ${my-helmfile}/bin/helmfile apply
+          helmfile apply
 
           echo "Cilium deployed successfully (apparently...)"
         '';
