@@ -13,10 +13,22 @@
       ...
     }:
     {
+      sops.secrets = {
+        "ts-client-kmJUapyKU311CNTRL" = {
+          sopsFile = ../../secrets/tailscale.enc.yaml;
+        };
+      };
       services.tailscale = {
         enable = true;
         package = pkgs.tailscale;
-        # authKeyFile = "${config.sops.secrets."...".path}";
+        authKeyFile = "${config.sops.secrets."ts-client-kmJUapyKU311CNTRL".path}";
+        authKeyParameters = {
+          ephemeral = false;
+          preauthorized = true;
+        };
+        extraUpFlags = [
+          "--advertise-tags=tag:computing"
+        ];
         # useRoutingFeatures = "client";
         # extraSetFlags = [ "--netfilter-mode=nodivert" ];
       };
