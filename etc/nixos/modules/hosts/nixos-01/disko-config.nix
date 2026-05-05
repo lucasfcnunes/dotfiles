@@ -31,9 +31,10 @@
                     format = "vfat";
                     mountpoint = "/boot";
                     mountOptions = [
-                      # "umask=0077"
-                      "fmask=0022"
-                      "dmask=0022"
+                      "umask=0077"
+                      "dmask=0077"
+                      # "fmask=0022"
+                      # "dmask=0022"
                     ];
                   };
                 };
