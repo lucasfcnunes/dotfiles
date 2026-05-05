@@ -35,6 +35,13 @@ tasks:
       - flake:update
     cmds:
       - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nixos-rebuild switch' --packages git vim go-task
+  rollback:
+    interactive: true
+    cmds:
+      - sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
+      - |
+        read -p "Would you really like to rollback to a previous generation? (Ctrl+C to cancel)"
+        sudo nix-env --rollback --profile /nix/var/nix/profiles/system
   flake:eval:
     dir: ./etc/nixos/
     vars:
