@@ -10,8 +10,10 @@
       ...
     }:
     {
+      imports = [
+        self.nixosModules.std-compliance
+      ];
       system.stateVersion = "25.11";
-      i18n.defaultLocale = "en_US.UTF-8";
       nix = {
         settings = {
           trusted-users = [
