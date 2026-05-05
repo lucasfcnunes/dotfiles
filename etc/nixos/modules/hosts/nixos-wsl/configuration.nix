@@ -19,6 +19,7 @@
         # self.nixosModules.nixos-wsl-disko-config
         self.nixosModules.sops
         self.nixosModules.nixos-wsl-home-manager
+        self.nixosModules.net-tools
         # self.nixosModules.users-defaults
         self.nixosModules.vscode-server
       ];

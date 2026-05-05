@@ -20,6 +20,8 @@
         self.nixosModules.sops
         self.nixosModules.disable-ipv6
         self.nixosModules.use-nftables
+        self.nixosModules.net-tools
+        self.nixosModules.dns-defaults
         self.nixosModules.users-defaults
         self.nixosModules.nixos-01-kubernetes
         # self.nixosModules.nixos-01-k3s
