@@ -6,6 +6,7 @@
 {
   flake.nixosModules.nix-defaults =
     {
+      pkgs,
       ...
     }:
     {
@@ -56,5 +57,9 @@
           dates = [ "03:45" ];
         };
       };
+      environment.systemPackages = with pkgs; [
+        nixfmt
+      ];
     };
+  flake.formatter.x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
 }

@@ -19,21 +19,20 @@
         # self.nixosModules.nixos-wsl-disko-config
         self.nixosModules.sops
         self.nixosModules.nixos-wsl-home-manager
+        # self.nixosModules.users-defaults
         self.nixosModules.vscode-server
       ];
-      # networking.networkmanager.enable = true;
       networking.hostName = "nixos-wsl";
-      # boot.loader.grub.enable = true;
-      boot.kernelModules = [
-        "nvme-fabrics"
-        "nvme-tcp"
-      ];
+      time.timeZone = "America/Sao_Paulo";
+      # system.userActivationScripts.zshrc = "touch .zshrc";
+      # networking.networkmanager.enable = true;
+      services.openssh.enable = false;
+      # users.defaultUserShell = pkgs.zsh;
+      users.users.lucasfcnunes.shell = pkgs.zsh;
       environment.variables.PATH = [
         "/home/lucasfcnunes/.dotbins/linux/amd64/bin"
       ];
       environment.systemPackages = with pkgs; [
-        nix-ld # https://github.com/nix-community/nix-ld
-        nixfmt
         git
         gnupg
         curl
@@ -65,7 +64,6 @@
         # k9s
       ];
       programs = {
-        nix-ld.enable = true;
         # starship = {
         #   enable = true;
         # };
@@ -85,9 +83,10 @@
           nix-direnv.enable = true;
         };
       };
-      users.users.lucasfcnunes.shell = pkgs.zsh;
-      # users.defaultUserShell = pkgs.zsh;
-      # system.userActivationScripts.zshrc = "touch .zshrc";
-      time.timeZone = "America/Sao_Paulo";
+      # boot.loader.grub.enable = true;
+      boot.kernelModules = [
+        "nvme-fabrics"
+        "nvme-tcp"
+      ];
     };
 }

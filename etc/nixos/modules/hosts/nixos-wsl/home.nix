@@ -31,7 +31,6 @@
             homeDirectory = "/home/lucasfcnunes";
             packages = with pkgs; [
               git
-              gh # github cli
               zsh
             ];
             file = {
