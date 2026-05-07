@@ -1,0 +1,115 @@
+# clusterName: nixos-cluster
+extraObjects: []
+# clusterName: "k8s_cluster"
+opentelemetry-operator:
+  enabled: true
+  crds:
+    create: true
+  admissionWebhooks:
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: NotIn
+          values:
+            - kube-system
+            - kube-node-lease
+    certManager:
+      enabled: true
+      issuerRef:
+        kind: ClusterIssuer
+        name: ca-issuer
+    autoGenerateCert:
+      enabled: false
+defaultCRConfig:
+  # config:
+  #   receivers:
+  #     otlp:
+  #       protocols:
+  #         grpc:
+  #           endpoint: ${env:MY_POD_IP}:4317
+  #         http:
+  #           endpoint: ${env:MY_POD_IP}:4318
+  #   exporters:
+  #     otlp:
+  #       endpoint: otel-collector.default:4317
+  #       tls:
+  #         insecure: true
+  #       sending_queue:
+  #         num_consumers: 4
+  #         queue_size: 100
+  #       retry_on_failure:
+  #         enabled: true
+  #   processors:
+  #     batch:
+  #     memory_limiter:
+  #       # 80% of maximum memory up to 2G
+  #       limit_mib: 400
+  #       # 25% of limit up to 2G
+  #       spike_limit_mib: 100
+  #       check_interval: 5s
+  #   extensions:
+  #     zpages: {}
+  #   service:
+  #     extensions: [zpages]
+  #     pipelines:
+  #       traces:
+  #         receivers: [otlp]
+  #         processors: [memory_limiter, batch]
+  #         exporters: [otlp]
+  presets:
+    logsCollection:
+      enabled: true
+      includeCollectorLogs: true
+      storeCheckpoints: false
+      maxRecombineLogSize: 102400
+    hostMetrics:
+      enabled: true
+    kubernetesAttributes:
+      enabled: true
+      # extractAllPodLabels: true
+      # extractAllPodAnnotations: true
+    kubeletMetrics:
+      enabled: true
+    kubernetesEvents:
+      enabled: true
+    clusterMetrics:
+      enabled: true
+    annotationDiscovery:
+      logs:
+        enabled: true
+      metrics:
+        enabled: true
+    resourceDetection:
+      eks:
+        enabled: false
+      aks:
+        enabled: false
+      gcp:
+        enabled: false
+kubernetesServiceMonitors:
+  enabled: true
+  ignoreNamespaceSelectors: false
+kubeApiServer:
+  enabled: true
+kubelet:
+  enabled: true
+kubeControllerManager:
+  enabled: false
+  endpoints: []
+coreDns:
+  enabled: false
+  endpoints:
+    - kube-dns.kube-system
+kubeEtcd:
+  enabled: false
+  endpoints: []
+kubeScheduler:
+  enabled: false
+  endpoints: []
+kubeProxy:
+  enabled: false
+  endpoints: []
+kubeStateMetrics:
+  enabled: true
+nodeExporter:
+  enabled: true

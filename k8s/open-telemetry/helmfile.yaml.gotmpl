@@ -1,13 +1,17 @@
 repositories:
-  - name: open-telemetry
+  - name: opentelemetry-helm
     url: https://open-telemetry.github.io/opentelemetry-helm-charts
 templates:
   default-release: &default-release
     namespace: opentelemetry-kube-stack
+    # namespace: opentelemetry-operator-system
 environments:
   default:
     values:
       - releases:
+          opentelemetry-operator:
+            version: 0.112.1
+            <<: *default-release
           opentelemetry-kube-stack:
             version: 0.14.12
             <<: *default-release
@@ -19,6 +23,14 @@ templates:
     values:
       - ./{{`{{ .Release.Name }}`}}/values.yaml.gotmpl
 releases:
-  - chart: open-telemetry/opentelemetry-kube-stack
+  - chart: opentelemetry-helm/opentelemetry-operator
+    name: opentelemetry-operator
+    <<: *default
+  - chart: opentelemetry-helm/opentelemetry-kube-stack
     name: opentelemetry-kube-stack
     <<: *default
+    set:
+      - name: opentelemetry-operator.enabled
+        value: false
+      - name: opentelemetry-operator.crds.create
+        value: false
