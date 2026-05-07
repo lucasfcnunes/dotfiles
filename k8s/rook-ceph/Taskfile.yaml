@@ -1,0 +1,13 @@
+version: "3"
+tasks:
+  csi-drivers:
+    cmds:
+      - kubectl get csidrivers
+  ceph:
+    vars:
+      CLI_ARGS: "{{.CLI_ARGS}}"
+      # ceph osd tree
+      # ceph-volume inventory
+    cmds:
+      - kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- {{.CLI_ARGS}}
+      # - kubectl rook-ceph -- {{.CLI_ARGS}}

@@ -1,0 +1,81 @@
+toolbox:
+  enabled: true
+cephClusterSpec:
+  dataDirHostPath: /var/lib/rook
+  disruptionManagement:
+    managePodBudgets: false
+  mgr:
+    modules:
+      - name: pg_autoscaler
+        enabled: true
+      - name: rook # This enables the rook module (and thus orchestrator. https://serverfault.com/questions/1057092/orchestrator-is-not-available-with-fresh-rook-instance)
+        enabled: true
+  dashboard:
+    enabled: true
+    urlPrefix: /
+    ssl: false
+  # cleanupPolicy:
+  #   confirmation: yes-really-destroy-data
+  #   sanitizeDisks:
+  #     method: quick
+  #     dataSource: zero
+  #     iteration: 1
+  #   allowUninstallWithVolumes: false
+  # cephConfig: # ! why this doesn't exist in the helm chart?
+  storage:
+    useAllNodes: true
+    useAllDevices: false
+    devicePathFilter: "^/dev/disk/by-path/acpi-VMBUS:00-vmbus-(.+)-lun-([3-6][0-9])$"
+    onlyApplyOSDPlacement: false
+    # nodes:
+    #   - name: nixos-01
+    #     devices:
+    #       - name: /dev/disk/by-path/acpi-VMBUS:00-vmbus-8bc32d1ef5834925b64f2a85d2a5cf59-lun-30
+    #   # - name: nixos-02
+    #   #   devices:
+    #   #     - name: /dev/disk/by-id/scsi-?
+    #   # - name: nixos-03
+    #   #   devices:
+    #   #     - name: /dev/disk/by-id/scsi-?
+  resources:
+    mgr:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 500Mi
+    mon:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 512Mi
+    osd:
+      limits:
+        memory: 2048Gi
+      requests:
+        cpu: 100m
+        memory: 512Mi # lower causes the OSD to crash with an allocation error
+    mgr-sidecar:
+      limits:
+        memory: 100Mi
+      requests:
+        cpu: 100m
+        memory: 40Mi
+    cleanup:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+    exporter:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 50Mi
+# TODO: monitoring
+# monitoring:
+#   enabled: true
+#   metricsDisabled: true
+#   createPrometheusRules: true

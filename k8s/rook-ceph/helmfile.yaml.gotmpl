@@ -8,8 +8,11 @@ environments:
   default:
     values:
       - releases:
-          rook-ceph:
-            version: 1.19.4
+          rook-ceph-operator:
+            version: 1.19.5
+            <<: *default-release
+          rook-ceph-cluster:
+            version: 1.19.5
             <<: *default-release
 ---
 templates:
@@ -20,5 +23,45 @@ templates:
       - ./{{`{{ .Release.Name }}`}}/values.yaml.gotmpl
 releases:
   - chart: rook-release/rook-ceph
-    name: rook-ceph
+    name: rook-ceph-operator
     <<: *default
+  - chart: rook-release/rook-ceph-cluster
+    name: rook-ceph-cluster
+    <<: *default
+    values:
+      - ./rook-ceph-cluster/values.yaml.gotmpl
+      - ./rook-ceph-cluster/single-node.yaml.gotmpl
+    set:
+      - name: operatorNamespace
+        value: '{{ .Values.releases | get "rook-ceph-operator" | get "namespace" }}'
+    jsonPatches:
+      # ! single-node cluster
+      - target:
+          kind: CephBlockPool
+          name: ceph-blockpool
+        patch:
+          - op: replace
+            path: /spec/replicated/size
+            value: 1
+          - op: replace
+            path: /spec/replicated/requireSafeReplicaSize
+            value: false
+      - target:
+          kind: CephFilesystem
+          name: ceph-filesystem
+        patch:
+          - op: replace
+            path: /spec/metadataPool/replicated/size
+            value: 1
+          - op: replace
+            path: /spec/dataPools/0/replicated/size
+            value: 1
+      - target:
+          kind: CephObjectStore
+          name: ceph-objectstore
+        patch:
+          - op: replace
+            path: /spec/metadataPool/replicated/size
+            value: 1
+    needs:
+      - rook-ceph-operator

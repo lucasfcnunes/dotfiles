@@ -34,6 +34,7 @@
       ];
       # cniBinDir = "/var/lib/kubernetes/bin";
       cniBinDir = config.services.kubernetes.dataDir + "/bin";
+      rookCephEnabled = true;
     in
     {
       imports = [
@@ -50,7 +51,17 @@
       #   # enableNvidia = true;
       #   # extraOptions = "--default-runtime=nvidia";
       # };
-      boot.kernelModules = [ "ceph" ];
+      boot.kernelModules = [
+      ]
+      ++ (
+        if rookCephEnabled then
+          [
+            "ceph"
+            "rbd"
+          ]
+        else
+          [ ]
+      );
       networking.extraHosts = "${kubeMasterIP} ${kubeMasterHostname}";
       networking.firewall = {
         trustedInterfaces = [
@@ -66,11 +77,25 @@
           config.services.kubernetes.apiserver.securePort
         ];
       };
-      environment.systemPackages = with pkgs.unstable; [
-        # kompose
-        kubectl
-        kubernetes
-      ];
+      environment.systemPackages =
+        with pkgs.unstable;
+        [
+          # kompose
+          kubectl
+          kubernetes
+        ]
+        ++ (
+          if rookCephEnabled then
+            with pkgs;
+            [
+              e2fsprogs
+              lvm2
+              util-linux
+              xfsprogs
+            ]
+          else
+            [ ]
+        );
       virtualisation = {
         containerd = {
           enable = true;
@@ -81,7 +106,15 @@
       };
       systemd.tmpfiles.rules = [
         "d /var/lib/kubernetes/bin 0755 root root -"
-      ];
+      ]
+      ++ (
+        if rookCephEnabled then
+          [
+            "d /var/lib/rook 0755 root root -"
+          ]
+        else
+          [ ]
+      );
       services.kubernetes = {
         package = pkgs.unstable.kubernetes;
         # package = pkgs.kubernetes;
