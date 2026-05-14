@@ -5,8 +5,31 @@
     "dotbins",
     "global",
     "k8s",
-    "nixos-*",
+    "nixos",
     "nixos-01",
     "nixos-wsl"
-  ]
+  ],
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nixd",
+  "nix.serverSettings": {
+    "nixd": {
+      "formatting": {
+        "command": ["nixfmt"]
+      },
+      "options": {
+        // "nixos-wsl": {
+        //   "expr": "(builtins.getFlake \"${workspaceFolder}/etc/nixos/\").nixosConfigurations.nixos-wsl.options"
+        // },
+        "nixos": {
+          "expr": "(builtins.getFlake \"${workspaceFolder}/etc/nixos/\").nixosConfigurations.nixos-wsl.options"
+        }
+        // "home-manager": {
+        //   "expr": "(builtins.getFlake \"${workspaceFolder}/etc/nixos/\").homeConfigurations.<name>.options"
+        // },
+        // "nix-darwin": {
+        //   "expr": "(builtins.getFlake \"${workspaceFolder}/etc/nixos/\").darwinConfigurations.<name>.options"
+        // }
+      }
+    }
+  }
 }

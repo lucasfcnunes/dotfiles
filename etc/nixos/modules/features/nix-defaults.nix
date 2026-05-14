@@ -21,12 +21,13 @@
           ];
           # auto-optimise-store = true;
           experimental-features = [
-            "nix-command"
             "flakes"
+            "nix-command"
+            "pipe-operators"
           ];
           connect-timeout = 5;
           fallback = true;
-          accept-flake-config = true;
+          accept-flake-config = false; # INFO: https://notashelf.dev/posts/reject-flake-content/
           substituters = [
             "https://cache.nixos.org?priority=10"
             "https://nix-mirror.freetls.fastly.net?priority=10"
@@ -61,6 +62,7 @@
       };
       environment.systemPackages = with pkgs; [
         nixfmt
+        nixd
       ];
     };
   flake.formatter.x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
