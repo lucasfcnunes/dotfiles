@@ -1,0 +1,27 @@
+repositories:
+  # - name: skyhook
+  #   url: https://skyhook-io.github.io/helm-charts
+  # TODO: use upstream after https://github.com/skyhook-io/radar/pull/714
+  - name: skyhook-lucasfcnunes
+    url: git+https://github.com/lucasfcnunes/radar/@deploy/helm/?ref=patch-1
+templates:
+  default-release: &default-release
+    namespace: radar
+environments:
+  default:
+    values:
+      - releases:
+          radar:
+            version: "*"
+            <<: *default-release
+---
+templates:
+  default: &default
+    version: '{{`{{ .Values | get "releases" | get .Release.Name | get "version" }}`}}'
+    namespace: '{{`{{ .Values | get "releases" | get .Release.Name | get "namespace" }}`}}'
+    values:
+      - ./{{`{{ .Release.Name }}`}}/values.yaml.gotmpl
+releases:
+  - chart: skyhook-lucasfcnunes/radar
+    name: radar
+    <<: *default
