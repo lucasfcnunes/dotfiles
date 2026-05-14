@@ -11,9 +11,11 @@
       config,
       lib,
       pkgs,
+      options,
       ...
     }:
     let
+      hasIPv6Internet = config.networking.enableIPv6;
       # When using 'easyCerts = true;', the IP address must resolve to the master at the time of creation.
       # In this case, set 'kubeMasterIP = "127.0.0.1";'. Otherwise, you may encounter the following issue: https://github.com/NixOS/nixpkgs/issues/59364.
       kubeMasterIP = "100.69.10.63"; # TODO: make this configurable
@@ -105,6 +107,27 @@
         addons.dns = {
           enable = true;
           replicas = 1;
+          corefile =
+            let
+              corefileOld = options.services.kubernetes.addons.dns.corefile.default;
+              corefileNew =
+                corefileOld
+                |>
+                  lib.replaceStrings
+                    (
+                      [
+                        # "forward . /etc/resolv.conf"
+                      ]
+                      ++ lib.optional (!hasIPv6Internet) " ip6.arpa"
+                    )
+                    (
+                      [
+                        # "forward . 127.0.0.1"
+                      ]
+                      ++ lib.optional (!hasIPv6Internet) ""
+                    );
+            in
+            corefileNew;
         };
         proxy.enable = false;
         flannel.enable = false;
