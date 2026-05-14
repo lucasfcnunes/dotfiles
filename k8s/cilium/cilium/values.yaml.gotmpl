@@ -1,5 +1,7 @@
-devices:
-  - eth0 # INFO: https://tailscale.com/docs/features/kubernetes-operator#cilium-in-kube-proxy-replacement-mode
+# devices:
+#   # INFO: https://tailscale.com/docs/features/kubernetes-operator#cilium-in-kube-proxy-replacement-mode
+#   # WARNING: breaks coredns and more if only eth0 set
+#   - eth0
 # extraConfig:
 #   install-iptables-rules: "false" # TODO: waiting on https://github.com/cilium/cilium/pull/44878#issuecomment-4360985850
 kubeProxyReplacement: true
