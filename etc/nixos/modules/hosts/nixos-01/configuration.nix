@@ -15,7 +15,6 @@
       imports = [
         self.nixosModules.nix-defaults
         self.nixosModules.nixos-01-hardware
-        self.nixosModules.nixpkgs-unstable
         self.nixosModules.nixos-01-disko-config
         self.nixosModules.sops
         self.nixosModules.disable-ipv6

@@ -4,50 +4,57 @@
   ...
 }:
 let
-  system = "x86_64-linux";
-  pkgs = import inputs.nixpkgs { inherit system; };
-  deployPkgs = import inputs.nixpkgs {
-    inherit system;
-    overlays = [
+  genericPkgs =
+    system: overlays:
+    import inputs.nixpkgs {
+      inherit system;
+      inherit overlays;
+    };
+  genericDeployPkgs =
+    system:
+    genericPkgs system [
       # inputs.deploy-rs.overlay
       inputs.deploy-rs.overlays.default
-      (self: super: {
+      # TODO: use wrapper-modules instead of overlay to inject deploy-rs into packages (?)
+      # TODO: make a flake.overlays.deploy-rs
+      (final: prev: {
         deploy-rs = {
-          inherit (pkgs) deploy-rs;
-          lib = super.deploy-rs.lib;
+          inherit (genericPkgs system [ ]) deploy-rs;
+          inherit (prev.deploy-rs) lib;
         };
       })
     ];
-  };
 in
 {
-  flake.checks = builtins.mapAttrs (
-    system: deployLib: deployLib.deployChecks self.deploy
-  ) inputs.deploy-rs.lib;
-  flake.deploy.nodes = {
-    nixos-wsl = {
-      hostname = "nixos-wsl";
-      profiles.system = {
-        user = "lucasfcnunes";
-        # path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-wsl;
-        path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.nixos-wsl;
-      };
+  perSystem =
+    {
+      system,
+      ...
+    }:
+    {
+      checks = (genericDeployPkgs system).deploy-rs.lib.deployChecks self.deploy;
     };
-    nixos-01 = {
-      hostname = "nixos-01";
-      # hostname = "nixos-01.tail3404eb.ts.net";
+  flake.deploy.nodes = builtins.mapAttrs (
+    name: nixosConfiguration:
+    let
+      # TODO: solve for host with no facter.reportPath set case too
+      system = nixosConfiguration.config.hardware.facter.report.system;
+      hostname = nixosConfiguration.config.networking.hostName;
+      deployPkgs = genericDeployPkgs system;
+    in
+    {
+      inherit hostname;
       sshUser = "lucasfcnunes";
-      # interactiveSudo = true;
-      profiles.system = {
-        user = "root";
-        autoRollback = false;
-        magicRollback = false;
-        # remoteBuild = true;
-        activationTimeout = 600;
-        confirmTimeout = 60;
-        # path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-01;
-        path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.nixos-01;
-      };
-    };
-  };
+      user = "root";
+      autoRollback = false;
+      magicRollback = false;
+      # remoteBuild = true;
+      activationTimeout = 600;
+      confirmTimeout = 60;
+      sshOpts = [
+        "-oControlMaster=no"
+      ];
+      profiles.system.path = deployPkgs.deploy-rs.lib.activate.nixos nixosConfiguration;
+    }
+  ) self.nixosConfigurations;
 }

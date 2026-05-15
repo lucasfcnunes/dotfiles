@@ -1,9 +1,28 @@
 {
   self,
   inputs,
+  withSystem,
   ...
 }:
 {
+  perSystem =
+    {
+      pkgs,
+      system,
+      ...
+    }:
+    {
+      _module.args.pkgs = import inputs.nixpkgs {
+        inherit system;
+        overlays = [
+          self.overlays.nixpkgs-unstable
+        ];
+        config = {
+          allowUnfree = false;
+        };
+      };
+      formatter = pkgs.nixfmt-tree;
+    };
   flake.nixosModules.nix-defaults =
     {
       pkgs,
@@ -12,6 +31,13 @@
     {
       imports = [
         self.nixosModules.std-compliance
+        # inputs.nixpkgs.nixosModules.readOnlyPkgs
+        (
+          { config, ... }:
+          {
+            nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system ({ pkgs, ... }: pkgs);
+          }
+        )
       ];
       system.stateVersion = "25.11";
       nix = {
@@ -61,9 +87,9 @@
         };
       };
       environment.systemPackages = with pkgs; [
+        nixfmt-tree
         nixfmt
         nixd
       ];
     };
-  flake.formatter.x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
 }

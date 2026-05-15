@@ -10,8 +10,11 @@
       pkgs,
       ...
     }:
+    let
+      system = pkgs.stdenv.hostPlatform.system;
+    in
     {
-      environment.systemPackages = with self.packages.${pkgs.system}; [
+      environment.systemPackages = with self.packages.${system}; [
         my-kubernetes-helm
         my-helmfile
       ];

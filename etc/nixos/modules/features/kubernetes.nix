@@ -15,6 +15,7 @@
       ...
     }:
     let
+      system = pkgs.stdenv.hostPlatform.system;
       hasIPv6Internet = config.networking.enableIPv6;
       # When using 'easyCerts = true;', the IP address must resolve to the master at the time of creation.
       # In this case, set 'kubeMasterIP = "127.0.0.1";'. Otherwise, you may encounter the following issue: https://github.com/NixOS/nixpkgs/issues/59364.
@@ -166,7 +167,7 @@
           ++ (with pkgs.unstable; [
             kubectl
           ])
-          ++ (with self.packages.${pkgs.system}; [
+          ++ (with self.packages.${system}; [
             my-kubernetes-helm
             my-helmfile
           ]);
