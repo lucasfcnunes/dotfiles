@@ -22,6 +22,7 @@
         self.nixosModules.net-tools
         # self.nixosModules.users-defaults
         self.nixosModules.vscode-server
+        self.nixosModules.cross-emulation
       ];
       networking.hostName = "nixos-wsl";
       time.timeZone = "America/Sao_Paulo";
