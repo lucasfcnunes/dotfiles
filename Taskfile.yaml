@@ -12,11 +12,15 @@ tasks:
       - wget https://github.com/nix-community/NixOS-WSL/releases/download/2505.7.0/nixos.wsl
       - wget https://github.com/nix-community/NixOS-WSL/releases/download/2505.7.0/nixos.wsl.sha256
   nix-channel:
+    dir: ./etc/nixos/
+    vars:
+      NIX_CHANNEL_VERSION: "25.11"
     cmds:
+      - sudo nix-channel --list
       # github:NixOS/nixpkgs/nixos-25.11
-      - sudo nix-channel --add https://nixos.org/channels/nixos-25.11 nixos
+      - sudo nix-channel --add 'https://nixos.org/channels/nixos-{{.NIX_CHANNEL_VERSION}}' nixos
       # github:nix-community/nixos-wsl/release-25.11
-      - sudo nix-channel --add https://github.com/nix-community/NixOS-WSL/archive/refs/heads/release-25.11.tar.gz nixos-wsl
+      - sudo nix-channel --add 'https://github.com/nix-community/NixOS-WSL/archive/refs/heads/release-{{.NIX_CHANNEL_VERSION}}.tar.gz' nixos-wsl
       # - nix flake update
       - sudo nix-channel --update
       - sudo nixos-rebuild switch
@@ -30,7 +34,9 @@ tasks:
       - ./flake.nix
     cmds:
       - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nix flake update' --packages git vim go-task
-  rebuild:
+  switch:
+    aliases:
+      - rebuild
     deps:
       - flake:update
     cmds:
