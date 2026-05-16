@@ -41,6 +41,10 @@
       ];
       system.stateVersion = "25.11";
       nix = {
+        nixPath = [
+          "nixpkgs=${inputs.nixpkgs}"
+          "nixpkgs-unstable=${inputs.nixpkgs-unstable}"
+        ];
         settings = {
           trusted-users = [
             "@wheel"
