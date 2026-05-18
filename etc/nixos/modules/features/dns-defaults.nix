@@ -12,38 +12,57 @@
       ...
     }:
     let
-      hasIPv6Internet = config.networking.enableIPv6;
+      hasIPv6Enabled = config.networking.enableIPv6;
       StateDirectory = "dnscrypt-proxy";
-      blocklist_base = builtins.readFile inputs.oisd;
+      blocklistBase = builtins.readFile inputs.oisd;
       extraBlocklist = "";
-      blocklist_txt = pkgs.writeText "blocklist.txt" ''
+      blocklistTxt = pkgs.writeText "blocklist.txt" ''
         ${extraBlocklist}
-        ${blocklist_base}
+        ${blocklistBase}
       '';
+      forwardingRulesFile = "nixos/services/networking/forwarding-rules.txt";
     in
     {
+      environment.etc.${forwardingRulesFile}.text = ''
+        # INFO: https://github.com/DNSCrypt/dnscrypt-proxy/blob/master/dnscrypt-proxy/example-forwarding-rules.txt
+
+      ''
+      + (
+        # TODO: move this tailscale section to the tailscale module (in a configurable order)
+        let
+          tailscaleNameservers =
+            "100.100.100.100" + lib.optionalString hasIPv6Enabled ", [fd7a:115c:a1e0::53]";
+        in
+        lib.optionalString config.services.tailscale.enable ''
+          # INFO: https://tailscale.com/docs/reference/quad100
+          # INFO: https://tailscale.com/docs/reference/faq/dns-resolv-conf
+          ts.net ${tailscaleNameservers}
+
+        ''
+      );
       networking = {
         nameservers = [
           "127.0.0.1"
         ]
-        ++ lib.optional hasIPv6Internet "::1";
+        ++ lib.optional hasIPv6Enabled "::1";
         # If using dhcpcd:
         dhcpcd.extraConfig = "nohook resolv.conf";
         # If using NetworkManager:
         networkmanager.dns = "none";
+        useNetworkd = false;
       };
       services.resolved.enable = false;
       services.dnscrypt-proxy = {
         enable = true;
         # INFO: https://github.com/DNSCrypt/dnscrypt-proxy/blob/master/dnscrypt-proxy/example-dnscrypt-proxy.toml
         settings = {
-          ipv6_servers = hasIPv6Internet;
-          block_ipv6 = !hasIPv6Internet;
+          ipv6_servers = hasIPv6Enabled;
+          block_ipv6 = !hasIPv6Enabled;
           require_dnssec = true;
           require_nolog = false;
           require_nofilter = true;
           # query_log.file = "/var/log/dnscrypt-proxy/query.log";
-          blocked_names.blocked_names_file = blocklist_txt;
+          blocked_names.blocked_names_file = blocklistTxt;
           sources.public-resolvers = {
             urls = [
               "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
@@ -56,10 +75,18 @@
           # INFO: https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/public-resolvers.md
           server_names = [
             "cloudflare"
-            # "cloudflare-ipv6"
             # "google"
-            # "google-ipv6"
-          ];
+          ]
+          ++ (
+            if hasIPv6Enabled then
+              [
+                "cloudflare-ipv6"
+                # "google-ipv6"
+              ]
+            else
+              [ ]
+          );
+          forwarding_rules = config.environment.etc.${forwardingRulesFile}.source;
         };
       };
       systemd.services.dnscrypt-proxy.serviceConfig.StateDirectory = StateDirectory;

@@ -6,38 +6,42 @@
 {
   flake.nixosModules.use-nftables =
     {
+      lib,
+      pkgs,
       ...
     }:
-    {
-      networking.nftables.enable = true;
-      # disable iptables and related modules
-      boot.blacklistedKernelModules = [
+    let
+      blacklistedKernelModules = [
+        # legacy ipv4
         "ip_tables"
-        "iptable_nat"
         "iptable_filter"
         "iptable_mangle"
+        "iptable_nat"
         "iptable_raw"
+        # legacy ipv6
         "ip6_tables"
-        "ip6table_nat"
         "ip6table_filter"
         "ip6table_mangle"
+        "ip6table_nat"
         "ip6table_raw"
-        "x_tables"
+        # common infra
         "br_netfilter"
+        "x_tables"
       ];
-      boot.extraModprobeConfig = ''
-        install ip_tables /bin/false
-        install iptable_nat /bin/false
-        install iptable_filter /bin/false
-        install iptable_mangle /bin/false
-        install iptable_raw /bin/false
-        install ip6_tables /bin/false
-        install ip6table_nat /bin/false
-        install ip6table_filter /bin/false
-        install ip6table_mangle /bin/false
-        install ip6table_raw /bin/false
-        install x_tables /bin/false
-        install br_netfilter /bin/false
-      '';
+      extraModprobeConfig = lib.concatMapStringsSep "\n" (
+        kmod: "install ${kmod} ${pkgs.coreutils}/bin/false"
+      ) blacklistedKernelModules;
+    in
+    {
+      networking.firewall.enable = lib.mkDefault true;
+      networking.firewall.checkReversePath = lib.mkDefault "loose";
+      networking.nftables.enable = true;
+      environment.systemPackages = with pkgs; [
+        nftables
+        iptables # (actually) iptables-nft
+        # iptables-legacy
+      ];
+      boot.blacklistedKernelModules = blacklistedKernelModules;
+      boot.extraModprobeConfig = extraModprobeConfig;
     };
 }

@@ -16,7 +16,7 @@
     }:
     let
       system = pkgs.stdenv.hostPlatform.system;
-      hasIPv6Internet = config.networking.enableIPv6;
+      hasIPv6Enabled = config.networking.enableIPv6;
       # When using 'easyCerts = true;', the IP address must resolve to the master at the time of creation.
       # In this case, set 'kubeMasterIP = "127.0.0.1";'. Otherwise, you may encounter the following issue: https://github.com/NixOS/nixpkgs/issues/59364.
       kubeMasterIP = "100.69.10.63"; # TODO: make this configurable
@@ -54,28 +54,16 @@
       networking.extraHosts = "${kubeMasterIP} ${kubeMasterHostname}";
       networking.firewall = {
         trustedInterfaces = [
-          "cilium_net"
+          # "cilium_*"
           "cilium_host"
+          "cilium_net"
+          # "cilium_vxlan"
+          "lxc*"
         ];
         allowedUDPPorts = [
-          # dns
-          10053 # config.services.kubernetes.addons.dns.ports.dns
-          # cilium
-          4240
-          8472
         ];
         allowedTCPPorts = [
           config.services.kubernetes.apiserver.securePort
-          # dns
-          10054
-          10055
-          # cilium
-          9879
-          4244
-          9965
-          9964
-          9234
-          9963
         ];
       };
       environment.systemPackages = with pkgs.unstable; [
@@ -119,13 +107,13 @@
                       [
                         # "forward . /etc/resolv.conf"
                       ]
-                      ++ lib.optional (!hasIPv6Internet) " ip6.arpa"
+                      ++ lib.optional (!hasIPv6Enabled) " ip6.arpa"
                     )
                     (
                       [
                         # "forward . 127.0.0.1"
                       ]
-                      ++ lib.optional (!hasIPv6Internet) ""
+                      ++ lib.optional (!hasIPv6Enabled) ""
                     );
             in
             corefileNew;

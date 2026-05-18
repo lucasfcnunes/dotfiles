@@ -9,6 +9,7 @@
   flake.nixosModules.tailscale =
     {
       config,
+      lib,
       pkgs,
       ...
     }:
@@ -30,23 +31,41 @@
           "--advertise-tags=tag:computing"
         ];
         # useRoutingFeatures = "client";
-        # extraSetFlags = [ "--netfilter-mode=nodivert" ];
+        extraSetFlags = [
+          # "--netfilter-mode=nodivert"
+        ]
+        ++ lib.optional config.services.dnscrypt-proxy.enable "--accept-dns=false";
       };
-
+      networking.search = [
+        # INFO: https://tailscale.com/docs/reference/dns-in-tailscale?tab=linux#search-domains
+        # INFO: https://login.tailscale.com/admin/dns
+        "tail3404eb.ts.net"
+      ];
       networking.firewall = {
-        # Always allow traffic from your Tailscale network
-        trustedInterfaces = [ "tailscale0" ];
-        # Allow the Tailscale UDP port through the firewall
+        trustedInterfaces = [ config.services.tailscale.interfaceName ];
         allowedUDPPorts = [ config.services.tailscale.port ];
       };
-      # Force tailscaled to use nftables (Critical for clean nftables-only systems)
-      # This avoids the "iptables-compat" translation layer issues.
       systemd.services.tailscaled.serviceConfig.Environment = [
-        "TS_DEBUG_FIREWALL_MODE=nftables"
-      ];
+      ]
+      # INFO: https://tailscale.com/docs/features/firewall-mode
+      ++ lib.optional config.networking.nftables.enable "TS_DEBUG_FIREWALL_MODE=nftables";
       # Optimization: Prevent systemd from waiting for network online
       # (Optional but recommended for faster boot with VPNs)
       systemd.network.wait-online.enable = false;
       boot.initrd.systemd.network.wait-online.enable = false;
+      services.networkd-dispatcher = {
+        enable = true;
+        rules."50-tailscale-optimizations" = {
+          onState = [ "routable" ];
+          script =
+            let
+              # TODO: dinamically choose the wan interface
+              nic = "eth0";
+            in
+            ''
+              ${pkgs.ethtool}/bin/ethtool -K ${nic} rx-udp-gro-forwarding on rx-gro-list off
+            '';
+        };
+      };
     };
 }

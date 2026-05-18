@@ -31,7 +31,6 @@
       networking.hostName = "nixos-01"; # Define your hostname.
       time.timeZone = "UTC";
       networking.networkmanager.enable = true;
-      networking.firewall.enable = false; # ! turn it on after configuring it properly
       services.openssh.enable = true;
       # users.defaultUserShell = pkgs.zsh;
       environment.systemPackages = with pkgs; [
