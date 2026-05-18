@@ -1,3 +1,12 @@
+extraObjects:
+  resources:
+    - apiVersion: tailscale.com/v1alpha1
+      kind: ProxyGroup
+      metadata:
+        name: ingress-proxies
+      spec:
+        type: ingress
+        replicas: 1
 installCRDs: true
 operatorConfig:
   defaultTags:
@@ -8,3 +17,4 @@ ingressClass:
 proxyConfig:
   defaultTags: tag:k8s
   firewallMode: auto
+  # defaultProxyClass:
