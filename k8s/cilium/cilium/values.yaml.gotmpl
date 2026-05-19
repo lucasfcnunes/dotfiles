@@ -1,9 +1,11 @@
+# TODO: (1) cilium expecting iptables(-legacy) issue https://github.com/NixOS/nixpkgs/issues/179741#issuecomment-4493165951
+# TODO: (2) (for now) no solution on https://github.com/cilium/cilium/pull/44878#issuecomment-4483211952
 # devices:
 #   # INFO: https://tailscale.com/docs/features/kubernetes-operator#cilium-in-kube-proxy-replacement-mode
 #   # WARNING: breaks coredns and more if only eth0 set
 #   - eth0
 # extraConfig:
-#   install-iptables-rules: "false" # TODO: waiting on https://github.com/cilium/cilium/pull/44878#issuecomment-4360985850
+#   install-iptables-rules: "false" # TODO: fix (1) and (2)
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 installNoConntrackIptablesRules: false
@@ -150,6 +152,7 @@ replicas: 1
 ipv4:
   enabled: true
 enableIPv4BIGTCP: true
+enableIPv4Masquerade: true
 ipv6:
   enabled: false
 enableIPv6BIGTCP: false
