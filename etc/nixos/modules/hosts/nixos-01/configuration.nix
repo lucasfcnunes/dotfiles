@@ -28,7 +28,8 @@
         self.nixosModules.cloudflared
         self.nixosModules.vscode-server
       ];
-      networking.hostName = "nixos-01"; # Define your hostname.
+      networking.hostId = "007f0200";
+      networking.hostName = "nixos-01";
       time.timeZone = "UTC";
       networking.networkmanager.enable = true;
       services.openssh.enable = true;

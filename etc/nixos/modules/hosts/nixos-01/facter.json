@@ -125,16 +125,16 @@
         ],
         "bogo": 4389,
         "cache": 56320,
-        "units": 8,
+        "units": 16,
         "page_size": 4096,
         "physical_id": 0,
-        "siblings": 8,
-        "cores": 4,
+        "siblings": 10,
+        "cores": 5,
         "fpu": false,
         "fpu_exception": false,
         "cpuid_level": 20,
         "write_protect": false,
-        "tlb_size": 32645,
+        "tlb_size": 32765,
         "clflush_size": 64,
         "cache_alignment": 64,
         "address_sizes": {
@@ -145,8 +145,8 @@
     ],
     "disk": [
       {
-        "index": 14,
-        "attached_to": 13,
+        "index": 16,
+        "attached_to": 15,
         "class_list": [
           "disk",
           "scsi",
@@ -191,8 +191,8 @@
         "sysfs_bus_id": "0:0:0:1",
         "sysfs_device_link": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/VMBUS:00/8bc32d1e-f583-4925-b64f-2a85d2a5cf59/host0/target0:0:0/0:0:0:1",
         "unix_device_names": [
-          "/dev/disk/by-id/scsi-360022480088f80508d95da3ca9975270",
-          "/dev/disk/by-id/wwn-0x60022480088f80508d95da3ca9975270",
+          "/dev/disk/by-id/scsi-3600224806bfb6f9a865cb17e346c1bc6",
+          "/dev/disk/by-id/wwn-0x600224806bfb6f9a865cb17e346c1bc6",
           "/dev/disk/by-path/acpi-VMBUS:00-vmbus-8bc32d1ef5834925b64f2a85d2a5cf59-lun-1",
           "/dev/sdb"
         ],
@@ -201,7 +201,7 @@
         "resources": [
           {
             "type": "disk_geo",
-            "cylinders": 31330,
+            "cylinders": 130541,
             "heads": 255,
             "sectors": 63,
             "size": "0x0",
@@ -210,7 +210,7 @@
           {
             "type": "size",
             "unit": "sectors",
-            "value_1": 503316480,
+            "value_1": 2097152000,
             "value_2": 512
           }
         ],
@@ -226,8 +226,8 @@
         ]
       },
       {
-        "index": 15,
-        "attached_to": 13,
+        "index": 17,
+        "attached_to": 15,
         "class_list": [
           "disk",
           "scsi",
@@ -307,8 +307,8 @@
         ]
       },
       {
-        "index": 16,
-        "attached_to": 13,
+        "index": 18,
+        "attached_to": 15,
         "class_list": [
           "disk",
           "scsi",
@@ -353,8 +353,8 @@
         "sysfs_bus_id": "0:0:0:0",
         "sysfs_device_link": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/VMBUS:00/8bc32d1e-f583-4925-b64f-2a85d2a5cf59/host0/target0:0:0/0:0:0:0",
         "unix_device_names": [
-          "/dev/disk/by-id/scsi-3600224806bfb6f9a865cb17e346c1bc6",
-          "/dev/disk/by-id/wwn-0x600224806bfb6f9a865cb17e346c1bc6",
+          "/dev/disk/by-id/scsi-360022480088f80508d95da3ca9975270",
+          "/dev/disk/by-id/wwn-0x60022480088f80508d95da3ca9975270",
           "/dev/disk/by-path/acpi-VMBUS:00-vmbus-8bc32d1ef5834925b64f2a85d2a5cf59-lun-0",
           "/dev/sda"
         ],
@@ -363,7 +363,7 @@
         "resources": [
           {
             "type": "disk_geo",
-            "cylinders": 130541,
+            "cylinders": 31330,
             "heads": 255,
             "sectors": 63,
             "size": "0x0",
@@ -372,7 +372,7 @@
           {
             "type": "size",
             "unit": "sectors",
-            "value_1": 2097152000,
+            "value_1": 503316480,
             "value_2": 512
           }
         ],
@@ -390,7 +390,7 @@
     ],
     "memory": [
       {
-        "index": 11,
+        "index": 13,
         "attached_to": 0,
         "class_list": [
           "memory"
@@ -409,14 +409,14 @@
         "resources": [
           {
             "type": "phys_mem",
-            "range": 6979321856
+            "range": 21474836480
           }
         ]
       }
     ],
     "network_controller": [
       {
-        "index": 12,
+        "index": 14,
         "attached_to": 0,
         "class_list": [
           "network_controller"
@@ -476,30 +476,8 @@
     ],
     "network_interface": [
       {
-        "index": 17,
-        "attached_to": 0,
-        "class_list": [
-          "network_interface"
-        ],
-        "base_class": {
-          "hex": "0107",
-          "name": "Network Interface",
-          "value": 263
-        },
-        "sub_class": {
-          "hex": "0000",
-          "name": "Loopback",
-          "value": 0
-        },
-        "model": "Loopback network interface",
-        "sysfs_id": "/class/net/lo",
-        "unix_device_names": [
-          "lo"
-        ]
-      },
-      {
         "index": 24,
-        "attached_to": 12,
+        "attached_to": 14,
         "class_list": [
           "network_interface"
         ],
@@ -537,11 +515,33 @@
         "driver_modules": [
           "hv_netvsc"
         ]
+      },
+      {
+        "index": 35,
+        "attached_to": 0,
+        "class_list": [
+          "network_interface"
+        ],
+        "base_class": {
+          "hex": "0107",
+          "name": "Network Interface",
+          "value": 263
+        },
+        "sub_class": {
+          "hex": "0000",
+          "name": "Loopback",
+          "value": 0
+        },
+        "model": "Loopback network interface",
+        "sysfs_id": "/class/net/lo",
+        "unix_device_names": [
+          "lo"
+        ]
       }
     ],
     "storage_controller": [
       {
-        "index": 13,
+        "index": 15,
         "attached_to": 0,
         "class_list": [
           "storage_controller"
@@ -692,7 +692,7 @@
         "handle": 11,
         "array_handle": 6,
         "start_address": "0x100000000",
-        "end_address": "0x108000400",
+        "end_address": "0x4ea000400",
         "part_width": 0
       }
     ],
@@ -734,7 +734,7 @@
         "error_handle": 65534,
         "width": 0,
         "ecc_bits": 0,
-        "size": 131072,
+        "size": 16416768,
         "form_factor": {
           "hex": "0002",
           "name": "Unknown",
@@ -768,7 +768,7 @@
         "memory_device_handle": 10,
         "array_map_handle": 11,
         "start_address": "0x100000000",
-        "end_address": "0x108000400",
+        "end_address": "0x4ea000400",
         "row_position": 255,
         "interleave_position": 0,
         "interleave_depth": 0

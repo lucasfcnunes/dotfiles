@@ -1,3 +1,4 @@
+# TODO: make this the default disk configuration for all nixos-* hosts
 {
   self,
   inputs,
@@ -6,26 +7,37 @@
 {
   flake.nixosModules.nixos-01-disko-config =
     {
+      config,
       lib,
       ...
     }:
+    let
+      partitionPrefix = config.networking.hostId;
+      # ! vmbus uuid may be not the best idea...
+      VMBus00DevicePrefix =
+        "/dev/disk/by-path/acpi-VMBUS:00-vmbus-"
+        + (
+          (builtins.elemAt config.hardware.facter.report.hardware.storage_controller 00).sysfs_bus_id
+          |> lib.replaceStrings [ "-" ] [ "" ]
+        );
+    in
     {
       imports = [
         inputs.disko.nixosModules.disko
       ];
       disko.devices = {
         disk = {
-          sda = {
-            device = "/dev/disk/by-id/scsi-360022480088f80508d95da3ca9975270";
+          lun-0 = {
+            device = "${VMBus00DevicePrefix}-lun-0";
             type = "disk";
             content = {
               type = "gpt";
               partitions = {
                 ESP = {
-                  uuid = "31e58b3a-54c4-42a5-a98a-a2553d5732ee";
-                  label = "boot";
+                  label = "${partitionPrefix}-boot";
                   type = "EF00";
                   size = "1G";
+                  # priority = 1;
                   content = {
                     type = "filesystem";
                     format = "vfat";
@@ -39,9 +51,9 @@
                   };
                 };
                 root = {
-                  uuid = "96fe526f-2118-459c-8646-543340c873d4";
-                  label = "nixos";
+                  label = "${partitionPrefix}-nixos";
                   size = "100%";
+                  # priority = 2;
                   content = {
                     type = "filesystem";
                     format = "ext4";
@@ -54,16 +66,16 @@
               };
             };
           };
-          sdb = {
-            device = "/dev/disk/by-id/scsi-3600224806bfb6f9a865cb17e346c1bc6";
+          lun-1 = {
+            device = "${VMBus00DevicePrefix}-lun-1";
             type = "disk";
             content = {
               type = "gpt";
               partitions = {
                 home = {
-                  uuid = "1b642b5d-0be1-42e4-8508-67e9d44e25cd";
-                  label = "home";
+                  label = "${partitionPrefix}-home";
                   size = "100%";
+                  # priority = 3;
                   content = {
                     type = "filesystem";
                     format = "ext4";
@@ -76,8 +88,8 @@
               };
             };
           };
-          # sdc = {
-          #   device = "/dev/disk/by-id/scsi-3600224804d7774e7dfb39316089a3884";
+          # lun-(\d+) = {
+          #   device = "${VMBus00DevicePrefix}-lun-(\d+)";
           #   type = "disk";
           # };
         };
