@@ -1,0 +1,22 @@
+# defaultArgs: []
+args:
+  - --kubelet-insecure-tls
+  # - --deprecated-kubelet-completely-insecure
+  # - --metric-resolution=15s
+  # - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+  - --kubelet-use-node-status-port
+  - --v=4
+# metrics:
+#   enabled: true
+# serviceMonitor:
+#   enabled: true
+# tls:
+#   type: cert-manager
+#   certManager:
+#     addInjectorAnnotations: true
+#     existingIssuer:
+#       enabled: true
+#       kind: ClusterIssuer
+#       name: ca-issuer
+# apiService:
+#   insecureSkipTLSVerify: true

@@ -1,0 +1,70 @@
+prometheus:
+  url: http://signoz
+  port: 8080
+priorityClassName: "system-cluster-critical"
+rbac:
+  useAuthReaderClusterRole: true
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+  maxUnavailable: ~
+resources:
+  requests:
+    cpu: 150m
+    memory: 400Mi
+rules:
+  default: true
+  resource:
+    cpu:
+      containerQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>}[3m])) by (<<.GroupBy>>)
+      nodeQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>, id='/'}[3m])) by (<<.GroupBy>>)
+      resources:
+        overrides:
+          instance:
+            resource: node
+          namespace:
+            resource: namespace
+          pod:
+            resource: pod
+      containerLabel: container
+    memory:
+      containerQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+      nodeQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>,id='/'}) by (<<.GroupBy>>)
+      resources:
+        overrides:
+          instance:
+            resource: node
+          namespace:
+            resource: namespace
+          pod:
+            resource: pod
+      containerLabel: container
+    # gpu:
+    #   containerQuery: sum(nvidia_gpu_duty_cycle{<<.LabelMatchers>>}) by (<<.GroupBy>>) / sum(nvidia_gpu_num_devices{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+    #   nodeQuery: sum(nvidia_gpu_duty_cycle{<<.LabelMatchers>>}) by (<<.GroupBy>>) / sum(nvidia_gpu_num_devices{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+    #   resources:
+    #     overrides:
+    #       instance:
+    #         resource: node
+    #       namespace:
+    #         resource: namespace
+    #       pod:
+    #         resource: pod
+    #   containerLabel: container
+    # gpu-memory:
+    #   containerQuery: sum(nvidia_gpu_memory_used_bytes{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+    #   nodeQuery: sum(nvidia_gpu_memory_used_bytes{<<.LabelMatchers>>'}) by (<<.GroupBy>>)
+    #   resources:
+    #     overrides:
+    #       instance:
+    #         resource: node
+    #       namespace:
+    #         resource: namespace
+    #       pod:
+    #         resource: pod
+    #   containerLabel: container
+    window: 3m
+  # custom:
+  #   - {}
+  # external:
+  #   - {}

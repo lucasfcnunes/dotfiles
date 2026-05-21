@@ -1,0 +1,80 @@
+bases:
+  - ../helmfile-defaults.yaml.gotmpl
+repositories:
+  - name: metrics-server
+    url: https://kubernetes-sigs.github.io/metrics-server/
+  - name: opentelemetry-helm
+    url: https://open-telemetry.github.io/opentelemetry-helm-charts
+  - name: signoz
+    url: https://charts.signoz.io
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+templates:
+  default-release: &default-release
+    namespace: monitoring
+environments:
+  default:
+    values:
+      - releases:
+          metrics-server:
+            version: 3.13.0
+            <<: *default-release
+          opentelemetry-operator:
+            version: 0.113.1
+            <<: *default-release
+          opentelemetry-kube-stack:
+            version: 0.15.0
+            <<: *default-release
+          k8s-infra:
+            version: 0.16.0
+            <<: *default-release
+          signoz:
+            version: 0.125.0
+            <<: *default-release
+          prometheus-adapter:
+            version: 5.3.0
+            <<: *default-release
+---
+templates:
+  default: &default
+    version: '{{`{{ .Values | get "releases" | get .Release.Name | get "version" }}`}}'
+    namespace: '{{`{{ .Values | get "releases" | get .Release.Name | get "namespace" }}`}}'
+    values:
+      - ./{{`{{ .Release.Name }}`}}/values.yaml.gotmpl
+releases:
+  - chart: metrics-server/metrics-server
+    name: metrics-server
+    <<: *default
+    namespace: kube-system
+    installed: false
+  - chart: opentelemetry-helm/opentelemetry-operator
+    name: opentelemetry-operator
+    <<: *default
+    installed: false
+  - chart: opentelemetry-helm/opentelemetry-kube-stack
+    name: opentelemetry-kube-stack
+    <<: *default
+    set:
+      - name: opentelemetry-operator.enabled
+        value: false
+      - name: opentelemetry-operator.crds.create
+        value: false
+    needs:
+      - opentelemetry-operator
+    installed: false
+  - chart: signoz/k8s-infra
+    name: k8s-infra
+    <<: *default
+  - chart: signoz/signoz
+    name: signoz
+    <<: *default
+    timeout: 3600
+    needs:
+      # - opentelemetry-kube-stack
+      - k8s-infra
+  - chart: prometheus-community/prometheus-adapter
+    name: prometheus-adapter
+    <<: *default
+    needs:
+      - signoz
+    installed: false

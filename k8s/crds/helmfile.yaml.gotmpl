@@ -1,0 +1,8 @@
+bases:
+  - ../helmfile-defaults.yaml.gotmpl
+---
+releases:
+  - chart: ./manifests
+    name: crds
+    namespace: default
+    # installed: false

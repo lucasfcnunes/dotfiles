@@ -1,0 +1,21 @@
+version: "3"
+tasks:
+  extract-crds:
+    cmds:
+      # - >-
+      #   helmfile --selector='name={{`{{ .Release.Name }}`}}' template --include-crds
+      #   | yq '. | select(.kind == "CustomResourceDefinition")'
+      #   |
+      #   KUBE_CTX='{{`{{- with .Environment.KubeContext -}}--context={{ . }}{{- end -}}`}}'
+      #   kubectl $KUBE_CTX apply --dry-run=client --validate=false --namespace='{{`{{ .Release.Namespace }}`}}' --file=-
+      - >-
+        helmfile -f ../ template --include-crds
+        | yq -P '. | select(.kind == "CustomResourceDefinition")'
+        > ./manifests/crds-1.yaml
+      - >-
+        curl https://raw.githubusercontent.com/Altinity/clickhouse-operator/0.26.3/deploy/operator/clickhouse-operator-install-template.yaml
+        | yq -P '. | select(.kind == "CustomResourceDefinition")'
+        > ./manifests/crds-2.yaml 
+  releases:
+    cmds:
+      - helmfile -f ../ list --output json | yq -P

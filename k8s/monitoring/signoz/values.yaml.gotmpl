@@ -1,0 +1,27 @@
+global:
+  storageClass: null
+signoz:
+  persistence:
+    enabled: false
+clickhouse:
+  enabled: true
+  zookeeper:
+    persistence:
+      enabled: false
+  persistence:
+    enabled: false
+  # TODO: no retention control on IaC https://github.com/SigNoz/signoz/issues/2209
+  # TODO: config cold storage for clickhouse (minio?)
+  # coldStorage:
+  #   enabled: true
+  #   defaultKeepFreeSpaceBytes: "1048576000" # 1GB buffer
+  #   type: s3
+  #   endpoint: "https://s3.amazonaws.com/your-bucket-name"
+  #   accessKeyID: "your-key"
+  #   secretAccessKey: "your-secret"
+signoz-otel-gateway:
+  enabled: false
+redpanda:
+  enabled: false
+postgresql:
+  enabled: false
