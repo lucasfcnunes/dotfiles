@@ -171,16 +171,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1778430510,
-        "narHash": "sha256-Ti+ZBvW6yrWWAg2szExVTwCd4qOJ3KlVr1tFHfyfi8Q=",
-        "owner": "NixOS",
+        "lastModified": 1779506229,
+        "narHash": "sha256-AqEPUZJkjHvyFh+8U8iYcNiamkzW/WkNkqAIn9ykW7I=",
+        "owner": "lucasfcnunes",
         "repo": "nixpkgs",
-        "rev": "8fd9daa3db09ced9700431c5b7ad0e8ba199b575",
+        "rev": "e38b2a33333e1789c66627199d7e4411556e90fa",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixos-25.11",
+        "owner": "lucasfcnunes",
+        "ref": "nixos-25.11.8fd9daa.dnscrypt-proxy.patch",
         "repo": "nixpkgs",
         "type": "github"
       }

@@ -31,7 +31,7 @@
       networking.hostId = "007f0200";
       networking.hostName = "nixos-01";
       time.timeZone = "UTC";
-      networking.networkmanager.enable = true;
+      networking.firewall.enable = true;
       services.openssh.enable = true;
       # users.defaultUserShell = pkgs.zsh;
       environment.systemPackages = with pkgs; [

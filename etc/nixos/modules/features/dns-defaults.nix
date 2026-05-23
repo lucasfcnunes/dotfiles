@@ -23,6 +23,9 @@
       forwardingRulesFile = "nixos/services/networking/forwarding-rules.txt";
     in
     {
+      imports = [
+        self.nixosModules.dummy-nic
+      ];
       environment.etc.${forwardingRulesFile}.text = ''
         # INFO: https://github.com/DNSCrypt/dnscrypt-proxy/blob/master/dnscrypt-proxy/example-forwarding-rules.txt
 
@@ -41,21 +44,35 @@
         ''
       );
       networking = {
-        nameservers = [
-          "127.0.0.1"
-        ]
-        ++ lib.optional hasIPv6Enabled "::1";
-        # If using dhcpcd:
-        dhcpcd.extraConfig = "nohook resolv.conf";
-        # If using NetworkManager:
+        nameservers = lib.mkDefault (
+          [
+            config.my.dummy-nic.lo-proxy0.ipv4
+          ]
+          ++ lib.optional hasIPv6Enabled "::1"
+        );
         networkmanager.dns = "none";
-        useNetworkd = false;
+        dhcpcd.extraConfig = "nohook resolv.conf";
+        # resolvconf.enable = true;
+        # resolvconf.useLocalResolver = true;
       };
-      services.resolved.enable = false;
+      # TODO: investigate if this can be enabled together with dnscrypt-proxy
+      # TODO: resolved.conf missing line `options edns0 trust-ad`
+      services.resolved.fallbackDns = [ ];
+      services.resolved.extraConfig = ''
+        DNSStubListener=no
+      '';
+      services.resolved.dnssec = "true";
+      # services.resolved.dnsovertls = true;
+      # environment.etc."resolv.conf".source = lib.mkForce "/run/systemd/resolve/resolv.conf";
+      # services.resolved.settings.Resolve.FallbackDNS = [ ];
       services.dnscrypt-proxy = {
         enable = true;
         # INFO: https://github.com/DNSCrypt/dnscrypt-proxy/blob/master/dnscrypt-proxy/example-dnscrypt-proxy.toml
         settings = {
+          listen_addresses = [
+            "127.0.0.1:53"
+          ]
+          ++ lib.optional hasIPv6Enabled "[::1]:53";
           ipv6_servers = hasIPv6Enabled;
           block_ipv6 = !hasIPv6Enabled;
           require_dnssec = true;

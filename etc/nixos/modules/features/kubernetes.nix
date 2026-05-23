@@ -35,6 +35,7 @@
       # cniBinDir = "/var/lib/kubernetes/bin";
       cniBinDir = config.services.kubernetes.dataDir + "/bin";
       rookCephEnabled = true;
+      kubeResolvConfPath = "kubernetes/resolv.conf";
     in
     {
       imports = [
@@ -42,6 +43,10 @@
       ];
       environment.etc = {
         "k8s".source = ../../../../k8s;
+        "${kubeResolvConfPath}".text = ''
+          nameserver ${config.my.dummy-nic.lo-proxy0.ipv4}
+          options edns0 trust-ad
+        '';
       };
       environment.variables = {
         KUBECONFIG = kubeConfigFile;
@@ -75,6 +80,7 @@
         ];
         allowedTCPPorts = [
           config.services.kubernetes.apiserver.securePort
+          config.services.kubernetes.kubelet.port
         ];
       };
       environment.systemPackages =
@@ -144,7 +150,7 @@
                     )
                     (
                       [
-                        # "forward . 127.0.0.1"
+                        # "forward . ${config.my.dummy-nic.lo-proxy0.ipv4}"
                       ]
                       ++ lib.optional (!hasIPv6Enabled) ""
                     );
@@ -158,6 +164,9 @@
           cni.packages = lib.mkForce [ ];
           extraOpts = builtins.concatStringsSep " " [
             "--root-dir=/var/lib/kubelet"
+            "--resolv-conf=${config.environment.etc."${kubeResolvConfPath}".source}"
+            "--authentication-token-webhook=true"
+            "--authorization-mode=Webhook"
             # "--fail-swap-on=false"
           ];
         };
