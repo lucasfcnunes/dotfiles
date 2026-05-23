@@ -13,6 +13,9 @@
       pkgs,
       ...
     }:
+    let
+      tsDomain = "tail3404eb.ts.net";
+    in
     {
       sops.secrets = {
         "ts-client-kmJUapyKU311CNTRL" = {
@@ -36,10 +39,11 @@
         ]
         ++ lib.optional config.services.dnscrypt-proxy.enable "--accept-dns=false";
       };
+      networking.domain = lib.mkDefault tsDomain;
       networking.search = [
         # INFO: https://tailscale.com/docs/reference/dns-in-tailscale?tab=linux#search-domains
         # INFO: https://login.tailscale.com/admin/dns
-        "tail3404eb.ts.net"
+        tsDomain
       ];
       networking.firewall = {
         trustedInterfaces = [ config.services.tailscale.interfaceName ];
