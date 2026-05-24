@@ -64,6 +64,8 @@
         # kubernetes-helm
         # helmfile
         # k9s
+        clickhouse # TODO: make dotbins version
+        sqlite-interactive # TODO: make dotbins version
       ];
       programs = {
         # starship = {

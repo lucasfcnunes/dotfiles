@@ -1,17 +1,167 @@
+extraObjects:
+  resources:
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: &secret-key "{{ .Release.Name }}-extra-secrets"
+      stringData:
+        SIGNOZ_TOKENIZER_JWT_SECRET: ref+sops://./secrets.enc.yaml#signoz/SIGNOZ_TOKENIZER_JWT_SECRET
+    - apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: &clickhouse-bootstrap "{{ .Release.Name }}-clickhouse-bootstrap"
+      data:
+        01_clickhouse_keeper_ready.sh: |
+          echo "Checking if ClickHouse Keeper is ready to accept connections..."
+          KEEPER_URL="http://127.0.0.1:9182/ready"
+
+          # check if clickhouse is ready to accept connections
+          # will try to send ping clickhouse via http_port (max 1000 rekeeper_tries by default, with 1 sec timeout and 1 sec delay between rekeeper_tries)
+          keeper_tries=${CLICKHOUSE_INIT_TIMEOUT:-1000}
+          while ! wget --spider --no-check-certificate -T 1 -q "$KEEPER_URL" 2>/dev/null; do
+              if [ "$keeper_tries" -le "0" ]; then
+                  echo >&2 'ClickHouse Keeper init process timeout.'
+                  exit 1
+              fi
+              keeper_tries=$(( keeper_tries-1 ))
+              sleep 1
+              echo "Waiting for ClickHouse Keeper to be ready... ($keeper_tries rekeeper_tries left)"
+          done
+          echo "ClickHouse Keeper is ready!"
+        # 02_clickhouse_signoz_load.sh: |
+        #   \{\{ readFile "./clickhouse-bootstrap-scripts/clickhouse_signoz.sh" | nindent 10 }}
+        01_clickhouse_signoz_dump.sql: |
+          {{ readFile "./bootstrap/clickhouse/schema/01_clickhouse_signoz_dump.sql" | nindent 10 }}
+    - apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: &sqlite-bootstrap "{{ .Release.Name }}-sqlite-bootstrap"
+      data:
+        # signoz.db: |-
+        #   \{\{ readFile "./bootstrap/sqlite/signoz.db" | nindent 10 }}
+        01_sqlite_signoz_dump.sql: |
+          {{ readFile "./bootstrap/sqlite/schema/01_sqlite_signoz_dump.sql" | nindent 10 }}
 global:
+  # cloud: other
+  # clusterName: cluster
+  # deploymentEnvironment: lab
   storageClass: null
+k8s-infra:
+  # enabled: false
+  otelCollectorEndpoint: signoz-otel-collector:4317
+  presets:
+    otlpExporter:
+      enabled: true
+    otlphttpExporter:
+      enabled: false
 signoz:
   persistence:
     enabled: false
+  service:
+    annotations:
+      tailscale.com/expose: "true"
+      # tailscale.com/proxy-group: ingress-proxies
+  env:
+    SIGNOZ_TOKENIZER_JWT_SECRET:
+      valueFrom:
+        secretKeyRef:
+          name: *secret-key
+          key: SIGNOZ_TOKENIZER_JWT_SECRET
+  additionalVolumes:
+    - name: *sqlite-bootstrap
+      configMap:
+        name: *sqlite-bootstrap
+telemetryStoreMigrator:
+  enabled: false
+  timeout: 30m
 clickhouse:
   enabled: true
+  # cluster: cluster
+  layout:
+    shards:
+      - internalReplication: "true"
+  image:
+    # tag: 24.1.2-alpine
+    # tag: 25.5.6
+    tag: 26.3
+  externalZookeeper:
+    # {{ $clickhouse_host_0_0 := printf "chi-%s-clickhouse-cluster-0-0" .Release.Name }}
+    servers:
+      - host:
+          "{{ $clickhouse_host_0_0 }}"
+          # - host: 127.0.0.1
+          # - host: chi-signoz-clickhouse-cluster-0-0 # 127.0.0.1, in HostAliases
+          # - host: chi-{{ .Release.Name }}-clickhouse-cluster-0-0-0.chi-{{ .Release.Name }}-clickhouse-cluster-0-0.{{ .Release.Namespace }}.svc.cluster.local
+          # - host: chi-signoz-clickhouse-cluster-0-0-0.chi-signoz-clickhouse-cluster-0-0.monitoring.svc.cluster.local
+        port: 9181
   zookeeper:
+    enabled: false
+    replicaCount: 1
     persistence:
       enabled: false
+  user: admin
+  password: ref+sops://./secrets.enc.yaml#clickhouse/CLICKHOUSE_ADMIN_PASSWORD
+  # allowedNetworkIps:
+  #   - 0.0.0.0/0
+  settings:
+    listen_host:
+      - 0.0.0.0
+    asynchronous_metric_log: _removed_
+    logger/console: "true"
+    logger/formatting/names/date_time: date_time
+    logger/formatting/names/level: level
+    logger/formatting/names/logger_name: logger_name
+    logger/formatting/names/message: message
+    logger/formatting/names/query_id: query_id
+    logger/formatting/names/source_file: source_file
+    logger/formatting/names/source_line: source_line
+    logger/formatting/names/thread_id: thread_id
+    logger/formatting/names/thread_name: thread_name
+    logger/formatting/type: json
+    logger/level: warning
+    metric_log: _removed_
+    part_log: _removed_
+    # query_log: _removed_
+    query_thread_log: _removed_
+    session_log: _removed_
+    text_log: _removed_
+    trace_log: _removed_
+    # use embedded "zookeeper"
+    keeper_server/enable_ipv6: "false"
+    keeper_server/tcp_port: 9181
+    keeper_server/server_id: 1
+    keeper_server/log_storage_path: /var/lib/clickhouse/coordination/log
+    keeper_server/snapshot_storage_path: /var/lib/clickhouse/coordination/snapshots
+    keeper_server/coordination_settings/operation_timeout_ms: 10000000
+    keeper_server/coordination_settings/session_timeout_ms: 30000000
+    # keeper_server/coordination_settings/async_replication: true
+    keeper_server/coordination_settings/raft_logs_level: warning
+    keeper_server/http_control/port: 9182
+    keeper_server/http_control/readiness/endpoint: /ready
+    # keeper_server/raft_configuration/server/id: 1
+    # keeper_server/raft_configuration/server/hostname: '{{ $clickhouse_host_0_0 }}'
+    # keeper_server/raft_configuration/server/port: 9234
+  files:
+    config.d/99-clickhouse-99-keeper_raft_servers.xml: |
+      <clickhouse>
+        <keeper_server>
+          <raft_configuration>
+            <server>
+              <hostname>{{ $clickhouse_host_0_0 }}</hostname>
+              <id>1</id>
+              <port>9234</port>
+            </server>
+          </raft_configuration>
+        </keeper_server>
+      </clickhouse>
+  service:
+    annotations:
+      tailscale.com/expose: "true"
+      # tailscale.com/proxy-group: ingress-proxies
   persistence:
     enabled: false
   # TODO: no retention control on IaC https://github.com/SigNoz/signoz/issues/2209
-  # TODO: config cold storage for clickhouse (minio?)
+  # TODO: config cold storage for clickhouse (ceph)
   # coldStorage:
   #   enabled: true
   #   defaultKeepFreeSpaceBytes: "1048576000" # 1GB buffer
@@ -19,6 +169,13 @@ clickhouse:
   #   endpoint: "https://s3.amazonaws.com/your-bucket-name"
   #   accessKeyID: "your-key"
   #   secretAccessKey: "your-secret"
+  additionalVolumes:
+    - name: *clickhouse-bootstrap
+      configMap:
+        name: *clickhouse-bootstrap
+  additionalVolumeMounts:
+    - name: *clickhouse-bootstrap
+      mountPath: /docker-entrypoint-initdb.d/
 signoz-otel-gateway:
   enabled: false
 redpanda:

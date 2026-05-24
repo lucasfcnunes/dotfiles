@@ -1,0 +1,8 @@
+services:
+  sqlite3-alpine:
+    image: lucasfcnunes/sqlite3-alpine:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      tags:
+        - lucasfcnunes/sqlite3-alpine:latest

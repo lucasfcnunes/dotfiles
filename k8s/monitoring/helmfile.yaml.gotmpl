@@ -29,7 +29,7 @@ environments:
             version: 0.16.0
             <<: *default-release
           signoz:
-            version: 0.125.0
+            version: 0.126.0
             <<: *default-release
           prometheus-adapter:
             version: 5.3.0
@@ -65,13 +65,65 @@ releases:
   - chart: signoz/k8s-infra
     name: k8s-infra
     <<: *default
+    installed: false
   - chart: signoz/signoz
     name: signoz
     <<: *default
+    wait: true
     timeout: 3600
+    dependencies:
+      - chart: bedag/raw
+        version: "*"
+        alias: extraObjects
+      - chart: signoz/k8s-infra
+        version: '{{ .Values | get "releases" | get "k8s-infra" | get "version" }}'
+        # alias: k8s-infra
+    jsonPatches:
+      - target:
+          kind: ClickHouseInstallation
+          name: signoz-clickhouse
+        patch:
+          - op: replace
+            path: /spec/templates/podTemplates/0/spec/containers/0/command
+            value: []
+          # - op: add
+          #   path: /spec/templates/podTemplates/0/spec/containers/0/env
+          #   value:
+          #     # - name: CLICKHOUSE_CLUSTER_ENABLED
+          #     #   value: "true"
+          #     # - name: CLICKHOUSE_CONFIG
+          #     #   value: /etc/clickhouse-server/config.xml
+          #     # - name: CLICKHOUSE_ALWAYS_RUN_INITDB_SCRIPTS
+          #     #   value: "true"
+          #     # - name: CLICKHOUSE_INIT_TIMEOUT
+          #     #   value: "60"
+      - target:
+          kind: StatefulSet
+          name: signoz
+        patch:
+          - op: add
+            path: /spec/template/spec/initContainers
+            value:
+              - name: signoz-sqlite-bootstrap
+                image: lucasfcnunes/sqlite3-alpine:latest
+                command:
+                  - /bin/sh
+                args:
+                  - -c
+                  - |
+                    set -euo pipefail
+
+                    echo "Bootstrapping Signoz SQLite database..."
+                    cat /tmp/signoz-sqlite-bootstrap/*.sql | sqlite3 /var/lib/signoz/signoz.db
+                    echo "Signoz SQLite database bootstrapped successfully!"
+                volumeMounts:
+                  - mountPath: /tmp/signoz-sqlite-bootstrap/
+                    name: signoz-sqlite-bootstrap
+                  - mountPath: /var/lib/signoz/
+                    name: signoz-db-volume
     needs:
       # - opentelemetry-kube-stack
-      - k8s-infra
+      # - k8s-infra
   - chart: prometheus-community/prometheus-adapter
     name: prometheus-adapter
     <<: *default

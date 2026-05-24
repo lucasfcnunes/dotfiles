@@ -4,3 +4,6 @@ result
 .decrypted~*
 .task
 .tmp
+*.db
+*.db-shm
+*.db-wal

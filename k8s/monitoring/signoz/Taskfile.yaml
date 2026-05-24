@@ -1,0 +1,74 @@
+version: "3"
+env:
+  CLICKHOUSE_HOST: monitoring-signoz-clickhouse-1.tail3404eb.ts.net
+  CLICKHOUSE_PORT: "9000"
+  CLICKHOUSE_HTTP_PORT: "8123"
+  CLICKHOUSE_HOST_PORT: "{{.CLICKHOUSE_HOST}}:{{.CLICKHOUSE_PORT}}"
+  CLICKHOUSE_CLUSTER: cluster
+  CLICKHOUSE_USER: admin
+  CLICKHOUSE_PASSWORD:
+    sh: vals get ref+sops://../secrets.enc.yaml#clickhouse/CLICKHOUSE_ADMIN_PASSWORD
+  CLICKHOUSE_SECURE: "false"
+  CLICKHOUSE_URL: "{{.CLICKHOUSE_USER}}:{{.CLICKHOUSE_PASSWORD}}@{{.CLICKHOUSE_HOST_PORT}}/"
+  DB_URL: clickhouse://{{.CLICKHOUSE_URL}}
+  SIGNOZ_OTEL_COLLECTOR_CLICKHOUSE_DSN: tcp://{{.CLICKHOUSE_URL}}
+  SIGNOZ_OTEL_COLLECTOR_CLICKHOUSE_CLUSTER: "{{.CLICKHOUSE_CLUSTER}}"
+  SIGNOZ_OTEL_COLLECTOR_TIMEOUT: 10m
+  SIGNOZ_OTEL_COLLECTOR_CLICKHOUSE_REPLICATION: "true"
+vars:
+  ATLAS_BIN:
+    sh: echo docker run --rm -v $(pwd)/schema/:/schema/ -v $(pwd)/atlas.hcl:/atlas.hcl arigaio/atlas:latest-extended
+    # sh: echo atlas
+tasks:
+  signoz-migrate:
+    vars:
+      CLI_ARGS: '{{.CLI_ARGS | default "--help"}}'
+    cmds:
+      - docker run --rm docker.io/signoz/signoz-otel-collector:v0.144.4 migrate {{.CLI_ARGS}}
+  clickhouse:atlas:
+    dir: ./bootstrap/clickhouse/
+    cmds:
+      - >-
+        {{.ATLAS_BIN}} --url="$DB_URL" {{.CLI_ARGS}}
+  clickhouse:atlas-export:
+    dir: ./bootstrap/clickhouse/
+    cmds:
+      - >-
+        {{.ATLAS_BIN}} schema inspect --env monitoring --export
+  clickhouse:migrate:
+    cmds:
+      - >-
+        migrate -source="$DB_URL" {{.CLI_ARGS}}
+  bytebase:
+    cmds:
+      - >-
+        docker run --rm --init --name=bytebase --network=host --publish=8080:8080 --pull=always --volume=bytebase-data:/var/opt/bytebase/ bytebase/bytebase:latest
+        --external-url "http://srvlucasfcnunes.tail3404eb.ts.net:8080"
+  clickhouse:dump:
+    dir: ./bootstrap/clickhouse/
+    cmds:
+      # - >-
+      #   docker run --rm -it --entrypoint=''
+      #   -v $(pwd):/mnt/data/ -w /mnt/data/
+      #   -e CLICKHOUSE_CLUSTER="$CLICKHOUSE_CLUSTER"
+      #   -e CLICKHOUSE_HOST="$CLICKHOUSE_HOST" -e CLICKHOUSE_PORT="$CLICKHOUSE_PORT"
+      #   -e CLICKHOUSE_USER="$CLICKHOUSE_USER" -e CLICKHOUSE_PASSWORD="$CLICKHOUSE_PASSWORD"
+      #   clickhouse
+      #   ./clickhouse_signoz.sh dump
+      - >-
+        ./clickhouse_signoz.sh dump
+  replace-job:
+    cmds:
+      - >-
+        kubectl get -n monitoring job/signoz-telemetrystore-migrator -o json
+        | jq 'del(.spec.selector)'
+        | jq 'del(.spec.template.metadata.labels)'
+        | kubectl replace --force -f -
+  sqlite:download:
+    dir: ./bootstrap/sqlite/
+    cmds:
+      - kubectl cp monitoring/signoz-0:/var/lib/signoz/ ./
+  sqlite:dump:
+    dir: ./bootstrap/sqlite/
+    cmds:
+      - sqlite3 signoz.db ".mode insert" ".once ./schema/01_sqlite_signoz_dump.sql" ".dump"

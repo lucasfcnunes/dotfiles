@@ -4,6 +4,7 @@ channels:
   - conda-forge
 dependencies:
   # - prek # pre-commit (in rust, faster than the python version)
+  - atlasgo
   - pip
   - pip:
       - dotbins
