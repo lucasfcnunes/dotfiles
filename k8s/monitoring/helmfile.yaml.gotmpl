@@ -9,6 +9,10 @@ repositories:
     url: https://charts.signoz.io
   - name: prometheus-community
     url: https://prometheus-community.github.io/helm-charts
+  - name: kedacore
+    url: https://kedacore.github.io/charts
+  - name: signoz-metrics-adapter-lucasfcnunes
+    url: git+https://github.com/lucasfcnunes/signoz-metrics-adapter@helm?rev=master
 templates:
   default-release: &default-release
     namespace: monitoring
@@ -28,11 +32,17 @@ environments:
           k8s-infra:
             version: 0.16.0
             <<: *default-release
+          signoz-metrics-adapter:
+            version: "*"
+            <<: *default-release
           signoz:
             version: 0.126.0
             <<: *default-release
           prometheus-adapter:
             version: 5.3.0
+            <<: *default-release
+          keda:
+            version: "*"
             <<: *default-release
 ---
 templates:
@@ -124,8 +134,20 @@ releases:
     needs:
       # - opentelemetry-kube-stack
       # - k8s-infra
+  - chart: signoz-metrics-adapter-lucasfcnunes/signoz-metrics-adapter
+    name: signoz-metrics-adapter
+    <<: *default
+    needs:
+      - signoz
+    installed: false
   - chart: prometheus-community/prometheus-adapter
     name: prometheus-adapter
+    <<: *default
+    needs:
+      - signoz
+    installed: true
+  - chart: kedacore/keda
+    name: keda
     <<: *default
     needs:
       - signoz
