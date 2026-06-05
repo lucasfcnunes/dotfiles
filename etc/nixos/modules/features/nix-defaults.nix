@@ -7,6 +7,8 @@
 {
   perSystem =
     {
+      # config,
+      # lib,
       pkgs,
       system,
       ...
@@ -19,6 +21,7 @@
         ];
         config = {
           allowUnfree = false;
+          # allowUnsupportedSystem = lib.mkDefault (if (config ? wsl && config.wsl.enable) then true else true);
         };
       };
       formatter = pkgs.nixfmt-tree;

@@ -18,22 +18,20 @@
         self.nixosModules.nixos-wsl
         # self.nixosModules.nixos-wsl-disko-config
         self.nixosModules.sops
-        self.nixosModules.nixos-wsl-home-manager
         self.nixosModules.net-tools
         # self.nixosModules.users-defaults
         self.nixosModules.vscode-server
         self.nixosModules.cross-emulation
+        self.nixosModules.home-manager
+        self.nixosModules.lucasfcnunes-hm
       ];
       networking.hostName = "nixos-wsl";
       time.timeZone = "America/Sao_Paulo";
+      home-manager.users.lucasfcnunes.npiperelay-wsl.enable = true;
       # system.userActivationScripts.zshrc = "touch .zshrc";
       # networking.networkmanager.enable = true;
       services.openssh.enable = false;
       # users.defaultUserShell = pkgs.zsh;
-      users.users.lucasfcnunes.shell = pkgs.zsh;
-      environment.variables.PATH = [
-        "/home/lucasfcnunes/.dotbins/linux/amd64/bin"
-      ];
       environment.systemPackages = with pkgs; [
         git
         gnupg
