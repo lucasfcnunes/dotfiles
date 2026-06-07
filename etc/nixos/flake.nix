@@ -1,8 +1,19 @@
 {
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
   inputs = {
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    nixpkgs.url = "github:lucasfcnunes/nixpkgs/nixos-25.11.8fd9daa.dnscrypt-proxy.patch";
+    # TODO: use a builtin patching pattern https://github.com/NixOS/nix/issues/3920
+    nixpkgs-upstream.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:lucasfcnunes/nixpkgs/nixos-25.11";
+    nixpkgs-patch-01 = {
+      # dnscrypt-proxy
+      url = "https://github.com/NixOS/nixpkgs/pull/523222.patch";
+      flake = false;
+    };
+    nixpkgs-patch-02 = {
+      # windows.npiperelay
+      url = "https://github.com/NixOS/nixpkgs/pull/528466.patch";
+      flake = false;
+    };
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";

@@ -33,7 +33,8 @@ tasks:
     sources:
       - ./flake.nix
     cmds:
-      - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nix flake update' --packages git vim go-task
+      - nix flake update
+      - task: nix-patcher
   switch:
     aliases:
       - rebuild
@@ -100,3 +101,8 @@ tasks:
       HOST: "{{.HOST | default .CURRENT_HOST}}"
     cmds:
       - nix run github:nix-community/disko -- --flake '.#{{.HOST}}' --dry-run
+  nix-patcher:
+    desc: Apply patches using nix-patcher
+    dir: ./etc/nixos/
+    cmds:
+      - nix run github:katrinafyi/nix-patcher -- --update
