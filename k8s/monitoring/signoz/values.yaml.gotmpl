@@ -41,6 +41,24 @@ extraObjects:
         #   \{\{ readFile "./bootstrap/sqlite/signoz.db" | nindent 10 }}
         01_sqlite_signoz_dump.sql: |
           {{ readFile "./bootstrap/sqlite/schema/01_sqlite_signoz_dump.sql" | nindent 10 }}
+    # - apiVersion: cilium.io/v2
+    #   kind: CiliumClusterwideNetworkPolicy
+    #   metadata:
+    #     name: signoz-clickhouse-http-visibility
+    #   spec:
+    #     endpointSelector: {}
+    #     enableDefaultDeny:
+    #       egress: false
+    #     egress:
+    #       - toEndpoints:
+    #           - matchLabels:
+    #               k8s:clickhouse.altinity.com/chi: signoz-clickhouse
+    #         toPorts:
+    #           - ports:
+    #               - port: "8123"
+    #                 protocol: TCP
+    #             rules:
+    #               http: [{}]
 global:
   # cloud: other
   # clusterName: cluster
@@ -55,6 +73,9 @@ k8s-infra:
     otlphttpExporter:
       enabled: false
 signoz:
+  image:
+    repository: lucasfcnunes/signoz-community
+    tag: v0.127.1.prometheus-server-emu-b2bae6e44
   persistence:
     enabled: false
   service:

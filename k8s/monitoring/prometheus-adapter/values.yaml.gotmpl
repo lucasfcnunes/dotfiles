@@ -4,10 +4,14 @@ prometheus:
   url: http://srvlucasfcnunes.tail3404eb.ts.net
   port: 9090
 extraArguments:
+  # - --client-ca-file=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+  # - --authorization-kubeconfig=/var/run/secrets/kubernetes.io/serviceaccount/token
+  # - --authentication-kubeconfig=/var/run/secrets/kubernetes.io/serviceaccount/token
   # TOdO: pass via k8s Secret env var
-  - --prometheus-header='SIGNOZ-API-KEY={{ fetchSecretValue "ref+sops://./secrets.enc.yaml#/signoz/SIGNOZ-API-KEY" }}'
-priorityClassName: "system-cluster-critical"
+  - --prometheus-header=SIGNOZ-API-KEY={{ fetchSecretValue "ref+sops://./secrets.enc.yaml#/signoz/SIGNOZ-API-KEY" }}
+priorityClassName: system-cluster-critical
 rbac:
+  create: true
   useAuthReaderClusterRole: true
 podDisruptionBudget:
   enabled: true
@@ -18,18 +22,21 @@ resources:
     cpu: 150m
     memory: 400Mi
 rules:
-  default: true
+  default: false
   resource:
     window: 3m
     cpu:
-      containerQuery: |
-        sum by (<<.GroupBy>>) (
-          rate(container_cpu_usage_seconds_total{container!="",<<.LabelMatchers>>}[3m])
-        )
-      nodeQuery: |
-        sum  by (<<.GroupBy>>) (
-          rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal",<<.LabelMatchers>>}[3m])
-        )
+      # containerQuery: |
+      #   sum by (<<.GroupBy>>) (
+      #     rate("container_cpu_usage_seconds_total"{container!="",<<.LabelMatchers>>}[3m])
+      #   )
+      # nodeQuery: |
+      #   sum  by (<<.GroupBy>>) (
+      #     rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal",<<.LabelMatchers>>}[3m])
+      #   )
+      containerQuery: sum by (<<.GroupBy>>) (rate({"container.cpu.time","container.id"!="",<<.LabelMatchers>>}[3m]))
+      nodeQuery: sum by (<<.GroupBy>>) (rate({"k8s.node.cpu.time",<<.LabelMatchers>>}[3m]))
+      # nodeQuery: sum by (<<.GroupBy>>) (rate({"system.cpu.time",mode!="idle",mode!="iowait",mode!="steal",<<.LabelMatchers>>}[3m]))
       resources:
         overrides:
           node:
@@ -40,16 +47,18 @@ rules:
             resource: pod
       containerLabel: container
     memory:
-      containerQuery: |
-        round(sum by (<<.GroupBy>>) (
-          avg_over_time(container_memory_working_set_bytes{container!="",<<.LabelMatchers>>}[3m])
-        ))
-      nodeQuery: |
-        round(sum by (<<.GroupBy>>) (
-          avg_over_time(node_memory_MemTotal_bytes{<<.LabelMatchers>>}[3m])
-          -
-          avg_over_time(node_memory_MemAvailable_bytes{<<.LabelMatchers>>}[3m])
-        ))
+      # containerQuery: |
+      #   round(sum by (<<.GroupBy>>) (
+      #     avg_over_time(container_memory_working_set_bytes{container!="",<<.LabelMatchers>>}[3m])
+      #   ))
+      # nodeQuery: |
+      #   round(sum by (<<.GroupBy>>) (
+      #     avg_over_time(node_memory_MemTotal_bytes{<<.LabelMatchers>>}[3m])
+      #     -
+      #     avg_over_time(node_memory_MemAvailable_bytes{<<.LabelMatchers>>}[3m])
+      #   ))
+      containerQuery: round(sum by (<<.GroupBy>>) (avg_over_time({"container.memory.working_set","container.id"!="",<<.LabelMatchers>>}[3m])))
+      nodeQuery: round(sum by (<<.GroupBy>>) (avg_over_time({"k8s.node.memory.working_set",<<.LabelMatchers>>}[3m])))
       resources:
         overrides:
           node:

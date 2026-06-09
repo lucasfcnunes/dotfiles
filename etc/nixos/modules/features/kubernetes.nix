@@ -163,7 +163,7 @@
           # kubeconfig.server = kubeMasterUrl; #TODO: set this only for worker nodes
           cni.packages = lib.mkForce [ ];
           extraOpts = builtins.concatStringsSep " " [
-            "--root-dir=/var/lib/kubelet"
+            "--root-dir=/var/lib/kubelet" # TODO: why did i do this? rook-ceph?
             "--resolv-conf=${config.environment.etc."${kubeResolvConfPath}".source}"
             "--authentication-token-webhook=true"
             "--authorization-mode=Webhook"
