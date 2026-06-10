@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.nixosModules.nixos-01-configuration =
+  flake.nixosModules.dkplucasfcnunes-configuration =
     {
       config,
       lib,
@@ -14,8 +14,8 @@
     {
       imports = [
         self.nixosModules.nix-defaults
-        self.nixosModules.nixos-01-hardware
-        self.nixosModules.nixos-01-disko-config
+        self.nixosModules.dkplucasfcnunes-hardware
+        self.nixosModules.dkplucasfcnunes-disko-config
         self.nixosModules.boot-defaults
         self.nixosModules.sops
         self.nixosModules.disable-ipv6
@@ -23,23 +23,33 @@
         self.nixosModules.net-tools
         self.nixosModules.dns-defaults
         self.nixosModules.users-defaults
-        self.nixosModules.nixos-01-kubernetes
-        # self.nixosModules.nixos-01-k3s
         self.nixosModules.tailscale
-        self.nixosModules.cloudflared
         self.nixosModules.vscode-server
+        self.nixosModules.hyprland
+        self.nixosModules.xrdp
+        self.nixosModules.home-manager
+        self.nixosModules.lucasfcnunes-hm
       ];
       system.stateVersion = "25.11";
-      networking.hostId = "007f0200";
-      networking.hostName = "nixos-01";
-      time.timeZone = "UTC";
+      networking.hostId = "efc7412e";
+      networking.hostName = "dkplucasfcnunes";
+      time.timeZone = "America/Sao_Paulo";
       networking.firewall.enable = true;
       services.openssh.enable = true;
       # users.defaultUserShell = pkgs.zsh;
       environment.systemPackages = with pkgs; [
-        vim
-        wget
         git
+        gnupg
+        curl
+        wget
+        # vimrm -rf
+        neovim
+        zsh
+        zsh-powerlevel10k
+        micromamba
+        direnv
+        # microsoft-edge
+        firefox
       ];
     };
 }

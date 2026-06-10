@@ -6,6 +6,7 @@
 {
   flake.nixosModules.lucasfcnunes-hm =
     {
+      config,
       pkgs,
       ...
     }:
@@ -14,6 +15,40 @@
         # TODO: auto import if, and only if, not imported already
         # self.nixosModules.home-manager
       ];
+      environment.systemPackages = with pkgs; [
+        # fish
+        # starship # prompt
+        zsh
+        zsh-powerlevel10k
+        direnv
+        git
+        gnupg
+        curl
+        wget
+        # vimrm -rf
+        neovim
+        micromamba
+      ];
+      programs = {
+        # starship = {
+        #   enable = true;
+        # };
+        # fish = {
+        #   enable = true;
+        #   interactiveShellInit = ''
+        #     set fish_greeting ""
+        #     starship init fish | source
+        #     fzf --fish | source
+        #   '';
+        # };
+        zsh = {
+          enable = true;
+        };
+        direnv = {
+          enable = true;
+          nix-direnv.enable = true;
+        };
+      };
       users.users.lucasfcnunes = {
         isNormalUser = true;
         shell = pkgs.zsh;
@@ -42,13 +77,22 @@
         self.homeModules.npiperelay-wsl
       ];
       home = {
-        stateVersion = "25.11";
+        stateVersion = "25.05";
         # username = "lucasfcnunes";
         # homeDirectory = "/home/lucasfcnunes";
         sessionPath = [
           "$HOME/.dotbins/linux/amd64/bin"
         ];
         packages = with pkgs; [
+          fastfetch
+          # (pkgs.writeShellApplication {
+          #   name = "ns";
+          #   runtimeInputs = with pkgs; [
+          #     fzf
+          #     nix-search-tv
+          #   ];
+          #   text = builtins.readFile "${pkgs.nix-search-tv.src}/nixpkgs.sh";
+          # })
         ];
       };
       programs = {
@@ -89,6 +133,7 @@
           syntaxHighlighting.enable = true;
           history.size = 10000;
           shellAliases = {
+            btw = "echo i use nixos, btw";
             ll = "ls -l";
             update = "sudo nixos-rebuild switch";
           };

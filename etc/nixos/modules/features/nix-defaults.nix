@@ -42,7 +42,6 @@
           }
         )
       ];
-      system.stateVersion = "25.11";
       nix = {
         nixPath = [
           "nixpkgs=${inputs.nixpkgs}"
@@ -77,6 +76,7 @@
           http-connections = 128;
           max-substitution-jobs = 128;
           max-jobs = "auto";
+          download-buffer-size = 524288000;
         };
         # package = pkgs.nixVersions.latest;
         gc = {

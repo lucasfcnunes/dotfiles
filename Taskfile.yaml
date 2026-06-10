@@ -49,6 +49,19 @@ tasks:
       - |
         read -p "Would you really like to rollback to a previous generation? (Ctrl+C to cancel)"
         sudo nix-env --rollback --profile /nix/var/nix/profiles/system
+  ssh:cmd:
+    desc: SSH into the host using the SSH config file
+    dir: ./etc/nixos/
+    vars:
+      HOST: "{{.HOST | default .CURRENT_HOST}}"
+      SSH_FLAGS: '{{.SSH_FLAGS | default "-F /mnt/c/Users/lucas/.ssh/config"}}'
+      DEFAULT_CMD: |-
+        {{- if ne .HOST .CURRENT_HOST -}}
+        ssh {{.SSH_FLAGS}} '{{.HOST}}' --
+        {{- end -}}
+    cmds:
+      - >-
+        {{.DEFAULT_CMD}} {{.CLI_ARGS}}
   flake:eval:
     dir: ./etc/nixos/
     vars:
@@ -60,20 +73,27 @@ tasks:
       # - nix-shell --extra-experimental-features 'nix-command flakes' --run 'nix eval .#nixosConfigurations."{{.HOST}}".config --json | yq -r "..|strings?" | grep {{.GREP_PATTERN}}' --packages git vim go-task
       # - nix run github:zimbatm/nix-flake-grep -- virtualisation.containerd
       - nix eval .#nixosConfigurations.'{{.HOST}}'.config.{{.NIX_CONFIG}} {{.FORMAT}}
-  # nixos-anywhere:
-  #   desc: Deploy NixOS using NixOS Anywhere
-  #   cmds:
-  #     - nix run github:nix-community/nixos-anywhere -- --flake '.#myconfig' --target-host ubuntu@vps-01.lucasfcnunes.com
+  nixos-anywhere:
+    desc: Deploy NixOS using NixOS Anywhere
+    dir: ./etc/nixos/
+    vars:
+      HOST: "{{.HOST}}"
+      TARGET_HOST: "{{.TARGET_HOST | default .HOST}}"
+    cmds:
+      - nix run github:nix-community/nixos-anywhere -- --flake '.#{{.HOST}}' --target-host '{{.TARGET_HOST}}'
   deploy:
     desc: Deploy NixOS using deploy-rs
     dir: ./etc/nixos/
+    vars:
+      HOST: '{{.HOST | default "nixos-01"}}'
     cmds:
-      - nix run github:serokell/deploy-rs -- .#nixos-01.system --skip-checks --rollback-succeeded false
+      - nix run github:serokell/deploy-rs -- .#{{.HOST}}.system --skip-checks --rollback-succeeded false
   ssh-to-age:
     desc: Get the public key of the SSH host key in age format, so it can be added to the SOPS keys for encryption
     cmds:
-      - nix-shell -p ssh-to-age --run "cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-age"
-      # - nix-shell -p ssh-to-age --run "ssh-keyscan nixos-01 | ssh-to-age"
+      - task: ssh:cmd
+        vars:
+          CLI_ARGS: cat /etc/ssh/ssh_host_ed25519_key.pub | nix run nixpkgs#ssh-to-age
   cp:kubeconfig:
     desc: Copy kubeconfig from nixos-01 to local machine
     dir: ~/.kube/nixos-01/
@@ -84,16 +104,10 @@ tasks:
   facter:
     desc: Generate facter.json using nixos-facter
     dir: ./etc/nixos/
-    vars:
-      HOST: "{{.HOST | default .CURRENT_HOST}}"
-      DEFAULT_CMD: |-
-        {{- if ne .HOST .CURRENT_HOST -}}
-        ssh 'root@{{.HOST}}' --
-        {{- end -}}
     cmds:
-      - >-
-        {{.DEFAULT_CMD}} sudo nix run nixpkgs#nixos-facter > './modules/hosts/{{.HOST}}/facter.json'
-      # - nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-facter './modules/hosts/{{.HOST}}/facter.json' --flake '.#{{.HOST}}' --target-host 'root@{{.HOST}}'
+      - task: ssh:cmd
+        vars:
+          CLI_ARGS: sudo nix run nixpkgs#nixos-facter > './modules/hosts/{{.HOST}}/facter.json'
   disko:
     desc: Get information about disks using disko
     dir: ./etc/nixos/

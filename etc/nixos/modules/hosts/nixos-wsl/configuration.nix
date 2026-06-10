@@ -25,6 +25,8 @@
         self.nixosModules.home-manager
         self.nixosModules.lucasfcnunes-hm
       ];
+      system.stateVersion = "25.05";
+      networking.hostId = "007f0101";
       networking.hostName = "nixos-wsl";
       time.timeZone = "America/Sao_Paulo";
       home-manager.users.lucasfcnunes.npiperelay-wsl.enable = true;
@@ -33,18 +35,6 @@
       services.openssh.enable = false;
       # users.defaultUserShell = pkgs.zsh;
       environment.systemPackages = with pkgs; [
-        git
-        gnupg
-        curl
-        wget
-        # vimrm -rf
-        neovim
-        zsh
-        zsh-powerlevel10k
-        micromamba
-        direnv
-        # fish
-        # starship # prompt
         # fzf # fuzzy finder
         # helix
         # zellij # terminal multiplexer
@@ -65,26 +55,6 @@
         clickhouse # TODO: make dotbins version
         sqlite-interactive # TODO: make dotbins version
       ];
-      programs = {
-        # starship = {
-        #   enable = true;
-        # };
-        # fish = {
-        #   enable = true;
-        #   interactiveShellInit = ''
-        #     set fish_greeting ""
-        #     starship init fish | source
-        #     fzf --fish | source
-        #   '';
-        # };
-        zsh = {
-          enable = true;
-        };
-        direnv = {
-          enable = true;
-          nix-direnv.enable = true;
-        };
-      };
       # boot.loader.grub.enable = true;
       boot.kernelModules = [
         "nvme-fabrics"
