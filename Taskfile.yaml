@@ -38,8 +38,8 @@ tasks:
   switch:
     aliases:
       - rebuild
-    deps:
-      - flake:update
+    # deps:
+    #   - flake:update
     cmds:
       - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nixos-rebuild switch' --packages git vim go-task
   rollback:

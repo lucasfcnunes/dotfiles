@@ -11,6 +11,22 @@
       ...
     }:
     {
+      # TODO: switch from sudo to run0, pollkit and a run0-sudo-shim
+      # security.run0 = {
+      #   enableSudoAlias = true;
+      #   wheelNeedsPassword = false;
+      # };
+      # security.polkit = {
+      #   enable = true;
+      #   adminIdentities = [
+      #     # "unix-group:wheel" # default
+      #     "unix-group:root"
+      #     "unix-user:lucasfcnunes"
+      #   ];
+      #   extraConfig = ''
+      #     /* yes, js... ); */
+      #   '';
+      # };
       security.sudo = {
         enable = true; # make sure to enable the sudo package
         execWheelOnly = false;
