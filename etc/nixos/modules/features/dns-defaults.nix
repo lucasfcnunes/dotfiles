@@ -57,14 +57,15 @@
       };
       # TODO: investigate if this can be enabled together with dnscrypt-proxy
       # TODO: resolved.conf missing line `options edns0 trust-ad`
-      services.resolved.fallbackDns = [ ];
-      services.resolved.extraConfig = ''
-        DNSStubListener=no
-      '';
-      services.resolved.dnssec = "true";
-      # services.resolved.dnsovertls = true;
+      services.resolved.settings = {
+        Resolve = {
+          FallbackDNS = [ ];
+          DNSStubListener = "no";
+          DNSSEC = "true";
+          # DNSOverTLS = true;
+        };
+      };
       # environment.etc."resolv.conf".source = lib.mkForce "/run/systemd/resolve/resolv.conf";
-      # services.resolved.settings.Resolve.FallbackDNS = [ ];
       services.dnscrypt-proxy = {
         enable = true;
         # INFO: https://github.com/DNSCrypt/dnscrypt-proxy/blob/master/dnscrypt-proxy/example-dnscrypt-proxy.toml
