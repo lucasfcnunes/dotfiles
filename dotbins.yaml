@@ -3,10 +3,12 @@ platforms:
   linux:
     - amd64
 tools:
-  asciinema:
-    repo: asciinema/asciinema
+  # atuin:
+  #   repo: atuinsh/atuin
   argo:
     repo: argoproj/argo-workflows
+  asciinema:
+    repo: asciinema/asciinema
   bao:
     repo: openbao/openbao
     extract_archive: true
@@ -22,6 +24,7 @@ tools:
   bat:
     repo: sharkdp/bat
     shell_code: |
+      # source <(bat --completion=__DOTBINS_SHELL__)
       alias bat="bat --paging=never"
       alias cat="bat --plain --paging=never"
   cilium:
@@ -66,6 +69,9 @@ tools:
     repo: dolthub/doltgresql
   dyff:
     repo: homeport/dyff
+    shell_code:
+      bash,zsh: |
+        source <(dyff completion __DOTBINS_SHELL__)
   eza:
     repo: eza-community/eza
     shell_code: |
@@ -83,6 +89,9 @@ tools:
   #   asset_patterns: gam-{version}-{platform}-{arch}-legacy\.tar\.xz
   gh:
     repo: cli/cli
+    shell_code:
+      bash,zsh: |
+        source <(gh completion --shell=__DOTBINS_SHELL__)
   # helm:
   #   repo: helm/helm
   helmfile:
@@ -157,6 +166,11 @@ tools:
     #     source <(rclone completion __DOTBINS_SHELL__)
   sops:
     repo: getsops/sops
+    shell_code:
+      bash,zsh: |
+        source <(sops completion __DOTBINS_SHELL__)
+  systemctl-tui:
+    repo: rgwood/systemctl-tui
   task:
     repo: go-task/task
     shell_code:

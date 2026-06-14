@@ -28,6 +28,7 @@
     };
   flake.nixosModules.nix-defaults =
     {
+      lib,
       pkgs,
       ...
     }:
@@ -80,16 +81,14 @@
         };
         # package = pkgs.nixVersions.latest;
         gc = {
-          automatic = true;
-          # dates = "daily";
+          automatic = lib.mkDefault true;
           persistent = true;
-          options = "--delete-generations 14d";
-          dates = "2weeks";
-          # options = "--delete-older-than 10d";
-          # options = "--delete-older-than 6d";
+          options = "--delete-older-than 20d";
+          # dates = "weekly";
+          dates = "*-*-01,15 00:00:00";
         };
         optimise = {
-          automatic = true;
+          automatic = lib.mkDefault true;
           dates = [ "03:45" ];
         };
       };

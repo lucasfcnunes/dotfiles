@@ -37,14 +37,23 @@
                   (
                     [
                       "-v"
-                      "-p"
-                      "-l"
+                      # "-p"
+                      # "-l"
                       "-ep"
                       "-ei"
                       "-s"
                       # "-a"
                     ]
-                    ++ (if isGpgAgent then [ "-a" ] else [ ])
+                    ++ (
+                      if isGpgAgent then
+                        [
+                          "-p"
+                          "-l"
+                          "-a"
+                        ]
+                      else
+                        [ ]
+                    )
                     ++ (if isSsh then [ ] else [ ])
                     ++ (if isNamedPipe then [ ] else [ ])
                   )

@@ -85,6 +85,7 @@
         ];
         packages = with pkgs; [
           fastfetch
+          # systemctl-tui
           # (pkgs.writeShellApplication {
           #   name = "ns";
           #   runtimeInputs = with pkgs; [
@@ -215,6 +216,14 @@
           enable = true;
           # settings.editor = "nvim";
         };
+        # atuin = {
+        #   enable = true;
+        #   daemon.enable = true;
+        #   enableBashIntegration = true;
+        #   enableZshIntegration = true;
+        #   enableFishIntegration = true;
+        #   enableNushellIntegration = true;
+        # };
       };
     };
 }

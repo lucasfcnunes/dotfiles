@@ -19,9 +19,11 @@
       ];
       wsl.enable = true;
       wsl.docker-desktop.enable = true;
-      wsl.defaultUser = "lucasfcnunes";
+      wsl.defaultUser = "lucasfcnunes"; # TODO: https://github.com/nix-community/NixOS-WSL/discussions/1068
       wsl.interop.register = lib.mkIf (lib.length config.boot.binfmt.emulatedSystems > 0) (
         lib.mkOverride 900 true
       );
+      wsl.useWindowsDriver = true;
+      # wsl.startMenuLaunchers = false;
     };
 }
