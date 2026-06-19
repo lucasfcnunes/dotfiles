@@ -25,7 +25,7 @@
         self.nixosModules.users-defaults
         self.nixosModules.tailscale
         self.nixosModules.vscode-server
-        self.nixosModules.hyprland
+        self.nixosModules.plasma
         self.nixosModules.xrdp
         self.nixosModules.home-manager
         self.nixosModules.lucasfcnunes-hm
@@ -48,8 +48,6 @@
         zsh-powerlevel10k
         micromamba
         direnv
-        # microsoft-edge
-        firefox
       ];
     };
 }

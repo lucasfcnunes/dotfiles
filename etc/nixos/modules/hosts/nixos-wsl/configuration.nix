@@ -28,6 +28,7 @@
       system.stateVersion = "25.05";
       networking.hostId = "007f0101";
       networking.hostName = "nixos-wsl";
+      users.mutableUsers = true;
       nix.gc.automatic = false;
       time.timeZone = "America/Sao_Paulo";
       home-manager.users.lucasfcnunes.npiperelay-wsl.enable = true;

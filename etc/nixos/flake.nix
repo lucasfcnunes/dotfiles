@@ -19,6 +19,11 @@
       url = "https://github.com/NixOS/nixpkgs/pull/531462.patch";
       flake = false;
     };
+    nixpkgs-patch-04 = {
+      # nixos/hyperv: Fix hotplug and IO scheduler warnings on boot
+      url = "https://github.com/NixOS/nixpkgs/pull/467257.patch";
+      flake = false;
+    };
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -41,6 +46,11 @@
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";

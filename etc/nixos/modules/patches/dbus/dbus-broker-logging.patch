@@ -1,0 +1,12 @@
+diff --git a/src/launch/launcher.c b/src/launch/launcher.c
+index 5985712..f189f4a 100644
+--- a/src/launch/launcher.c
++++ b/src/launch/launcher.c
+@@ -723,7 +723,7 @@ static int launcher_load_service_file(Launcher *launcher, const char *path, cons
+                         log_append_service_path(&launcher->log, path);
+                         log_append_service_name(&launcher->log, name);
+
+-                        r = log_commitf(&launcher->log, "Ignoring duplicate name '%s' in service file '%s'\n", name, path);
++                        r = log_commitf(&launcher->log, "Ignoring duplicate name '%s' in service file '%s' (already seen in '%s')\n", name, path, old_service->data->path);
+                         if (r)
+                                 return error_fold(r);

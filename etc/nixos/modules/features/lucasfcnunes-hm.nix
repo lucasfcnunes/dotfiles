@@ -172,7 +172,7 @@
 
                 # PATH="$PATH:/opt/bin:$HOME/.local/bin/"
 
-                source $HOME/.dotbins/shell/zsh.sh
+                [[ ! -f ~/.dotbins/shell/zsh.sh ]] || source ~/.dotbins/shell/zsh.sh
               '';
             in
             lib.mkMerge [

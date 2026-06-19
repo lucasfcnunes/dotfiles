@@ -42,6 +42,7 @@
             nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system ({ pkgs, ... }: pkgs);
           }
         )
+        self.nixosModules.dbus-patch
       ];
       nix = {
         nixPath = [
