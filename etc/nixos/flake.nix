@@ -55,7 +55,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     oisd = {
-      url = "https://big.oisd.nl/domainswild";
+      url = "github:sjhgvr/oisd";
       flake = false;
     };
   };

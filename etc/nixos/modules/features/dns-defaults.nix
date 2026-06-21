@@ -14,12 +14,16 @@
     let
       hasIPv6Enabled = config.networking.enableIPv6;
       StateDirectory = "dnscrypt-proxy";
-      blocklistBase = builtins.readFile inputs.oisd;
+      blocklistBase = builtins.readFile "${inputs.oisd}/domainswild_big.txt";
+      blocklistNSFW = builtins.readFile "${inputs.oisd}/domainswild_nsfw.txt";
       extraBlocklist = "";
-      blocklistTxt = pkgs.writeText "blocklist.txt" ''
-        ${extraBlocklist}
-        ${blocklistBase}
-      '';
+      blocklistTxt = pkgs.writeText "blocklist.txt" (
+        lib.concatLines [
+          extraBlocklist
+          blocklistBase
+          blocklistNSFW
+        ]
+      );
       forwardingRulesFile = "nixos/services/networking/forwarding-rules.txt";
     in
     {
