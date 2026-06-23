@@ -33,6 +33,7 @@
         kdePackages.kclock # Clock app
         kdePackages.kcolorchooser # Color picker
         kdePackages.kolourpaint # Simple paint program
+        # kdePackages.krdp
         kdePackages.ksystemlog # System log viewer
         # kdePackages.sddm-kcm # SDDM configuration module
         kdiff3 # File/directory comparison tool
