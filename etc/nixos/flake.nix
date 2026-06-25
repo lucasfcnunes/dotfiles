@@ -68,5 +68,11 @@
       url = "github:sjhgvr/oisd";
       flake = false;
     };
+    nix-on-droid = {
+      # TODO: set to 26.05
+      url = "github:nix-community/nix-on-droid/prerelease-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 }
