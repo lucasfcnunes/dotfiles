@@ -13,13 +13,7 @@
     }:
     let
       partitionPrefix = config.networking.hostId;
-      # ! vmbus uuid may be not the best idea...
-      VMBus00DevicePrefix =
-        "/dev/disk/by-path/acpi-VMBUS:00-vmbus-"
-        + (
-          (builtins.elemAt config.hardware.facter.report.hardware.storage_controller 00).sysfs_bus_id
-          |> lib.replaceStrings [ "-" ] [ "" ]
-        );
+      storageDevicePath = config.lucasfcnunesLib.hvDiskByLocation;
     in
     {
       imports = [
@@ -28,7 +22,7 @@
       disko.devices = {
         disk = {
           lun-0 = {
-            device = "${VMBus00DevicePrefix}-lun-0";
+            device = storageDevicePath { location = 0; };
             type = "disk";
             content = {
               type = "gpt";
@@ -67,7 +61,7 @@
             };
           };
           lun-1 = {
-            device = "${VMBus00DevicePrefix}-lun-1";
+            device = storageDevicePath { location = 1; };
             type = "disk";
             content = {
               type = "gpt";
@@ -89,7 +83,7 @@
             };
           };
           # lun-(\d+) = {
-          #   device = "${VMBus00DevicePrefix}-lun-(\d+)";
+          #   device = storageDevicePath { location = $1; };
           #   type = "disk";
           # };
         };

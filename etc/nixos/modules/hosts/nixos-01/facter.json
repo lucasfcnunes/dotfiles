@@ -2,6 +2,10 @@
   "version": 1,
   "system": "x86_64-linux",
   "virtualisation": "microsoft",
+  "uefi": {
+    "supported": true,
+    "platform_size": 64
+  },
   "hardware": {
     "bios": {
       "apm_info": {
@@ -63,7 +67,10 @@
           "rep_good",
           "nopl",
           "xtopology",
+          "tsc_reliable",
+          "nonstop_tsc",
           "cpuid",
+          "aperfmperf",
           "tsc_known_freq",
           "pni",
           "pclmulqdq",
@@ -73,8 +80,10 @@
           "pcid",
           "sse4_1",
           "sse4_2",
+          "x2apic",
           "movbe",
           "popcnt",
+          "tsc_deadline_timer",
           "aes",
           "xsave",
           "avx",
@@ -90,6 +99,7 @@
           "ibpb",
           "stibp",
           "fsgsbase",
+          "tsc_adjust",
           "bmi1",
           "hle",
           "avx2",
@@ -118,6 +128,7 @@
           "itlb_multihit",
           "mmio_stale_data",
           "bhi",
+          "spectre_v2_user",
           "its"
         ],
         "power_management": [
@@ -134,7 +145,6 @@
         "fpu_exception": false,
         "cpuid_level": 20,
         "write_protect": false,
-        "tlb_size": 32765,
         "clflush_size": 64,
         "cache_alignment": 64,
         "address_sizes": {
@@ -187,21 +197,21 @@
           "value": 0
         },
         "model": "Msft Virtual Disk",
-        "sysfs_id": "/class/block/sdb",
-        "sysfs_bus_id": "0:0:0:1",
-        "sysfs_device_link": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/VMBUS:00/8bc32d1e-f583-4925-b64f-2a85d2a5cf59/host0/target0:0:0/0:0:0:1",
+        "sysfs_id": "/class/block/sdd",
+        "sysfs_bus_id": "0:0:0:30",
+        "sysfs_device_link": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/8bc32d1e-f583-4925-b64f-2a85d2a5cf59/host0/target0:0:0/0:0:0:30",
         "unix_device_names": [
-          "/dev/disk/by-id/scsi-3600224806bfb6f9a865cb17e346c1bc6",
-          "/dev/disk/by-id/wwn-0x600224806bfb6f9a865cb17e346c1bc6",
-          "/dev/disk/by-path/acpi-VMBUS:00-vmbus-8bc32d1ef5834925b64f2a85d2a5cf59-lun-1",
-          "/dev/sdb"
+          "/dev/disk/by-id/scsi-3600224804d7774e7dfb39316089a3884",
+          "/dev/disk/by-id/wwn-0x600224804d7774e7dfb39316089a3884",
+          "/dev/disk/by-path/acpi-MSFT1000:00-scsi-0:0:0:30",
+          "/dev/sdd"
         ],
-        "unix_device_name2": "/dev/sg1",
+        "unix_device_name2": "/dev/sg2",
         "rom_id": "0x80",
         "resources": [
           {
             "type": "disk_geo",
-            "cylinders": 130541,
+            "cylinders": 26108,
             "heads": 255,
             "sectors": 63,
             "size": "0x0",
@@ -210,7 +220,7 @@
           {
             "type": "size",
             "unit": "sectors",
-            "value_1": 2097152000,
+            "value_1": 419430400,
             "value_2": 512
           }
         ],
@@ -268,21 +278,21 @@
           "value": 0
         },
         "model": "Msft Virtual Disk",
-        "sysfs_id": "/class/block/sdc",
-        "sysfs_bus_id": "0:0:0:2",
-        "sysfs_device_link": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/VMBUS:00/8bc32d1e-f583-4925-b64f-2a85d2a5cf59/host0/target0:0:0/0:0:0:2",
+        "sysfs_id": "/class/block/sdb",
+        "sysfs_bus_id": "0:0:0:1",
+        "sysfs_device_link": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/8bc32d1e-f583-4925-b64f-2a85d2a5cf59/host0/target0:0:0/0:0:0:1",
         "unix_device_names": [
-          "/dev/disk/by-id/scsi-3600224804d7774e7dfb39316089a3884",
-          "/dev/disk/by-id/wwn-0x600224804d7774e7dfb39316089a3884",
-          "/dev/disk/by-path/acpi-VMBUS:00-vmbus-8bc32d1ef5834925b64f2a85d2a5cf59-lun-2",
-          "/dev/sdc"
+          "/dev/disk/by-id/scsi-3600224806bfb6f9a865cb17e346c1bc6",
+          "/dev/disk/by-id/wwn-0x600224806bfb6f9a865cb17e346c1bc6",
+          "/dev/disk/by-path/acpi-MSFT1000:00-scsi-0:0:0:1",
+          "/dev/sdb"
         ],
-        "unix_device_name2": "/dev/sg2",
+        "unix_device_name2": "/dev/sg1",
         "rom_id": "0x81",
         "resources": [
           {
             "type": "disk_geo",
-            "cylinders": 26108,
+            "cylinders": 130541,
             "heads": 255,
             "sectors": 63,
             "size": "0x0",
@@ -291,7 +301,7 @@
           {
             "type": "size",
             "unit": "sectors",
-            "value_1": 419430400,
+            "value_1": 2097152000,
             "value_2": 512
           }
         ],
@@ -349,17 +359,98 @@
           "value": 0
         },
         "model": "Msft Virtual Disk",
+        "sysfs_id": "/class/block/sdc",
+        "sysfs_bus_id": "0:0:0:31",
+        "sysfs_device_link": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/8bc32d1e-f583-4925-b64f-2a85d2a5cf59/host0/target0:0:0/0:0:0:31",
+        "unix_device_names": [
+          "/dev/disk/by-id/scsi-360022480f1559a3c7c211f0d36632920",
+          "/dev/disk/by-id/wwn-0x60022480f1559a3c7c211f0d36632920",
+          "/dev/disk/by-path/acpi-MSFT1000:00-scsi-0:0:0:31",
+          "/dev/sdc"
+        ],
+        "unix_device_name2": "/dev/sg3",
+        "rom_id": "0x82",
+        "resources": [
+          {
+            "type": "disk_geo",
+            "cylinders": 26108,
+            "heads": 255,
+            "sectors": 63,
+            "size": "0x0",
+            "geo_type": "logical"
+          },
+          {
+            "type": "size",
+            "unit": "sectors",
+            "value_1": 419430400,
+            "value_2": 512
+          }
+        ],
+        "driver": "hv_storvsc",
+        "driver_module": "hv_storvsc",
+        "drivers": [
+          "hv_storvsc",
+          "sd"
+        ],
+        "driver_modules": [
+          "hv_storvsc",
+          "sd_mod"
+        ]
+      },
+      {
+        "index": 19,
+        "attached_to": 15,
+        "class_list": [
+          "disk",
+          "scsi",
+          "block_device"
+        ],
+        "bus_type": {
+          "hex": "0084",
+          "name": "SCSI",
+          "value": 132
+        },
+        "slot": {
+          "bus": 0,
+          "number": 0
+        },
+        "base_class": {
+          "hex": "0106",
+          "name": "Mass Storage Device",
+          "value": 262
+        },
+        "sub_class": {
+          "hex": "0000",
+          "name": "Disk",
+          "value": 0
+        },
+        "vendor": {
+          "hex": "0000",
+          "name": "Msft",
+          "value": 0
+        },
+        "device": {
+          "hex": "0000",
+          "name": "Virtual Disk",
+          "value": 0
+        },
+        "revision": {
+          "hex": "0000",
+          "name": "1.0",
+          "value": 0
+        },
+        "model": "Msft Virtual Disk",
         "sysfs_id": "/class/block/sda",
         "sysfs_bus_id": "0:0:0:0",
-        "sysfs_device_link": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/VMBUS:00/8bc32d1e-f583-4925-b64f-2a85d2a5cf59/host0/target0:0:0/0:0:0:0",
+        "sysfs_device_link": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/8bc32d1e-f583-4925-b64f-2a85d2a5cf59/host0/target0:0:0/0:0:0:0",
         "unix_device_names": [
           "/dev/disk/by-id/scsi-360022480088f80508d95da3ca9975270",
           "/dev/disk/by-id/wwn-0x60022480088f80508d95da3ca9975270",
-          "/dev/disk/by-path/acpi-VMBUS:00-vmbus-8bc32d1ef5834925b64f2a85d2a5cf59-lun-0",
+          "/dev/disk/by-path/acpi-MSFT1000:00-scsi-0:0:0:0",
           "/dev/sda"
         ],
         "unix_device_name2": "/dev/sg0",
-        "rom_id": "0x82",
+        "rom_id": "0x83",
         "resources": [
           {
             "type": "disk_geo",
@@ -434,7 +525,7 @@
         "vendor": "Virtual",
         "device": "Virtual Ethernet Card 0",
         "model": "Virtual Ethernet Card 0",
-        "sysfs_id": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/VMBUS:00/061ccb31-d37b-4185-9e25-bd49786421bc",
+        "sysfs_id": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/061ccb31-d37b-4185-9e25-bd49786421bc",
         "sysfs_bus_id": "061ccb31-d37b-4185-9e25-bd49786421bc",
         "unix_device_names": [
           "eth0"
@@ -476,7 +567,29 @@
     ],
     "network_interface": [
       {
-        "index": 24,
+        "index": 20,
+        "attached_to": 0,
+        "class_list": [
+          "network_interface"
+        ],
+        "base_class": {
+          "hex": "0107",
+          "name": "Network Interface",
+          "value": 263
+        },
+        "sub_class": {
+          "hex": "0000",
+          "name": "Loopback",
+          "value": 0
+        },
+        "model": "Loopback network interface",
+        "sysfs_id": "/class/net/lo",
+        "unix_device_names": [
+          "lo"
+        ]
+      },
+      {
+        "index": 39,
         "attached_to": 14,
         "class_list": [
           "network_interface"
@@ -493,7 +606,7 @@
         },
         "model": "Ethernet network interface",
         "sysfs_id": "/class/net/eth0",
-        "sysfs_device_link": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/VMBUS:00/061ccb31-d37b-4185-9e25-bd49786421bc",
+        "sysfs_device_link": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/061ccb31-d37b-4185-9e25-bd49786421bc",
         "unix_device_names": [
           "eth0"
         ],
@@ -514,28 +627,6 @@
         ],
         "driver_modules": [
           "hv_netvsc"
-        ]
-      },
-      {
-        "index": 35,
-        "attached_to": 0,
-        "class_list": [
-          "network_interface"
-        ],
-        "base_class": {
-          "hex": "0107",
-          "name": "Network Interface",
-          "value": 263
-        },
-        "sub_class": {
-          "hex": "0000",
-          "name": "Loopback",
-          "value": 0
-        },
-        "model": "Loopback network interface",
-        "sysfs_id": "/class/net/lo",
-        "unix_device_names": [
-          "lo"
         ]
       }
     ],
@@ -559,7 +650,7 @@
         "vendor": "Virtual",
         "device": "Storage 0",
         "model": "Virtual Storage 0",
-        "sysfs_id": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/VMBUS:00/8bc32d1e-f583-4925-b64f-2a85d2a5cf59",
+        "sysfs_id": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/8bc32d1e-f583-4925-b64f-2a85d2a5cf59",
         "sysfs_bus_id": "8bc32d1e-f583-4925-b64f-2a85d2a5cf59",
         "driver": "hv_storvsc",
         "driver_module": "hv_storvsc",
@@ -595,7 +686,7 @@
       "handle": 0,
       "vendor": "Microsoft Corporation",
       "version": "Hyper-V UEFI Release v4.1",
-      "date": "10/23/2025",
+      "date": "09/25/2025",
       "features": [
         "PnP supported",
         "CD boot supported",
@@ -685,14 +776,14 @@
         "handle": 8,
         "array_handle": 6,
         "start_address": "0x0",
-        "end_address": "0xf8000400",
+        "end_address": "0xc0000400",
         "part_width": 0
       },
       {
         "handle": 11,
         "array_handle": 6,
         "start_address": "0x100000000",
-        "end_address": "0x4ea000400",
+        "end_address": "0x522000400",
         "part_width": 0
       }
     ],
@@ -707,7 +798,7 @@
         "error_handle": 65534,
         "width": 0,
         "ecc_bits": 0,
-        "size": 4063232,
+        "size": 3145728,
         "form_factor": {
           "hex": "0002",
           "name": "Unknown",
@@ -734,7 +825,7 @@
         "error_handle": 65534,
         "width": 0,
         "ecc_bits": 0,
-        "size": 16416768,
+        "size": 17334272,
         "form_factor": {
           "hex": "0002",
           "name": "Unknown",
@@ -758,7 +849,7 @@
         "memory_device_handle": 7,
         "array_map_handle": 8,
         "start_address": "0x0",
-        "end_address": "0xf8000400",
+        "end_address": "0xc0000400",
         "row_position": 255,
         "interleave_position": 0,
         "interleave_depth": 0
@@ -768,7 +859,7 @@
         "memory_device_handle": 10,
         "array_map_handle": 11,
         "start_address": "0x100000000",
-        "end_address": "0x4ea000400",
+        "end_address": "0x522000400",
         "row_position": 255,
         "interleave_position": 0,
         "interleave_depth": 0

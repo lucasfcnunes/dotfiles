@@ -5,6 +5,39 @@
   ...
 }:
 {
+  flake.nixosModules.hyper-v-guest-lib =
+    {
+      config,
+      lib,
+      ...
+    }:
+    {
+      options.lucasfcnunesLib = lib.mkOption {
+        type = lib.types.raw;
+        readOnly = true;
+      };
+      config.lucasfcnunesLib = {
+        hvDiskByLocation =
+          {
+            location ? 0, # lun
+            storageControllerId ? 0,
+            facterReport ? config.hardware.facter.report,
+          }:
+          let
+            storage_controller =
+              facterReport.hardware.storage_controller |> (l: builtins.elemAt l storageControllerId);
+            sysfs_bus_id = (storage_controller.sysfs_bus_id |> builtins.replaceStrings [ "-" ] [ "" ]);
+            bus = storage_controller.sysfs_id |> builtins.split "/" |> (l: builtins.elemAt l 10);
+            mode = bus |> builtins.split ":" |> (l: builtins.elemAt l 0);
+          in
+          if mode == "VMBUS" then
+            "/dev/disk/by-path/acpi-${bus}-vmbus-${sysfs_bus_id}-lun-${toString location}"
+          else if mode == "MSFT1000" then
+            "/dev/disk/by-path/acpi-${bus}-scsi-0:0:0:${toString location}"
+          else
+            throw "Unknown sysfs_bus_id mode: ${sysfs_bus_id}";
+      };
+    };
   flake.nixosModules.hyper-v-guest =
     {
       lib,
@@ -12,6 +45,9 @@
       ...
     }:
     {
+      imports = [
+        self.nixosModules.hyper-v-guest-lib
+      ];
       virtualisation.hypervGuest.enable = true;
       # REQUIRED - see: https://github.com/nixos/nixpkgs/issues/9899
       boot.initrd.kernelModules = [
