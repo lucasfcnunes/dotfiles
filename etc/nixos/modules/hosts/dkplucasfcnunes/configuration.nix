@@ -29,6 +29,7 @@
         self.nixosModules.xrdp
         self.nixosModules.home-manager
         self.nixosModules.lucasfcnunes-hm
+        self.nixosModules.gpu
       ];
       system.stateVersion = "25.11";
       networking.hostId = "efc7412e";

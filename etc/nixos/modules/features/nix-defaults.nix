@@ -8,7 +8,7 @@
   perSystem =
     {
       # config,
-      # lib,
+      lib,
       pkgs,
       system,
       ...
@@ -22,6 +22,11 @@
         config = {
           allowUnfree = false;
           # allowUnsupportedSystem = lib.mkDefault (if (config ? wsl && config.wsl.enable) then true else true);
+          allowUnfreePredicate =
+            pkg:
+            builtins.elem (lib.getName pkg) [
+              "wsl-gpu-lib" # dxgkrnl
+            ];
         };
       };
       formatter = pkgs.nixfmt-tree;

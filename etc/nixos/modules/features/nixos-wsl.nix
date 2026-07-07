@@ -8,11 +8,13 @@
     {
       config,
       lib,
+      pkgs,
       ...
     }:
     {
       imports = [
         inputs.nixos-wsl.nixosModules.default
+        self.nixosModules.gpu
       ];
       nix.nixPath = [
         "nixos-wsl=${inputs.nixos-wsl}"
@@ -25,5 +27,12 @@
       );
       wsl.useWindowsDriver = true;
       # wsl.startMenuLaunchers = false;
+      environment.sessionVariables = {
+        LD_LIBRARY_PATH = [
+          # "/usr/lib/wsl/lib"
+          "/run/opengl-driver/lib" # To make WSLg driver available to the apps
+        ];
+      };
+      virtualisation.hypervGuest.dxgkrnl.enable = false;
     };
 }

@@ -334,6 +334,18 @@
         "url": "https://github.com/NixOS/nixpkgs/pull/467257.patch"
       }
     },
+    "nixpkgs-patch-05": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-LXoUIL0qouqup/pzdFo4C2HBHJ7LjGbt7KKS4iP88lg=",
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/502687.patch"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/502687.patch"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1780747962,
@@ -457,6 +469,7 @@
         "nixpkgs-patch-02": "nixpkgs-patch-02",
         "nixpkgs-patch-03": "nixpkgs-patch-03",
         "nixpkgs-patch-04": "nixpkgs-patch-04",
+        "nixpkgs-patch-05": "nixpkgs-patch-05",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixpkgs-upstream": "nixpkgs-upstream",
         "oisd": "oisd",

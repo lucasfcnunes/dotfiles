@@ -145,6 +145,7 @@
         "fpu_exception": false,
         "cpuid_level": 20,
         "write_protect": false,
+        "tlb_size": 30970,
         "clflush_size": 64,
         "cache_alignment": 64,
         "address_sizes": {
@@ -230,6 +231,63 @@
           "hv_storvsc",
           "sd_mod"
         ]
+      }
+    ],
+    "graphics_card": [
+      {
+        "index": 19,
+        "attached_to": 0,
+        "class_list": [
+          "graphics_card",
+          "pci"
+        ],
+        "bus_type": {
+          "hex": "0004",
+          "name": "PCI",
+          "value": 4
+        },
+        "slot": {
+          "bus": 3968000,
+          "number": 0
+        },
+        "base_class": {
+          "hex": "0003",
+          "name": "Display controller",
+          "value": 3
+        },
+        "sub_class": {
+          "hex": "0002",
+          "name": "3D controller",
+          "value": 2
+        },
+        "vendor": {
+          "hex": "1414",
+          "value": 5140
+        },
+        "device": {
+          "hex": "008e",
+          "value": 142
+        },
+        "model": "3D controller",
+        "sysfs_id": "/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/73631d1f-3c8c-4292-b8cf-2086c9ff6a7c/pci3c8c:00/3c8c:00:00.0",
+        "sysfs_bus_id": "3c8c:00:00.0",
+        "detail": {
+          "function": 0,
+          "command": 7,
+          "header_type": 0,
+          "secondary_bus": 0,
+          "prog_if": 0
+        },
+        "driver": "dxgkrnl",
+        "driver_module": "dxgkrnl",
+        "drivers": [
+          "dxgkrnl"
+        ],
+        "driver_modules": [
+          "dxgkrnl",
+          "dxgkrnl"
+        ],
+        "module_alias": "pci:v00001414d0000008Esv00000000sd00000000bc03sc02i00"
       }
     ],
     "memory": [
@@ -342,7 +400,7 @@
         ]
       },
       {
-        "index": 24,
+        "index": 25,
         "attached_to": 20,
         "class_list": [
           "network_interface"

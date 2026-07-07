@@ -119,4 +119,21 @@ tasks:
     desc: Apply patches using nix-patcher
     dir: ./etc/nixos/
     cmds:
-      - nix run github:katrinafyi/nix-patcher -- --update
+      # - nix run github:katrinafyi/nix-patcher -- --update --verbose
+      # - nix run ~/dotfiles/lucasfcnunes/nix-patcher/ -- --update --verbose
+      - nix run github:lucasfcnunes/nix-patcher -- --update --verbose
+  gpu-pv-drivers:sync:
+    desc: Install GPU-PV driver for WSL
+    dir: "{{.WSL_DRIVERS_PATH}}"
+    # dir: /usr/lib/wsl/drivers/
+    # dir: /mnt/c/Windows/System32/DriverStore/FileRepository/
+    # wslpath 'C:\Windows\System32\DriverStore\FileRepository\'
+    vars:
+      WSL_DRIVERS_PATH: /usr/lib/wsl/drivers/
+      HOST: '{{.HOST | default "dkplucasfcnunes"}}'
+      AMD_REPO: u0201588.inf_amd64_18d847f3215007c5
+      NVIDIA_REPO: nv_dispsi.inf_amd64_adf52f3aa9d98326
+    cmds:
+      - rsync -avm --mkpath --include={'*/','{{.AMD_REPO}}/**.bin*','{{.AMD_REPO}}/**.so*'} --exclude={'*'} ./ 'root@{{.HOST}}:{{.WSL_DRIVERS_PATH}}'
+      # - scp ./{{.AMD_REPO}}/*.{so,bin} 'root@{{.HOST}}:{{.WSL_DRIVERS_PATH}}/'
+      # - scp ./{{.NVIDIA_REPO}}/*.{so,bin} 'root@{{.HOST}}:{{.WSL_DRIVERS_PATH}}'

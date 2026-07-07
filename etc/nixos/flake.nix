@@ -24,6 +24,12 @@
       url = "https://github.com/NixOS/nixpkgs/pull/467257.patch";
       flake = false;
     };
+    nixpkgs-patch-05 = {
+      # pkgs.linuxPackages.dxgkrnl (nixos/hyperv-guest: add GPU-PV (dxgkrnl) support)
+      url = "https://github.com/NixOS/nixpkgs/compare/master...lucasfcnunes:nixpkgs:lostmsu-dxgkrnl.patch";
+      # url = "https://github.com/NixOS/nixpkgs/pull/502687.patch";
+      flake = false;
+    };
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
