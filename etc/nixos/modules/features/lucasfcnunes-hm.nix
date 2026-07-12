@@ -28,6 +28,10 @@
         # vimrm -rf
         neovim
         micromamba
+        busybox
+        # psmisc
+        # parted
+        unstable.devenv
       ];
       programs = {
         # starship = {
@@ -136,7 +140,9 @@
           shellAliases = {
             btw = "echo i use nixos, btw";
             ll = "ls -l";
-            update = "sudo nixos-rebuild switch";
+            update = "sudo nixos-rebuild switch --flake ~/dotfiles/etc/nixos/";
+            docker2 = "nix run nixpkgs/nixpkgs-unstable#docker-client -- ";
+            # devenv2 = "nix run github:cachix/devenv/v2.2 -- ";
           };
           oh-my-zsh = {
             enable = true;

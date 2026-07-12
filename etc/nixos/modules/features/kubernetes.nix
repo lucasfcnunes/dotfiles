@@ -132,6 +132,12 @@
           securePort = kubeMasterAPIServerPort;
           advertiseAddress = kubeMasterIP;
         };
+        # TODO: json logging
+        # addonManager.addons.coredns-deploy.spec.template.spec.containers = [
+        #   {
+        #     args = [ "-log-format=json" ];
+        #   }
+        # ];
         addons.dns = {
           enable = true;
           replicas = 1;

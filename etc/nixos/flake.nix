@@ -5,17 +5,17 @@
     nixpkgs-upstream.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs.url = "github:lucasfcnunes/nixpkgs/nixos-26.05";
     nixpkgs-patch-01 = {
-      # dnscrypt-proxy
-      url = "https://github.com/NixOS/nixpkgs/pull/523222.patch";
+      # nixos/dnscrypt-proxy
+      url = "https://github.com/NixOS/nixpkgs/pull/548856.patch";
       flake = false;
     };
     nixpkgs-patch-02 = {
-      # windows.npiperelay
+      # pkgs.windows.npiperelay
       url = "https://github.com/NixOS/nixpkgs/pull/528466.patch";
       flake = false;
     };
     nixpkgs-patch-03 = {
-      # services.kubernetes (fix: aggregation layer)
+      # nixos/kubernetes (fix: aggregation layer)
       url = "https://github.com/NixOS/nixpkgs/pull/531462.patch";
       flake = false;
     };
@@ -30,6 +30,11 @@
       # url = "https://github.com/NixOS/nixpkgs/pull/502687.patch";
       flake = false;
     };
+    # nixpkgs-patch-06 = {
+    #   # pkgs.rocmPackages.amdsmi: fix error: wsl2 support
+    #   url = "https://github.com/lucasfcnunes/nixpkgs/pull/2.patch";
+    #   flake = false;
+    # };
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -60,7 +65,7 @@
     };
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
     };
     deploy-rs = {
       url = "github:serokell/deploy-rs";
