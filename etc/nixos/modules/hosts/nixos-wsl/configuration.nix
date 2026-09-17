@@ -24,6 +24,8 @@
         self.nixosModules.cross-emulation
         self.nixosModules.home-manager
         self.nixosModules.lucasfcnunes-hm
+        # self.nixosModules.libvirt
+        # self.nixosModules.virtualbox
       ];
       system.stateVersion = "25.05";
       networking.hostId = "007f0101";
