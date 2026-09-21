@@ -30,6 +30,7 @@
         self.nixosModules.home-manager
         self.nixosModules.lucasfcnunes-hm
         # self.nixosModules.gpu
+        self.nixosModules.writable-etc-hosts
         self.nixosModules.libvirt
         self.nixosModules.virtualbox
       ];
