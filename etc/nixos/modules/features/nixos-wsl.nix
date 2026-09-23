@@ -33,6 +33,9 @@
           "/run/opengl-driver/lib" # To make WSLg driver available to the apps
         ];
       };
+      # programs.nix-ld.libraries = [
+      #   "/run/opengl-driver/lib"
+      # ];
       virtualisation.hypervGuest.dxgkrnl.enable = false;
     };
 }

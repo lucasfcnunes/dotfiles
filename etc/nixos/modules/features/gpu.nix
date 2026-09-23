@@ -20,18 +20,30 @@
         virtualisation.hypervGuest.dxgkrnl.enable = lib.mkDefault true;
         environment.sessionVariables = {
           LD_LIBRARY_PATH = [
-            "/usr/lib/wsl/drivers/u0201588.inf_amd64_18d847f3215007c5/B026184"
+            # AMD "CUDA"
             "${pkgs.zluda}/lib"
-            (lib.makeLibraryPath [ pkgs.openssl ]) # AMD driver needs this
+            # opencl/clinfo
+            "${pkgs.ocl-icd}/lib"
+            "${pkgs.pocl}/lib"
+            # AMD driver needs this
+            "${pkgs.openssl.out}/lib" # or (lib.makeLibraryPath [ pkgs.openssl ])
+            # libx11
+            # "${pkgs.libx11}/lib"
           ];
+          OCL_ICD_VENDORS = "${pkgs.pocl}/etc/OpenCL/vendors";
           GALLIUM_DRIVER = "d3d12";
           # MESA_D3D12_DEFAULT_ADAPTER_NAME = "Nvidia";
         };
+        # programs.nix-ld.libraries = [
+        #   pkgs.zluda
+        #   pkgs.openssl
+        # ];
         # /dev/dxg is owned by the video group
         users.users =
           let
             extraGroups = [
               "video"
+              # "render" # ?
             ];
           in
           {

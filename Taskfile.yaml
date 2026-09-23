@@ -87,7 +87,7 @@ tasks:
     vars:
       HOST: '{{.HOST | default "nixos-01"}}'
     cmds:
-      - nix run github:serokell/deploy-rs -- .#{{.HOST}}.system --skip-checks --rollback-succeeded false
+      - nix run github:serokell/deploy-rs/5059116 -- .#{{.HOST}}.system --skip-checks --rollback-succeeded false
   ssh-to-age:
     desc: Get the public key of the SSH host key in age format, so it can be added to the SOPS keys for encryption
     cmds:
@@ -131,9 +131,19 @@ tasks:
     vars:
       WSL_DRIVERS_PATH: /usr/lib/wsl/drivers/
       HOST: '{{.HOST | default "dkplucasfcnunes"}}'
-      AMD_REPO: u0201588.inf_amd64_18d847f3215007c5
+      AMD_REPO: u0202642.inf_amd64_870f6b155aa057ce
       NVIDIA_REPO: nv_dispsi.inf_amd64_adf52f3aa9d98326
+      AMD_DRIVERS: |
+        /usr/lib/wsl/drivers/*/*/amdxc64.so
+        /usr/lib/wsl/drivers/*/*/libamdenc64.so
     cmds:
-      - rsync -avm --mkpath --include={'*/','{{.AMD_REPO}}/**.bin*','{{.AMD_REPO}}/**.so*'} --exclude={'*'} ./ 'root@{{.HOST}}:{{.WSL_DRIVERS_PATH}}'
+      # - find /usr/lib/wsl/drivers/ -type f -iregex '.*amd.*c64\.so'
+      - rsync -avm --delete --mkpath --include={'*/','/**/*amd*c64.so','/**/H9_EASU*.bin'} --exclude='*' ./ 'root@{{.HOST}}:{{.WSL_DRIVERS_PATH}}'
+      # - rsync -n -avm --delete --mkpath --include={'*/','/**/*.so','/**/*.bin'} --exclude='*' ./ 'root@{{.HOST}}:{{.WSL_DRIVERS_PATH}}'
+      # - task: ssh:cmd
+      #   vars:
+      #     CLI_ARGS: |
+      #       sudo chown -R root:root {{.WSL_DRIVERS_PATH}}
+      #       sudo chmod -R 755 {{.WSL_DRIVERS_PATH}}
       # - scp ./{{.AMD_REPO}}/*.{so,bin} 'root@{{.HOST}}:{{.WSL_DRIVERS_PATH}}/'
       # - scp ./{{.NVIDIA_REPO}}/*.{so,bin} 'root@{{.HOST}}:{{.WSL_DRIVERS_PATH}}'
