@@ -147,3 +147,8 @@ tasks:
       #       sudo chmod -R 755 {{.WSL_DRIVERS_PATH}}
       # - scp ./{{.AMD_REPO}}/*.{so,bin} 'root@{{.HOST}}:{{.WSL_DRIVERS_PATH}}/'
       # - scp ./{{.NVIDIA_REPO}}/*.{so,bin} 'root@{{.HOST}}:{{.WSL_DRIVERS_PATH}}'
+  dnscontrol:
+    desc: Manage DNS records using dnscontrol
+    dir: ./dnscontrol/
+    cmds:
+      - sops exec-env ./env-secrets.enc.yaml "dnscontrol {{.CLI_ARGS}}"

@@ -9,6 +9,13 @@
     "nixos-01",
     "nixos-wsl"
   ],
+  "files.associations": {
+    // "dnsconfig.js": "dnscontrol",
+    "*.yaml.gotmpl": "yaml",
+    ".*env": "dotenv",
+    ".*env.*": "dotenv",
+    "*.rmd": "markdown"
+  },
   "nix.enableLanguageServer": true,
   "nix.serverPath": "nixd",
   "nix.serverSettings": {

@@ -1,0 +1,9 @@
+{
+  "cloudflareapi": {
+    "TYPE": "CLOUDFLAREAPI",
+    "apitoken": "$CLOUDFLAREAPI_TOKEN"
+  },
+  "none": {
+    "TYPE": "NONE"
+  }
+}
