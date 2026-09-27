@@ -42,4 +42,6 @@ D("lucasfcnunes.com", REG_NONE, DnsProvider(DNS_CLOUDFLAREAPI),
     CNAME("mail", "mail-lucasfcnunes-com.brand.brevosend.com."),
     CNAME("r.mail", "mail-lucasfcnunes-com.r.brand.brevosend.com."),
     CNAME("img.mail", "mail-lucasfcnunes-com.img.brand.brevosend.com."),
+    // BIMI
+    TXT("default._bimi", "v=BIMI1; l=https://lucasfcnunes.com/static/bimi.svg"),
 );
