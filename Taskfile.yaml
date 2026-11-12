@@ -107,7 +107,9 @@ tasks:
     cmds:
       - task: ssh:cmd
         vars:
-          CLI_ARGS: sudo nix run nixpkgs#nixos-facter > './modules/hosts/{{.HOST}}/facter.json'
+          # CLI_ARGS: sudo nix run nixpkgs#nixos-facter > './modules/hosts/{{.HOST}}/facter.json'
+          CLI_ARGS: >-
+            sudo bash -c '`nix build nixpkgs#nixos-facter --print-out-paths --extra-experimental-features "nix-command flakes"`/bin/nixos-facter' > './modules/hosts/{{.HOST}}/facter.json'
   disko:
     desc: Get information about disks using disko
     dir: ./etc/nixos/

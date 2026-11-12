@@ -1,0 +1,58 @@
+{
+  self,
+  inputs,
+  ...
+}:
+{
+  flake.nixosModules.aw16lucasfcnunes-configuration =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    {
+      imports = [
+        self.nixosModules.nix-defaults
+        self.nixosModules.aw16lucasfcnunes-hardware
+        self.nixosModules.aw16lucasfcnunes-disko-config
+        self.nixosModules.boot-defaults
+        self.nixosModules.sops
+        self.nixosModules.disable-ipv6
+        self.nixosModules.use-nftables
+        self.nixosModules.net-tools
+        self.nixosModules.dns-defaults
+        self.nixosModules.users-defaults
+        self.nixosModules.tailscale
+        self.nixosModules.vscode-server
+        self.nixosModules.plasma
+        # self.nixosModules.xrdp
+        self.nixosModules.home-manager
+        self.nixosModules.lucasfcnunes-hm
+        # self.nixosModules.gpu
+        self.nixosModules.writable-etc-hosts
+        # self.nixosModules.libvirt
+        # self.nixosModules.virtualbox
+        self.nixosModules.aw16lucasfcnunes-specifics
+      ];
+      system.stateVersion = "26.05";
+      networking.hostId = "5c646357";
+      networking.hostName = "aw16lucasfcnunes";
+      time.timeZone = "America/Sao_Paulo";
+      networking.firewall.enable = true;
+      services.openssh.enable = true;
+      # users.defaultUserShell = pkgs.zsh;
+      environment.systemPackages = with pkgs; [
+        git
+        gnupg
+        curl
+        wget
+        # vimrm -rf
+        neovim
+        zsh
+        zsh-powerlevel10k
+        micromamba
+        direnv
+      ];
+    };
+}
