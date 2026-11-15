@@ -80,7 +80,8 @@ tasks:
       HOST: "{{.HOST}}"
       TARGET_HOST: "{{.TARGET_HOST | default .HOST}}"
     cmds:
-      - nix run github:nix-community/nixos-anywhere -- --flake '.#{{.HOST}}' --target-host '{{.TARGET_HOST}}'
+      - nix run github:nix-community/nixos-anywhere -- --flake '.#{{.HOST}}' --target-host '{{.TARGET_HOST}}' {{.CLI_ARGS}}
+      # - nix run github:nix-community/nixos-anywhere -- --no-kexec --flake '.#{{.HOST}}' --target-host '{{.TARGET_HOST}}' {{.CLI_ARGS}}
   deploy:
     desc: Deploy NixOS using deploy-rs
     dir: ./etc/nixos/

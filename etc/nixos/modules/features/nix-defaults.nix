@@ -20,7 +20,9 @@
           self.overlays.nixpkgs-unstable
         ];
         config = {
-          allowUnfree = false;
+          # TODO: revise this. i really don't like allowing unfree packages globally
+          # allowUnfree = false;
+          allowUnfree = true;
           # allowUnsupportedSystem = lib.mkDefault (if (config ? wsl && config.wsl.enable) then true else true);
           allowUnfreePredicate =
             pkg:
