@@ -85,6 +85,7 @@
     {
       imports = [
         self.homeModules.npiperelay-wsl
+        self.homeModules.aw16lucasfcnunes-hmod-specifics
       ];
       home = {
         stateVersion = "25.05";

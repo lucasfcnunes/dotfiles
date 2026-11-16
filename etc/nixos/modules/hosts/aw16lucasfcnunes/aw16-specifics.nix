@@ -47,4 +47,25 @@
       services.thermald.enable = true;
       services.power-profiles-daemon.enable = true;
     };
+  flake.homeModules.aw16lucasfcnunes-hmod-specifics =
+    # TODO: maybe this is not the best design
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    {
+      options = {
+        aw16lucasfcnunes-hmod-specifics.enable = lib.mkEnableOption "Enable AW16-specific home module settings";
+      };
+      config = lib.mkIf config.aw16lucasfcnunes-hmod-specifics.enable {
+        programs.vscode.enable = true;
+        programs.docker-cli.enable = true;
+        programs.discord.enable = true;
+        # services.remmina.enable = true;
+        services.keybase.enable = true;
+        services.kbfs.enable = false;
+      };
+    };
 }

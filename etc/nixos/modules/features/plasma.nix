@@ -45,7 +45,7 @@
         wl-clipboard # Wayland copy/paste support
         vlc # Media player
         remmina
-        # microsoft-edge
+        microsoft-edge
         firefox
         brave
       ];
@@ -270,6 +270,20 @@
           }
           # if desired, a second panel can be added here
         ];
+        # Declare ~/.config/klipperrc settings
+        configFile."klipperrc" = {
+          "General" = {
+            KeepClipboardContents = true; # Persist history across reboots/logouts
+            MaxClipItems = 100; # Increase from default 20 (up to 2048)
+            IgnoreImages = false; # Save copied images in history
+            IgnoreSelection = true; # Don't pollute history with X11/Wayland mouse highlights
+            SynchronizeClipboards = false; # Keep middle-click selection separate from Ctrl+C
+            TimeoutForActionPopups = 8;
+          };
+        };
+
+        # Optional: Ensure Meta+V opens the clipboard popup at cursor
+        shortcuts."plasmashell"."clipboard_action" = "Meta+V";
       };
     };
 }

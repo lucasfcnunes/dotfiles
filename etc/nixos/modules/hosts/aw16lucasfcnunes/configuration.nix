@@ -54,5 +54,6 @@
         micromamba
         direnv
       ];
+      home-manager.users.lucasfcnunes.aw16lucasfcnunes-hmod-specifics.enable = true;
     };
 }
