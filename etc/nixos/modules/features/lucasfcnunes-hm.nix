@@ -32,6 +32,7 @@
         # psmisc
         # parted
         unstable.devenv
+        ripgrep
       ];
       programs = {
         # starship = {
