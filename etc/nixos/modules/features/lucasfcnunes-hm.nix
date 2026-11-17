@@ -33,6 +33,7 @@
         # parted
         unstable.devenv
         ripgrep
+        go-task
       ];
       programs = {
         # starship = {

@@ -53,6 +53,8 @@
         zsh-powerlevel10k
         micromamba
         direnv
+        github-copilot-cli
+        freerdp
       ];
       home-manager.users.lucasfcnunes.aw16lucasfcnunes-hmod-specifics.enable = true;
     };

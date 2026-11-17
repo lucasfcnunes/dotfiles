@@ -46,8 +46,8 @@
         vlc # Media player
         remmina
         microsoft-edge
-        firefox
-        brave
+        # firefox
+        # brave
       ];
       environment.plasma6.excludePackages = with pkgs; [
         kdePackages.elisa # Music player

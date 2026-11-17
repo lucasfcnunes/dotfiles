@@ -9,12 +9,12 @@ tasks:
     dir: ./tmp/
     cmds:
       - echo "Getting NixOS for WSL..."
-      - wget https://github.com/nix-community/NixOS-WSL/releases/download/2505.7.0/nixos.wsl
-      - wget https://github.com/nix-community/NixOS-WSL/releases/download/2505.7.0/nixos.wsl.sha256
+      - wget https://github.com/nix-community/NixOS-WSL/releases/download/2605.7.0/nixos.wsl
+      - wget https://github.com/nix-community/NixOS-WSL/releases/download/2605.7.0/nixos.wsl.sha256
   nix-channel:
     dir: ./etc/nixos/
     vars:
-      NIX_CHANNEL_VERSION: "25.11"
+      NIX_CHANNEL_VERSION: "26.05"
     cmds:
       - sudo nix-channel --list
       # github:NixOS/nixpkgs/nixos-25.11
@@ -36,12 +36,15 @@ tasks:
       - nix flake update
       - task: nix-patcher
   switch:
+    dir: ./etc/nixos/
+    vars:
+      HOST: "{{.HOST | default .CURRENT_HOST}}"
     aliases:
       - rebuild
     # deps:
     #   - flake:update
     cmds:
-      - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nixos-rebuild switch' --packages git vim go-task
+      - sudo nix-shell --extra-experimental-features 'nix-command flakes' --run 'nixos-rebuild switch --flake .#{{.HOST}}' --packages git vim go-task
   rollback:
     interactive: true
     cmds:
