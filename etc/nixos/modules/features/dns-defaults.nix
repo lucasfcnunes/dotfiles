@@ -54,7 +54,7 @@
           ]
           ++ lib.optional hasIPv6Enabled "::1"
         );
-        networkmanager.dns = "none";
+        networkmanager.dns = lib.mkDefault "none";
         dhcpcd.extraConfig = "nohook resolv.conf";
         # resolvconf.enable = true;
         # resolvconf.useLocalResolver = true;

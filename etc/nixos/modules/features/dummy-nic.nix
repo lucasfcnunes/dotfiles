@@ -52,7 +52,7 @@
         # };
         networking.useNetworkd = true;
         networking.useDHCP = false;
-        networking.networkmanager.enable = false;
+        networking.networkmanager.enable = lib.mkDefault false;
         services.resolved.enable = true;
         networking.resolvconf.enable = false;
         systemd.network = {
