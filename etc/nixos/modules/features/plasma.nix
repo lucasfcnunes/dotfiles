@@ -42,9 +42,9 @@
         kdePackages.partitionmanager # Disk and partition management
         hardinfo2 # System benchmarks and hardware info
         wayland-utils # Wayland diagnostic tools
-        wl-clipboard # Wayland copy/paste support
+        # wl-clipboard # Wayland copy/paste support
         vlc # Media player
-        remmina
+        # remmina
         microsoft-edge
         # firefox
         # brave
@@ -283,7 +283,8 @@
         };
 
         # Optional: Ensure Meta+V opens the clipboard popup at cursor
-        shortcuts."plasmashell"."clipboard_action" = "Meta+V";
+        shortcuts."plasmashell"."clipboard_action" = "Meta+Alt+V";
+        shortcuts."plasmashell"."show-on-mouse-pos" = "Meta+V";
       };
     };
 }

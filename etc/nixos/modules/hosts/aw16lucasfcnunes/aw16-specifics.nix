@@ -64,8 +64,8 @@
         };
       };
 
-      services.keybase.enable = true;
-      services.kbfs.enable = true;
+      # services.keybase.enable = true;
+      # services.kbfs.enable = true;
     };
 
   flake.nixosModules.dell-oem-firmware =
@@ -157,16 +157,16 @@
           sshKeys = [
             # "YOUR_40_CHAR_AUTH_SUBKEY_KEYGRIP"
             "AD9B5630DC626C6BF33DF09CA3314B9C9563D4E4" # gpg-ssh (ed25519)
-            "7CEA90F018B46A548D6D245ACC4BB5777D111F44" # gpg-ssh (rsa)
-            "A5B50C3410C142735D957C096B002B1BB8AA185B 0" # personal old ssh
+            # "7CEA90F018B46A548D6D245ACC4BB5777D111F44" # gpg-ssh (rsa)
+            # "A5B50C3410C142735D957C096B002B1BB8AA185B 0" # personal old ssh
           ];
         };
         programs.vscode.enable = true;
         programs.docker-cli.enable = true;
         programs.discord.enable = true;
         # services.remmina.enable = true;
-        # services.keybase.enable = true;
-        # services.kbfs.enable = true;
+        services.keybase.enable = true;
+        services.kbfs.enable = true;
       };
     };
 }
