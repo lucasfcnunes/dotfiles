@@ -34,6 +34,8 @@
         unstable.devenv
         ripgrep
         go-task
+        sops
+        vals
       ];
       programs = {
         # starship = {
