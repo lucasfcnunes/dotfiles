@@ -162,9 +162,12 @@ tasks:
     desc: Connect to a remote desktop using RDP
     vars:
       RDP_HOST: "{{.HOST}}"
+      RDP_IP:
+        sh: vals get 'ref+sops://./etc/nixos/secrets/rdp.enc.yaml#{{.RDP_HOST}}/ip'
       RDP_USER:
         sh: vals get 'ref+sops://./etc/nixos/secrets/rdp.enc.yaml#{{.RDP_HOST}}/username'
+    env:
       RDP_PASS:
         sh: vals get 'ref+sops://./etc/nixos/secrets/rdp.enc.yaml#{{.RDP_HOST}}/password'
     cmds:
-      - xfreerdp /multimon /v:{{.RDP_HOST}} /u:{{.RDP_USER}} /p:{{.RDP_PASS}} /f /floatbar:sticky:on,default:visible,show:always
+      - xfreerdp /multimon /v:{{.RDP_IP}} /u:{{.RDP_USER}} /p:"${RDP_PASS}" /f /floatbar:sticky:on,default:visible,show:always
