@@ -158,3 +158,14 @@ tasks:
     dir: ./dnscontrol/
     cmds:
       - sops exec-env ./env-secrets.enc.yaml "dnscontrol {{.CLI_ARGS}}"
+  rdp:
+    desc: Connect to a remote desktop using RDP
+    dir: ./rdp/
+    vars:
+      HOST: "{{.HOST | default .CURRENT_HOST}}"
+      USER:
+        sh: vals get 'ref+sops:///home/lucasfcnunes/dotfiles/etc/nixos/secrets/rdp.enc.yaml#{{.HOST}}/user'
+      PASSWORD:
+        sh: vals get 'ref+sops:///home/lucasfcnunes/dotfiles/etc/nixos/secrets/rdp.enc.yaml#{{.HOST}}/password'
+    cmds:
+      - xfreerdp /multimon /v:{{.HOST}} /u:{{.USER}} /p:{{.PASSWORD}} /f /floatbar:sticky:on,default:visible,show:always
